@@ -1,10 +1,13 @@
 package com.scrum.ude.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 @Entity
 public class Usuario {
 
@@ -30,9 +33,10 @@ public class Usuario {
 	private String password;
 	
 	@Column
-	private boolean habilitado;
-	@Column
 	private String rol;
+	
+	@OneToMany(mappedBy = "usuario")
+	private Set<Proyecto> proyectos;
 	
 	
 	public Long getCedula() {
@@ -83,8 +87,15 @@ public class Usuario {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-
 	
+
+	public Set<Proyecto> getProyectos() {
+		return proyectos;
+	}
+
+	public void setProyectos(Set<Proyecto> proyectos) {
+		this.proyectos = proyectos;
+	}
 
 	public String getPassword() {
 		return password;
@@ -102,15 +113,6 @@ public class Usuario {
 		this.userName = userName;
 	}
 	
-
-	public boolean isHabilitado() {
-		return habilitado;
-	}
-
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
