@@ -87,7 +87,7 @@ public class UsuarioController {
 			List<Usuario> usuarios= (List<Usuario>) usuarioDAO.findAll();
 			
 			model.addAttribute("usuarios", usuarios);
-	Usuario usuario= new Usuario();
+			Usuario usuario= new Usuario();
 			
 			model.addAttribute("usuario", usuario);
 			return "/listadoUsuarios";
@@ -217,11 +217,7 @@ public class UsuarioController {
 			usuarioDAO.save(user);
 			
 		}
-	
-		
-		
-		
-		
+
 		return "/menu";
 		
 	}

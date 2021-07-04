@@ -21,32 +21,32 @@ import com.scrum.ude.service.UsuarioServiceImpl;
 @Controller
 @Scope("session")
 public class LoginController {
-	 
-	@GetMapping({"/","/login"})
-	public String index() {
-		return "index";
-	}
-	
-	 @RequestMapping("/menu")
-	    public String defaultAfterLogin(HttpServletRequest request, Model model) {
 
-		 Authentication auth = SecurityContextHolder
-	             .getContext()
-	             .getAuthentication();
-	     UserDetails userDetail = (UserDetails) auth.getPrincipal();
-		 model.addAttribute("autoridad",userDetail.getAuthorities().toString());
-		 
-		 
-	        return "menu";
-	    }
-	
-	
+    @GetMapping({"/","/login", ""})
+    public String index() {
+        return "index";
+    }
+
+    @RequestMapping("/menu")
+    public String defaultAfterLogin(HttpServletRequest request, Model model) {
+
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        model.addAttribute("autoridad",userDetail.getAuthorities().toString());
+
+        return "menu";
+    }
+
+
 //	
 //	@GetMapping("/menu")
 //	public String menu() {
 //		return "menu";
 //	}
-	
+
 //	@GetMapping("/user")
 //	public String user() {
 //		return "user";
