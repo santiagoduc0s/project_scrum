@@ -1,11 +1,8 @@
 package com.scrum.ude.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -142,7 +139,7 @@ public class UsuarioController {
 			model.addAttribute("usuario", usuario);
 			
 		}
-		return "/ModificarUsuarioDos";
+		return "/ModificarUsuariosPerfilAdmin";
 	}
 	
 	@GetMapping("/verDatosPersonales")
@@ -171,7 +168,6 @@ public class UsuarioController {
 		user.setApellido(usuario.getApellido());
 		user.setCedula(usuario.getCedula());
 		user.setMail(usuario.getMail());
-		user.setHabilitado(usuario.isHabilitado());
 		user.setRol(usuario.getRol());
 		user.setUserName(usuario.getUserName());
 		

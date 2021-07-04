@@ -43,8 +43,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
                  iUsuarioDAO.findByUserName(userName);
      
      UserDetails users=null;
-	if(appUser.isHabilitado()==true) {	
-    //Mapear nuestra lista de Authority con la de spring security 
+	    //Mapear nuestra lista de Authority con la de spring security 
     
      
     List  rol = new ArrayList<>();
@@ -56,12 +55,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
     //Crear El objeto UserDetails que va a ir en sesion y retornarlo.
      users = (UserDetails) new User(appUser.getUserName(), appUser.getPassword(),rol);
      return users;
-     }
 	
-	throw new 
-    UsernameNotFoundException("User no habilitado :" +appUser.getNombre());
-     
-    
     }
     
     @Override

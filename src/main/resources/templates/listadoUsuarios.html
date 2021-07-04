@@ -4,6 +4,9 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   
 </head>
 <body>
@@ -23,20 +26,28 @@
 					<li class="nav-item active"><a class="nav-link"
 						th:href="@{/menu}">Home <span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item active"><a class="nav-link"
-						th:href="@{/listadoUsuarios}">Listado Alumnos <span class="sr-only">(current)</span></a>
-					</li>
+				
 				</ul>
-				
-				
-					 <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
-            <p  class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
-        </form>
-				
-					</div>
+					
+					
+						<div class="dropdown" style="left:-6%;">
+  				<button   class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+     			<p class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
+  			</button>
+  				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    				<a class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
+    				<a class="dropdown-item" href="#">Generar Codigo Curso</a>
+    					<a class="dropdown-item" href="#">listar cursos</a>
+     			<form th:action="@{/logout}" method="post">
+            		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
+           
+        	</form>
+  		</div>
+	</div>
+	</div>
 		</nav>
 		
+		<div>
 				 <form th:action="@{/listadoUsuarios}" th:object="${usuario}" method="post">
 <div class="col-md-4">				
  <input type="text" class="form-control" placeholder="Cedula" name="cedula" th:field="*{cedula}" />
@@ -46,7 +57,7 @@
             
         </form>
 				
-		
+		</div>
 		
 	
   <div class="card-body">
@@ -62,7 +73,6 @@
 							<th>apellido</th>
 							<th>cedula</th>
 							<th>mail</th>
-							<th>habilitado</th>
 							<th>rol</th>
 							<th>Username</th>
 							<th>modificar</th>
@@ -75,7 +85,6 @@
 							<td  th:text="${usuario.apellido}"></td>
 							<td  th:text="${usuario.cedula}"></td>
 							<td  th:text="${usuario.mail}"></td>
-							<td  th:text="${usuario.habilitado}"></td>
 							<td   th:text="${usuario.rol}"></td>
 							<td   th:text="${usuario.userName}"></td>
 							<td><a class="btn btn-primary btn-sm"
