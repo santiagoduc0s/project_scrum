@@ -1,15 +1,20 @@
 package com.scrum.ude.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 @Entity
-public class Usuario {
+public class Usuario implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +43,8 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private Set<Proyecto> proyectos;
 	
+	@OneToOne
+	private CodigoRegistro codigoRegistro;
 	
 	public Long getCedula() {
 		return cedula;
@@ -49,6 +56,14 @@ public class Usuario {
 
 	public String getRol() {
 		return rol;
+	}
+
+	public CodigoRegistro getCodigoRegistro() {
+		return codigoRegistro;
+	}
+
+	public void setCodigoRegistro(CodigoRegistro codigoRegistro) {
+		this.codigoRegistro = codigoRegistro;
 	}
 
 	public void setRol(String rol) {

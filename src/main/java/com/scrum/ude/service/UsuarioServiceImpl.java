@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
+import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
 
 
@@ -76,6 +77,25 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 		return usuario;
 
 	}
+    
+    @Override
+  	public CodigoRegistro findCodigo(String codigo) {
+
+  		
+  		Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
+  		query.setParameter("codigo", codigo);
+
+  		CodigoRegistro codigoRegistro = null;
+  		try {
+  			log.info("Chequear ");
+  			codigoRegistro = (CodigoRegistro) query.getSingleResult();
+  		} catch (Exception nre) {
+  			 log.info("No se ha encontrado  codigoRegistro");
+
+  		}
+  		return codigoRegistro;
+
+  	}
     
     
     @Override

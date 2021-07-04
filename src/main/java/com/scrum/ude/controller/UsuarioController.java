@@ -17,9 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.config.WebSecurityConfig;
+import com.scrum.ude.dao.ICodigoRegistro;
 import com.scrum.ude.dao.IUsuarioDAO;
+import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.UsuarioServiceImpl;
+
+import jdk.internal.org.jline.utils.Log;
 
 @Controller
 public class UsuarioController {
@@ -28,6 +32,9 @@ public class UsuarioController {
 	IUsuarioDAO usuarioDAO;
 	@Autowired
 	WebSecurityConfig seguridad;
+	
+	@Autowired
+	private ICodigoRegistro codigoRegist;
 	
 	@Autowired
 	UsuarioServiceImpl usuarioService;
@@ -61,6 +68,17 @@ public class UsuarioController {
 		if (usuario == null) {
 			
 			usuarioDTO.setRol("ROLE_USER");
+			
+
+			CodigoRegistro  codigoRegistro = usuarioService.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
+			
+			if(codigoRegistro!=null) {
+			
+				codigoRegistro.setUsado(true);
+				usuarioDTO.setCodigoRegistro(codigoRegistro);
+				
+				//return "registroUsuario";	
+			}
 			usuarioService.agregarUsuario(usuarioDTO);
 
 			return "/index";
