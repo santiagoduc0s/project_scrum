@@ -139,7 +139,7 @@ public class UsuarioController {
 			model.addAttribute("usuario", usuario);
 			
 		}
-		return "/ModificarUsuarioDos";
+		return "/ModificarUsuariosPerfilAdmin";
 	}
 	
 	@GetMapping("/verDatosPersonales")

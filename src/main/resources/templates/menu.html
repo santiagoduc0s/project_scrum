@@ -3,10 +3,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <title th:text="titulo"></title>
-
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </head>
 
 
@@ -26,31 +29,28 @@
 						
 					</li>
 					
-					<li th:if="${autoridad=='[ROLE_USER]'}" class="nav-item active"><a class="nav-link" 
- 						th:href="@{/verDatosPersonales}"> Datos Personales <span class="sr-only">(current)</span></a> 
- 					</li> 
-					
- 					<li th:if="${autoridad=='[ROLE_ADMIN]'}" class="nav-item active"><a class="nav-link" 
- 						th:href="@{/listadoUsuarios}">Listado Usuarios <span class="sr-only">(current)</span></a> 
- 					</li> 
 				</ul>
-				
+				</div>
+			<div class="dropdown" style="left:-6%;">
+  				<button   class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+     			<p class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
+  			</button>
+  				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales}">Datos Personales</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
+    				<a class="dropdown-item" href="#">Generar Codigo Curso</a>
+     			<form th:action="@{/logout}" method="post">
+            		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
+           
+        	</form>
+  		</div>
+	</div>
+	
+	
 
-
-<!-- <form th:action="@{/index}"   method="get"> -->
-<!--        				<input  type="submit" value="Logout" class="btn float-right login_btn"> -->
-<!--        			<p  [[${#httpServletRequest.remoteUser}]]! class="btn float-right login_btn"/> -->
-					
-<!-- 					</form> -->
-					
-					 <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
-            <p  class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
-        </form>
-					
-
-			</div>
 		</nav>
+		
+		
 
 
 <h1  th:text="${autoridad}"></h1>
