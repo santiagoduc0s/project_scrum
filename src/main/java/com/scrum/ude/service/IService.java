@@ -1,6 +1,9 @@
 package com.scrum.ude.service;
 
+import java.util.List;
+
 import com.scrum.ude.entity.CodigoRegistro;
+import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Usuario;
 
 public interface IService {
@@ -13,5 +16,9 @@ public interface IService {
 	Usuario buscarPorCedula(Long cedula);
 
 	CodigoRegistro findCodigo(String codigo);
+
+	Proyecto buscarPorIdProyecto(Long id);
+
+	List<Proyecto> buscarProyectoPorUsuario(Long id);
 
 }

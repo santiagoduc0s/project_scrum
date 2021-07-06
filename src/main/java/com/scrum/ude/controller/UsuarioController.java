@@ -72,12 +72,15 @@ public class UsuarioController {
 
 			CodigoRegistro  codigoRegistro = usuarioService.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
 			
-			if(codigoRegistro!=null) {
+			if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
 			
 				codigoRegistro.setUsado(true);
 				usuarioDTO.setCodigoRegistro(codigoRegistro);
+					
+			}
+			else {
 				
-				//return "registroUsuario";	
+				return "registroUsuario";	
 			}
 			usuarioService.agregarUsuario(usuarioDTO);
 
@@ -166,12 +169,14 @@ public class UsuarioController {
 		 Authentication auth = SecurityContextHolder
 	             .getContext()
 	             .getAuthentication();
+		
+		
 	     UserDetails userDetail = (UserDetails) auth.getPrincipal();
 		
 		 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
 		 model.addAttribute("usuario",user);
 		//Usuario user= 
-		
+		 model.addAttribute("autoridad",auth.getAuthorities().toString());
 		
 		return"/modificarUser";
 	}

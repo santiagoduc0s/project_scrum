@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
+import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Usuario;
 
 
@@ -116,6 +117,47 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 		return usuario;
 
 	}
+    
+   
+	@Override
+   	public List<Proyecto> buscarProyectoPorUsuario(Long id) {
+
+   		
+   		Query query = em.createQuery("select p from Proyecto u where p.id=:id");
+   		query.setParameter("id", id);
+
+   		List<Proyecto> proyectos = null;
+   		try {
+   			log.info("Chequear ");
+   			proyectos = (List<Proyecto>) query.getResultList();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  usuarios");
+
+   		}
+   		return proyectos;
+
+   	}
+    
+    
+    
+    @Override
+   	public Proyecto buscarPorIdProyecto(Long id) {
+
+   		
+   		Query query = em.createQuery("select p from Proyecto p where p.id=:id");
+   		query.setParameter("id", id);
+
+   		Proyecto proyecto = null;
+   		try {
+   			log.info("Chequear ");
+   			proyecto = (Proyecto) query.getSingleResult();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  proyecto");
+
+   		}
+   		return proyecto;
+
+   	}
     
 
 	@Override
