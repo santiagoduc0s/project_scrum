@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+    
+</head>
+
+<body>
+
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link"
+						th:href="@{/menu}">Home <span class="sr-only">(current)</span></a>
+					</li>
+					
+				</ul>				
+				
+					</div>
+					<div class="dropdown" style="left:-6%;">
+  				<button   class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+     			<p class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
+  			</button>
+  				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales}">Datos Personales</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Codigo Curso</a>
+    				<a class="dropdown-item" href="#">listar cursos</a>
+    				<a class="dropdown-item" href="/vistaProyecto">ver proyectos</a>
+     			<form th:action="@{/logout}" method="post">
+            		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
+           
+        	</form>
+  		</div>
+	</div>
+		</nav>
+
+ <h1  th:text="${proyecto.titulo}"></h1>
+    <div class="text-center" style="margin-top: 20px; margin-bottom: 20px;">
+        <button type="button" class="btn btn-primary">
+            Crear tarea
+        </button>
+    </div>
+
+    <div class="drag-container"></div>
+
+    <div class="board">
+        <div class="board-column backlog">
+            <div class="board-column-container">
+                <div class="board-column-header">backlog</div>
+                <div class="board-column-content-wrapper">
+                    <div class="board-column-content" id="backlog">
+                        <div class="board-item">
+                            <div class="board-item-content" id="1">
+                                <span>Item #</span>1<span style="float: right;">&times;</span>
+                            </div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="2"><span>Item #</span>2</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="3"><span>Item #</span>3</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="4"><span>Item #</span>4</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="5"><span>Item #</span>5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="board-column todo">
+            <div class="board-column-container">
+                <div class="board-column-header">Todo</div>
+                <div class="board-column-content-wrapper">
+                    <div class="board-column-content" id="todo">
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>1</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>2</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>3</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>4</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="board-column working">
+            <div class="board-column-container">
+                <div class="board-column-header">Working</div>
+                <div class="board-column-content-wrapper">
+                    <div class="board-column-content" id="working">
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>6</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>7</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>8</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>9</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="board-column done">
+            <div class="board-column-container">
+                <div class="board-column-header">Done</div>
+                <div class="board-column-content-wrapper">
+                    <div class="board-column-content" id="done">
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>11</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>12</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>13</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>14</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content"><span>Item #</span>15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 100%; margin-bottom: 50px;"></div>
+
+
+
+    <!--
+    <div class="hover-bg">
+        DELETE IT
+    </div>
+    -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations.min.js"></script>
+    
+    -->
+
+    <script src="https://cdn.jsdelivr.net/gh/haltu/muuri@0.9.3/dist/muuri.min.js"></script>
+<script th:src="@{/js/init.js}"></script>
+</body>
+
+</html>

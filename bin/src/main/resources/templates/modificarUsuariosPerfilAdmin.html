@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+</head>
+<body>
+<div>
+
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link"
+						th:href="@{/menu}">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item active"><a class="nav-link"
+						th:href="@{/listadoUsuarios}">Listado Alumnos <span class="sr-only">(current)</span></a>
+					</li>
+				</ul>
+				
+				
+					 <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
+            <p  class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
+        </form>
+				
+					</div>
+		</nav>
+		
+				  <form class="col-12"  th:action="@{/usuarioModificado}" th:object="${usuario}"
+						method="post">
+							<div class="col-md-4">
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" th:field="*{id}" readonly />
+                    </div>
+              	<label>Nombre</label>
+              	
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" th:field="*{nombre}" />
+                    </div>
+                     <label>Apellido</label>
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" placeholder="Apellido" name="apellido" th:field="*{apellido}"
+								oninvalid="InvalidMsg(this)" required/>
+                    </div>
+                     <label>Cedula</label>
+                     <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" placeholder="Cedula" name="cedula" th:field="*{cedula}"
+								oninvalid="InvalidMsg(this)" required/>
+                    </div>
+                     <label>Email</label>
+                     <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" placeholder="Email" name="mail" th:field="*{mail}"
+								 oninvalid="InvalidEmail(textbox)"  required/>
+                    </div>
+                     <label>UserName</label>
+                     <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" placeholder="User" name="username" th:field="*{userName}" oninvalid="InvalidMsg(this)"
+								required/>
+                    </div>
+                    
+                    <label>Habilitar</label>
+                   
+                   
+                    <div class="form-group" >
+                   <select th:field="*{habilitado}">
+    <option th:value="'1'" th:text="HABILITADO"></option>
+    <option th:value="'0'" th:text="NOHABILITADO"></option>
+</select>
+                   
+                    </div>
+                    
+                     <label>ROL</label>
+                   
+                   
+                    <div class="form-group" >
+                   <select th:field="*{rol}">
+    <option th:value="'ROLE_USER'" th:text="ROLE_USER"></option>
+    <option th:value="'ROLE_ADMIN'" th:text="ROLE_ADMIN"></option>
+</select>
+                   
+                    </div>
+                      </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Guardar </button>
+                    
+                </form>
+                
+		
+		
+	
+ 
+</body>
+</html>
