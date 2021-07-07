@@ -120,11 +120,11 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
     
    
 	@Override
-   	public List<Proyecto> buscarProyectoPorUsuario(Long id) {
+   	public List<Proyecto> buscarProyectoPorTitulo(String titulo) {
 
    		
-   		Query query = em.createQuery("select p from Proyecto u where p.id=:id");
-   		query.setParameter("id", id);
+   		Query query = em.createQuery("select p from Proyecto u where p.titulo=:titulo");
+   		query.setParameter("titulo", titulo);
 
    		List<Proyecto> proyectos = null;
    		try {
@@ -137,8 +137,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
    		return proyectos;
 
    	}
-    
-    
     
     @Override
    	public Proyecto buscarPorIdProyecto(Long id) {

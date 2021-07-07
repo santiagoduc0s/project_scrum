@@ -19,6 +19,6 @@ public interface IService {
 
 	Proyecto buscarPorIdProyecto(Long id);
 
-	List<Proyecto> buscarProyectoPorUsuario(Long id);
+	List<Proyecto> buscarProyectoPorTitulo(String titulo);
 
 }

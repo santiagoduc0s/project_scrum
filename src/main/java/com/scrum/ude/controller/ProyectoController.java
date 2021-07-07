@@ -58,7 +58,7 @@ public String generarCodigo(Model model,Proyecto proyecto) {
 	 
 	 proyectoDAO.save(proyecto);
 	 
-	 List<Proyecto> proyectos= (List<Proyecto>) usuarioImpl.buscarProyectoPorUsuario(proyecto.getId());
+	 List<Proyecto> proyectos= (List<Proyecto>) usuarioImpl.buscarProyectoPorTitulo(proyecto.getTitulo());
 		
 		model.addAttribute("proyectos", proyectos);
 	
