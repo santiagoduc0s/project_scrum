@@ -7,7 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  
+
 </head>
 <body>
 <div>
@@ -26,79 +26,80 @@
 					<li class="nav-item active"><a class="nav-link"
 						th:href="@{/menu}">Home <span class="sr-only">(current)</span></a>
 					</li>
+					
+				</ul>				
 				
-				</ul>
-					
-					
-						<div class="dropdown" style="left:-6%;">
+					</div>
+					<div class="dropdown" style="left:-6%;">
   				<button   class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
      			<p class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
   			</button>
   				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    				<a class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
-    				<a class="dropdown-item" href="#">Generar Codigo Curso</a>
-    					<a class="dropdown-item" href="#">listar cursos</a>
+    				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales}">Datos Personales</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Codigo Curso</a>
+    				<a class="dropdown-item" href="#">listar cursos</a>
+    				<a class="dropdown-item" href="/vistaProyecto">ver proyectos</a>
      			<form th:action="@{/logout}" method="post">
             		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
            
         	</form>
   		</div>
 	</div>
-	</div>
 		</nav>
 		
-		<div>
-				 <form th:action="@{/listadoUsuarios}" th:object="${usuario}" method="post">
-<div class="col-md-4">				
- <input type="text" class="form-control" placeholder="Cedula" name="cedula" th:field="*{cedula}" />
-								
-            <input type="submit" value="Buscar"  class="btn btn-primary"/>
-            </div>
-            
-        </form>
-				
-		</div>
-		
-	
-  <div class="card-body">
-    <div id="table" class="table-editable">
-      <span class="table-add float-right mb-3 mr-2"
-        ><a href="#!" class="text-success"
-          ><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a
-      ></span>
-      <table class="table table-striped">
+				  <form class="col-12" th:action="@{/crearProyecto}"  th:object="${proyecto}"
+						method="post">
+						<label>Crear Proyecto</label>
+                   <div class="form-group" id="user-group">
+                   <div class="col-md-4">
+                        <input type="text" class="form-control" th:field="*{titulo}"  />
+                    </div>
+                    </div><label>Descripcion</label>
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" th:field="*{Descripcion}"  />
+                    </div>
+                    <label>Codigo Proyecto</label>
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" th:field="*{codigoProyecto}"  />
+                    </div>
+                   
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Guardar </button>
+                    
+                </form>
+                
+                  <table class="table table-striped">
 					<thead>
 						<tr>
-							<th>nombre</th>
-							<th>apellido</th>
-							<th>cedula</th>
-							<th>mail</th>
-							<th>rol</th>
-							<th>Username</th>
-							<th>modificar</th>
+							<th>Proyecto</th>
+							<th>Descripcion</th>
+							<th>Codigo Proyecto</th>
+							<th>VER</th>
+							
 							<th>eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="usuario: ${usuarios}">
-							<td   th:text="${usuario.nombre}"></td>
-							<td  th:text="${usuario.apellido}"></td>
-							<td  th:text="${usuario.cedula}"></td>
-							<td  th:text="${usuario.mail}"></td>
-							<td   th:text="${usuario.rol}"></td>
-							<td   th:text="${usuario.userName}"></td>
+						<tr th:each="proyecto: ${proyectos}">
+							<td th:text="${proyecto.titulo}"></td>
+							<td th:text="${proyecto.descripcion}"></td>
+							<td th:text="${proyecto.codigoProyecto}"></td>
 							<td><a class="btn btn-primary btn-sm"
-								th:href="@{/modificar/} + ${usuario.id}" th:text="'Modificar'"></a></td>
+								th:href="@{/verProyectoTarea/} + ${proyecto.id}" th:text="'ver Proyecto'"></a></td>
 								<td><a class="btn btn-danger btn-sm"
-								th:href="@{/eliminar/} + ${usuario.id}" th:text="'eliminar'"
+								th:href="@{/eliminarProyecto/} + ${proyecto.id}" th:text="'eliminar'"
 								onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
 						</tr>
 					</tbody>
 
 				</table>
-    </div>
-  </div>
-
-
+                
+               <a class="dropdown-item"  th:text="${proyect}" href="/menu">crear proyectos</a>
+                
+              
+		
+		
+	
+ 
 </body>
 </html>

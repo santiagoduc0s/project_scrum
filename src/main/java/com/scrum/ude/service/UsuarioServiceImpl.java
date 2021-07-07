@@ -1,6 +1,6 @@
 package com.scrum.ude.service;
 
-import java.util.ArrayList ;  
+import java.util.ArrayList ;   
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +21,7 @@ import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Proyecto;
+import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
 
 
@@ -120,11 +121,11 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
     
    
 	@Override
-   	public List<Proyecto> buscarProyectoPorTitulo(String titulo) {
+   	public List<Proyecto> buscarProyectoPorUsuario(Long id) {
 
    		
-   		Query query = em.createQuery("select p from Proyecto p where p.titulo=:titulo");
-   		query.setParameter("titulo", titulo);
+   		Query query = em.createQuery("select p from Proyecto p where p.usuario.id=:id");
+   		query.setParameter("id", id);
 
    		List<Proyecto> proyectos = null;
    		try {
@@ -135,6 +136,28 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
    		}
    		return proyectos;
+
+   	}
+	
+	
+	
+	@Override
+   	public Proyecto buscarProyectoPorUsuarioWithTitulo(Long id,String titulo) {
+
+   		
+   		Query query = em.createQuery("select p from Proyecto p where p.usuario.id=:id and p.titulo=:titulo");
+   		query.setParameter("id", id);
+   		query.setParameter("titulo", titulo);
+
+   		Proyecto proyecto = null;
+   		try {
+   			log.info("Chequear ");
+   			proyecto = (Proyecto) query.getSingleResult();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  usuarios");
+
+   		}
+   		return proyecto;
 
    	}
     
@@ -157,25 +180,46 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
    	}
     
-
 	@Override
-  	public Usuario buscarPorCedula(Long cedula) {
+   	public Tarea buscarPorNombreTarea(String nombre) {
 
-  		
-  		Query query = em.createQuery("select u from Usuario u where u.cedula=:cedula");
-  		query.setParameter("cedula", cedula);
+   		
+   		Query query = em.createQuery("select t from Tarea t where t.nombre=:nombre");
+   		query.setParameter("nombre", nombre);
 
-  		Usuario usuario = null;
-  		try {
-  			log.info("Chequear ");
-  			usuario = (Usuario) query.getSingleResult();
-  		} catch (Exception nre) {
-  			 log.info("No se ha encontrado  usuarios");
+   		Tarea tarea = null;
+   		try {
+   			log.info("Chequear ");
+   			tarea = (Tarea) query.getSingleResult();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  nombre con dicha tarea");
 
-  		}
-  		return usuario;
+   		}
+   		return tarea;
 
-  	}
+   	}
+    
+    
+    
+
+//	@Override
+//  	public Usuario buscarPorCedula(Long cedula) {
+//
+//  		
+//  		Query query = em.createQuery("select u from Usuario u where u.cedula=:cedula");
+//  		query.setParameter("cedula", cedula);
+//
+//  		Usuario usuario = null;
+//  		try {
+//  			log.info("Chequear ");
+//  			usuario = (Usuario) query.getSingleResult();
+//  		} catch (Exception nre) {
+//  			 log.info("No se ha encontrado  usuarios");
+//
+//  		}
+//  		return usuario;
+//
+//  	}
     
     
 	@Override

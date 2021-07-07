@@ -39,6 +39,15 @@ public class UsuarioController {
 	@Autowired
 	UsuarioServiceImpl usuarioService;
 	
+	// retorna el usuario Logeado para todo el contexto
+	
+	public  Authentication retornarUsuarioLogueado(){
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth;
+	}
+	
+	//navego a la vista de registro usuario 
 	
 	@GetMapping("/registroUsuario")
 	public String redirigir(Model model) {
@@ -46,21 +55,16 @@ public class UsuarioController {
 
 		model.addAttribute("usuario", usuario);
 
-		return "registroUsuario";
+		return "/registroUsuario/registroUsuario";
 	}
 	
-	
+	//aca proceso los datos  del registro usuario
 	@PostMapping("/registroUsuario")
 	public String procesar(Usuario usuarioDTO, Model model, BindingResult result,@RequestParam String repeatPassword) {
 
-		if (result.hasErrors()) {
+		if (result.hasErrors()||!usuarioDTO.getPassword().equals(repeatPassword)) {
 
-			return "registroUsuario";
-		}
-		if(!usuarioDTO.getPassword().equals(repeatPassword)) {
-		
-			return "registroUsuario";
-			
+			return "/registroUsuario/registroUsuario";
 		}
 
 		Usuario usuario = (Usuario) usuarioService.findOne(usuarioDTO.getUserName());
@@ -68,7 +72,6 @@ public class UsuarioController {
 		if (usuario == null) {
 			
 			usuarioDTO.setRol("ROLE_USER");
-			
 
 			CodigoRegistro  codigoRegistro = usuarioService.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
 			
@@ -80,25 +83,26 @@ public class UsuarioController {
 			}
 			else {
 				
-				return "registroUsuario";	
+				return "/registroUsuario/registroUsuario";	
 			}
 			usuarioService.agregarUsuario(usuarioDTO);
 
-			return "/index";
+			return "/login/index";
 		} else {
 			model.addAttribute("respuesta", "Este Usuario ya esta Registrado" + usuario.getUserName());
 
 		}
 
-		return "registroUsuario";	
+		return "/registroUsuario/registroUsuario";	
 		}
 	
+	//navego a la vista de ver usuarios que estan registrados
 	
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/listadoUsuarios")
-	public String verAlumnos(Model model) {
+	public String verUsuarios(Model model) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = retornarUsuarioLogueado();
 		if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
 			
 		
@@ -108,13 +112,15 @@ public class UsuarioController {
 			Usuario usuario= new Usuario();
 			
 			model.addAttribute("usuario", usuario);
-			return "/listadoUsuarios";
+			return "/admin/listadoUsuarios";
 			
 		}
 		model.addAttribute("autoridad",auth.getAuthorities().toString());
 		
-		return "/menu";
+		return "/menu/menu";
 	}
+	
+	// aca elimino un usuario
 	
 	@GetMapping(value = "/eliminar/{id}")
 	public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
@@ -127,27 +133,28 @@ public class UsuarioController {
 		return "redirect:/listadoUsuarios";
 	}
 	
-
+	//busco por nombre de usuario 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/listadoUsuarios")
-	public String buscarAlumno(Model model,Usuario usuario,BindingResult result) {
-		if(!usuario.getCedula().equals(null)) {
+	public String buscarUsuario(Model model,Usuario usuario,BindingResult result) {
+		
+		if(!usuario.getUserName().isEmpty()) {
 
-		Usuario usu= usuarioService.buscarPorCedula(usuario.getCedula());
-				
+		Usuario usu= usuarioService.findOne(usuario.getUserName());
 		
 		model.addAttribute("usuarios", usu);
-		}else {
+		
+		} else {
 		
 		List<Usuario> usuarios= (List<Usuario>) usuarioDAO.findAll();
 		
 		model.addAttribute("usuarios", usuarios);
 		
-		}
+		 }
 		
-		return "/listadoUsuarios";
+		return "/admin/listadoUsuarios";
 	}
-	
+	//modifico los datos del usuario
 	@GetMapping(value = "/modificar/{id}")
 	public String modificarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash, Model model) {
 		Optional<Usuario> usuario = Optional.ofNullable(new Usuario());
@@ -155,32 +162,32 @@ public class UsuarioController {
 		if (id > 0) {
 
 			  usuario= usuarioDAO.findById(id);
-			flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
-			//mv.addObject("usuario",usuario);
-			model.addAttribute("usuario", usuario);
+			
+			  flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
+			
+			  model.addAttribute("usuario", usuario);
 			
 		}
-		return "/ModificarUsuariosPerfilAdmin";
+		return "/admin/ModificarUsuariosPerfilAdmin";
 	}
-	
+	// Perfil Usuario ver datos personales
 	@GetMapping("/verDatosPersonales")
 	public String verDatosPersonales(Model model) {
 		
-		 Authentication auth = SecurityContextHolder
-	             .getContext()
-	             .getAuthentication();
-		
-		
-	     UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		 Authentication auth = retornarUsuarioLogueado();
+	     
+		 UserDetails userDetail = (UserDetails) auth.getPrincipal();
 		
 		 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+		 
 		 model.addAttribute("usuario",user);
 		//Usuario user= 
 		 model.addAttribute("autoridad",auth.getAuthorities().toString());
 		
-		return"/modificarUser";
+		return"/user/modificarUser";
 	}
 	
+	//Se procesan los cambios del Usuario, Perfil Administrador  
 	@PostMapping("/usuarioModificado")
 	public String guardarUsuarioModificadoAdmin(Usuario usuario, Model model) {
 	
@@ -204,21 +211,20 @@ public class UsuarioController {
 		model.addAttribute("usuario", usuariose);
 		
 		
-		return "/listadoUsuarios";
+		return "/admin/listadoUsuarios";
 		
 	}
+	// Se procesan datos de la modificacion del  propio Usuario
 	
 	@PostMapping("/modificarDatosPersonales")
-	public String modificarDatosPersonalesUsuario(Usuario usuario ,@RequestParam String contrasena,@RequestParam String nuevaContrasena, @RequestParam String confirmacionContrasena) {
+	public String modificarDatosPersonalesUsuario(Usuario usuario ,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
 	
-		System.out.println("Pssword ID  ES    "+contrasena);
 		Usuario user=usuarioService.buscarPorId(usuario.getId());
 		if(seguridad.passwordEncoder().matches(contrasena, user.getPassword())){
 			
-			
-			if(!confirmacionContrasena.equals(nuevaContrasena)) {
+				if(!confirmacionContrasena.equals(nuevaContrasena)) {
 				
-				return "modificarUser";
+					return "/user/modificarUser";
 				
 //				 ModelAndView modelAndView = new ModelAndView();
 //				error(modelAndView);
@@ -237,16 +243,14 @@ public class UsuarioController {
 			
 		}
 
-		return "/menu";
+		return "/menu/menu";
 		
 	}
 	
-	
+	// Aun no decido errores para la pantalla
 	public String error(ModelAndView model) {
 		
-		 Authentication auth = SecurityContextHolder
-	             .getContext()
-	             .getAuthentication();
+		Authentication auth = retornarUsuarioLogueado();
 	     UserDetails userDetail = (UserDetails) auth.getPrincipal();
 		
 		 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
@@ -255,8 +259,7 @@ public class UsuarioController {
 		//Usuario user= 
 		
 		
-		return"/modificarUser";
+		return"/user/modificarUser";
 	}
 	
-
 }

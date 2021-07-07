@@ -36,6 +36,12 @@ public class Proyecto implements Serializable {
 	@Column
 	private String  titulo;
 	
+	@Column
+	private String  descripcion;
+	
+	@Column
+	private String  codigoProyecto;
+	
 	public Proyecto() {
 		
 	}
@@ -70,6 +76,22 @@ public class Proyecto implements Serializable {
 
 	public void setTarea(Set<Tarea> tarea) {
 		this.tarea = tarea;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getCodigoProyecto() {
+		return codigoProyecto;
+	}
+
+	public void setCodigoProyecto(String codigoProyecto) {
+		this.codigoProyecto = codigoProyecto;
 	}
 
 	

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.dao.IProyectoDAO;
 import com.scrum.ude.dao.IUsuarioDAO;
@@ -20,61 +21,84 @@ import com.scrum.ude.service.UsuarioServiceImpl;
 @Controller
 public class ProyectoController {
 
-	
 	@Autowired
 	private IUsuarioDAO usuarioDAO;
 	@Autowired
-	private UsuarioServiceImpl usuarioImpl;
-	
-	
+	private UsuarioServiceImpl usuarioImpl; 
+	@Autowired
+	private UsuarioController usuarioController;
+
 	@Autowired
 	private IProyectoDAO proyectoDAO;
-	
-@GetMapping("/vistaProyecto")
-public String  vistaProyecto(Model model) {
-	Proyecto proyecto= new Proyecto();
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	
-	model.addAttribute("proyecto",proyecto);
-	 List<Proyecto> proyectos= (List<Proyecto>) proyectoDAO.findAll();
+
+	// navegar a vista de Proyectos y busco los proyectos para mostrar del usuario
+	@GetMapping("/vistaProyecto")
+	public String vistaProyecto(Model model) {
+		Proyecto proyecto = new Proyecto();
 		
-		model.addAttribute("proyectos", proyectos);
-		model.addAttribute("autoridad",auth.getAuthorities().toString());
-	
-	return"/crearProyecto";
-}
-
-
-@PostMapping("/crearProyecto")
-public String generarCodigo(Model model,Proyecto proyecto) {
-	
-	 Authentication auth = SecurityContextHolder
-             .getContext()
-             .getAuthentication();
-     UserDetails userDetail = (UserDetails) auth.getPrincipal();
-	
-	 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-	 proyecto.setUsuario(user);
-	 
-	 proyectoDAO.save(proyecto);
-	 
-	 List<Proyecto> proyectos= (List<Proyecto>) usuarioImpl.buscarProyectoPorTitulo(proyecto.getTitulo());
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
 		
-		model.addAttribute("proyectos", proyectos);
-	
-		return"/crearProyecto";
-}
+		model.addAttribute("proyecto", proyecto);
 
-@GetMapping("/verProyectoTarea/{id}")
-public String verProyectoWithTarea(@PathVariable(value = "id") Long id,Model model) {
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	Proyecto proyecto= usuarioImpl.buscarPorIdProyecto(id);
+		auth.getName();
+		Usuario user = usuarioImpl.findOne(auth.getName());
+
+		List<Proyecto> proyectos = (List<Proyecto>) usuarioImpl.buscarProyectoPorUsuario(user.getId());
+
+		model.addAttribute("proyectos", proyectos);
+		model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+		return "/proyecto/crearProyecto";
+	}
+	// proceso la creacion del proyecto
+	@PostMapping("/crearProyecto")
+	public String crearProyecto(Model model, Proyecto proyecto) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+		proyecto.setUsuario(user);
+		
+		Proyecto proyect = (Proyecto) usuarioImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
+			
+			if(proyect==null) {
+				 
+				 proyectoDAO.save(proyecto);
+			 } else {
+					return "redirect:/vistaProyecto";
+			    	
+			    }
+			List<Proyecto> proyectos = (List<Proyecto>) usuarioImpl.buscarProyectoPorUsuario(user.getId());
+			model.addAttribute("proyectos", proyectos);
+    	 return "redirect:/vistaProyecto";
+	}
+
+	// vista de cada Proyecto son sus respectivas tareas
+	@GetMapping("/verProyectoTarea/{id}")
+	public String verProyectoWithTarea(@PathVariable(value = "id") Long id, Model model) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		Proyecto proyecto = usuarioImpl.buscarPorIdProyecto(id);
+
+		model.addAttribute("proyecto", proyecto);
+		
+		model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+		return "/proyecto/proyectoConTarea";
+
+	}
 	
-	model.addAttribute("proyecto",proyecto);
-	model.addAttribute("autoridad",auth.getAuthorities().toString());
-	
-	return"/proyectoConTarea";
-	
-}
+	// aca elimino un  proyecto
+		@GetMapping(value = "/eliminarProyecto/{id}")
+		public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+
+			if (id > 0) {
+				proyectoDAO.deleteById(id);
+				flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
+			}
+			return "redirect:/vistaProyecto";
+		}
 
 }

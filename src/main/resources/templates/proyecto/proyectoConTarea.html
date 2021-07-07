@@ -52,9 +52,7 @@
 
  <h1  th:text="${proyecto.titulo}"></h1>
     <div class="text-center" style="margin-top: 20px; margin-bottom: 20px;">
-        <button type="button" class="btn btn-primary">
-            Crear tarea
-        </button>
+        <a  class="btn btn-primary" th:href="@{/crearTarea/} + ${proyecto.id}"> Crear Tarea</a>
     </div>
 
     <div class="drag-container"></div>

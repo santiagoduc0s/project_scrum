@@ -48,46 +48,37 @@
 	</div>
 		</nav>
 		
-				  <form class="col-12" th:action="@{/crearProyecto}"  th:object="${proyecto}"
+				  <form class="col-12" th:action="@{/crearTarea}"  th:object="${tarea}"
 						method="post">
-						<label>Crear Proyecto</label>
+						<label>Crear Tarea</label>
                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" th:field="*{titulo}"  />
+                   <div class="col-md-4">
+                        <input type="text" class="form-control" th:field="*{nombre}"  />
                     </div>
+                    </div><label>Descripcion</label>
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" th:field="*{Descripcion}"  />
+                    </div>
+                       <div class="form-group" id="user-group">
+                        <input  id="pass" name="pass" hidden type="text" class="form-control" th:value="${ide}"/>
+                    </div>
+                    
+                    <label>Status</label>
+                    <div class="form-group" >
+                   <select th:field="*{status}">
+    					<option th:value="'BACKLOG'" th:text="BACKLOG"></option>
+    					<option th:value="'TODO'" th:text="TODO"></option>
+    					<option th:value="'WORKING'" th:text="WORKING"></option>
+    					<option th:value="'DONE'" th:text="DONE"></option>
+				</select>
+</div>
                    
                     <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Guardar </button>
                     
                 </form>
                 
-                  <table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Proyecto</th>
-							<th>VER</th>
-							
-							<th>eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="proyecto: ${proyectos}">
-							<td th:text="${proyecto.titulo}"></td>
-							
-							<td><a class="btn btn-primary btn-sm"
-								th:href="@{/verProyectoTarea/} + ${proyecto.id}" th:text="'ver Proyecto'"></a></td>
-								<td><a class="btn btn-danger btn-sm"
-								th:href="@{/eliminar/} + ${proyecto.id}" th:text="'eliminar'"
-								onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
-						</tr>
-					</tbody>
-
-				</table>
                 
-               <a class="dropdown-item"  th:text="${proyect}" href="/menu">crear proyectos</a>
                 
-              
-		
-		
-	
  
 </body>
 </html>

@@ -41,10 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
              .loginPage("/login")
              .permitAll()
              .defaultSuccessUrl("/menu")
-//             .failureUrl("/login?habilitado=true")
-//             .failureUrl("/login?error=true")
-//             .usernameParameter("username")
-//             .passwordParameter("password")
              .and()
          .logout()
              .permitAll()
@@ -53,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
        
     }
     BCryptPasswordEncoder bCryptPasswordEncoder;
+   
     //Crea el encriptador de contraseñas	
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,12 +63,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { 
  
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());  
+       //setea la password codificada a la base
+       
+    	auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());  
         
-         //Usuario usuario= (Usuario) auth.getObject();
-         
-         //System.out.println(usuario.getNombre());
     }
 }
