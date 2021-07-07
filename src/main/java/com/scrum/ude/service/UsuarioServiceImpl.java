@@ -123,7 +123,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
    	public List<Proyecto> buscarProyectoPorTitulo(String titulo) {
 
    		
-   		Query query = em.createQuery("select p from Proyecto u where p.titulo=:titulo");
+   		Query query = em.createQuery("select p from Proyecto p where p.titulo=:titulo");
    		query.setParameter("titulo", titulo);
 
    		List<Proyecto> proyectos = null;
