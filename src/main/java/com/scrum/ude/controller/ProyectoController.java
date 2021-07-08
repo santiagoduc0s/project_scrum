@@ -52,7 +52,7 @@ public class ProyectoController {
 	}
 	// proceso la creacion del proyecto
 	@PostMapping("/crearProyecto")
-	public String crearProyecto(Model model, Proyecto proyecto) {
+	public String crearProyecto(Model model, Proyecto proyecto, RedirectAttributes flash) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -63,8 +63,12 @@ public class ProyectoController {
 		Proyecto proyect = (Proyecto) usuarioImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
 			
 			if(proyect==null) {
+				
+				String mensajeFlash = "Cliente editado con éxito! Cliente creado con éxito!";
 				 
-				 proyectoDAO.save(proyecto);
+				proyectoDAO.save(proyecto);
+				 
+				flash.addAttribute(mensajeFlash);
 			 } else {
 					return "redirect:/vistaProyecto";
 			    	

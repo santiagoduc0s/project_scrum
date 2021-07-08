@@ -1,6 +1,6 @@
 package com.scrum.ude.controller;
 
-import java.util.List;
+import java.util.List; 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,8 +22,6 @@ import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.UsuarioServiceImpl;
-
-import jdk.internal.org.jline.utils.Log;
 
 @Controller
 public class UsuarioController {

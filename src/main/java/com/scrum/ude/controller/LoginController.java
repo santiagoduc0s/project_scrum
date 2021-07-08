@@ -26,7 +26,10 @@ public class LoginController {
     @RequestMapping("/menu")
     public String defaultAfterLogin(HttpServletRequest request, Model model) {
 
-        Authentication auth = SecurityContextHolder
+        
+    	request.getCookies();
+    	
+    	Authentication auth = SecurityContextHolder
                 .getContext()
                 .getAuthentication();
 
