@@ -65,8 +65,13 @@
                     <div class="board-column-content" id="backlog">
                         <div class="board-item">
                             <div class="board-item-content" id="1">
+                             
                                 <span>Item #</span>1<span style="float: right;">&times;</span>
                             </div>
+                        </div>
+                        <div class="board-item" th:each="proyec: ${proyecto}">
+                            <div class="board-item-content" id="2"><span th:text="${proyect.tarea.nombre}"></span>2</div>
+                        
                         </div>
                         <div class="board-item">
                             <div class="board-item-content" id="2"><span>Item #</span>2</div>

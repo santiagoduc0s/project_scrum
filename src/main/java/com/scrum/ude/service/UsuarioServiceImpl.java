@@ -180,6 +180,8 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
    	}
     
+    
+    
 	@Override
    	public Tarea buscarPorNombreTarea(String nombre) {
 

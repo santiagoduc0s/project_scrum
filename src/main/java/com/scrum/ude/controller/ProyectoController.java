@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.dao.IProyectoDAO;
+import com.scrum.ude.dao.ITareaDAO;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Usuario;
@@ -27,6 +28,9 @@ public class ProyectoController {
 	private UsuarioServiceImpl usuarioImpl; 
 	@Autowired
 	private UsuarioController usuarioController;
+	
+	@Autowired
+	private ITareaDAO tareaDAO;
 
 	@Autowired
 	private IProyectoDAO proyectoDAO;
@@ -64,7 +68,7 @@ public class ProyectoController {
 			
 			if(proyect==null) {
 				
-				String mensajeFlash = "Cliente editado con éxito! Cliente creado con éxito!";
+				String mensajeFlash = "Proyecto Creado Con exito!";
 				 
 				proyectoDAO.save(proyecto);
 				 
@@ -89,6 +93,9 @@ public class ProyectoController {
 		model.addAttribute("proyecto", proyecto);
 		
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
+		
+	   //buscar tareas con el proyecto asociado
+		//Tarea tarea=tareaDAO.
 
 		return "/proyecto/proyectoConTarea";
 
