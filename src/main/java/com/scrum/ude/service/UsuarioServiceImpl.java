@@ -224,24 +224,25 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
     
     
 
-//	@Override
-//  	public Usuario buscarPorCedula(Long cedula) {
-//
-//  		
-//  		Query query = em.createQuery("select u from Usuario u where u.cedula=:cedula");
-//  		query.setParameter("cedula", cedula);
-//
-//  		Usuario usuario = null;
-//  		try {
-//  			log.info("Chequear ");
-//  			usuario = (Usuario) query.getSingleResult();
-//  		} catch (Exception nre) {
-//  			 log.info("No se ha encontrado  usuarios");
-//
-//  		}
-//  		return usuario;
-//
-//  	}
+
+	@Override
+  	public Usuario buscarPorCedula(Long cedula) {
+
+  		
+  		Query query = em.createQuery("select u from Usuario u where u.cedula=:cedula");
+  		query.setParameter("cedula", cedula);
+
+  		Usuario usuario = null;
+  		try {
+  			log.info("Chequear ");
+  			usuario = (Usuario) query.getSingleResult();
+  		} catch (Exception nre) {
+  			 log.info("No se ha encontrado  usuarios");
+
+  		}
+  		return usuario;
+
+  	}
     
     
 	@Override

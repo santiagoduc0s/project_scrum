@@ -54,7 +54,7 @@
 						method="post">
 							<div class="col-md-4">
                     <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" th:field="*{id}" readonly />
+                    <input  id="pass" name="id" hidden type="text" class="form-control" th:value="${id}"/>
                     </div>
               	<label>Nombre</label>
               	

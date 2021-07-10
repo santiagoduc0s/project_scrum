@@ -27,4 +27,6 @@ public interface IService {
 
 	Tarea buscarPorIdTarea(Long id);
 
+	Usuario buscarPorCedula(Long cedula);
+
 }

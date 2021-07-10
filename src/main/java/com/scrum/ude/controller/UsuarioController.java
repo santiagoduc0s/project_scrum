@@ -131,14 +131,14 @@ public class UsuarioController {
 		return "redirect:/listadoUsuarios";
 	}
 	
-	//busco por nombre de usuario 
+	//busco por cedula de usuario 
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/listadoUsuarios")
 	public String buscarUsuario(Model model,Usuario usuario,BindingResult result) {
 		
-		if(!usuario.getUserName().isEmpty()) {
+		if(usuario.getCedula()!=null) {
 
-		Usuario usu= usuarioService.findOne(usuario.getUserName());
+		Usuario usu= usuarioService.buscarPorCedula(usuario.getCedula());
 		
 		model.addAttribute("usuarios", usu);
 		
@@ -162,7 +162,7 @@ public class UsuarioController {
 			  usuario= usuarioDAO.findById(id);
 			
 			  flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
-			
+			  model.addAttribute("id", id);
 			  model.addAttribute("usuario", usuario);
 			
 		}
@@ -177,7 +177,7 @@ public class UsuarioController {
 		 UserDetails userDetail = (UserDetails) auth.getPrincipal();
 		
 		 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-		 
+		 model.addAttribute("id",user.getId());
 		 model.addAttribute("usuario",user);
 		//Usuario user= 
 		 model.addAttribute("autoridad",auth.getAuthorities().toString());
@@ -187,11 +187,11 @@ public class UsuarioController {
 	
 	//Se procesan los cambios del Usuario, Perfil Administrador  
 	@PostMapping("/usuarioModificado")
-	public String guardarUsuarioModificadoAdmin(Usuario usuario, Model model) {
+	public String guardarUsuarioModificadoAdmin(Usuario usuario,@RequestParam(value = "id") Long id, Model model) {
 	
 		System.out.println("USUARIO ID  ES    "+usuario.getId());
 	
-		Usuario user=usuarioService.buscarPorId(usuario.getId());
+		Usuario user=usuarioService.buscarPorId(id);
 		user.setNombre(usuario.getNombre());
 		user.setApellido(usuario.getApellido());
 		user.setCedula(usuario.getCedula());
@@ -215,9 +215,9 @@ public class UsuarioController {
 	// Se procesan datos de la modificacion del  propio Usuario
 	
 	@PostMapping("/modificarDatosPersonales")
-	public String modificarDatosPersonalesUsuario(Usuario usuario ,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
+	public String modificarDatosPersonalesUsuario(Usuario usuario ,@RequestParam(value = "id") Long id,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
 	
-		Usuario user=usuarioService.buscarPorId(usuario.getId());
+		Usuario user=usuarioService.buscarPorId(id);
 		if(seguridad.passwordEncoder().matches(contrasena, user.getPassword())){
 			
 				if(!confirmacionContrasena.equals(nuevaContrasena)) {
@@ -241,7 +241,7 @@ public class UsuarioController {
 			
 		}
 
-		return "/menu/menu";
+		return "redirect:/menu";
 		
 	}
 	
