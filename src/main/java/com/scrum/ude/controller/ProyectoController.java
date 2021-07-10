@@ -72,7 +72,7 @@ public class ProyectoController {
 				 
 				proyectoDAO.save(proyecto);
 				 
-				flash.addAttribute(mensajeFlash);
+				flash.addFlashAttribute("success",mensajeFlash);
 			 } else {
 					return "redirect:/vistaProyecto";
 			    	

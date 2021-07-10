@@ -63,29 +63,29 @@
                 <div class="board-column-header">backlog</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="backlog">
-                        <div class="board-item">
-                            <div class="board-item-content" id="1">
-                             
-                                <span>Item #</span>1<span style="float: right;">&times;</span>
+                       
+                        <div class="board-item" th:each="proyec: ${proyecto.tarea}">
+                       
+                            <div class="board-item-content" id="1"><span th:text="${proyec.nombre}"></span>
+                            
+                            <span th:text="${proyec.descripcion}"></span>
+                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${proyec.id}">Eliminar</a>
                             </div>
                         </div>
-                        <div class="board-item" th:each="proyec: ${proyecto}">
-                            <div class="board-item-content" id="2"><span th:text="${proyect.tarea.nombre}"></span>2</div>
-                        
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content" id="2"><span>Item #</span>2</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content" id="3"><span>Item #</span>3</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content" id="4"><span>Item #</span>4</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content" id="5"><span>Item #</span>5</div>
-                        </div>
+                         <div class="board-item">
+                            <div class="board-item-content">
+                            	 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false">
+   								 Tarea x
+  							</button>
+								<div class="collapse" id="collapseExample">
+  								<div class="card card-body">
+  									  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  							</div>
+						</div>
+                     </div>
+                  </div>
                     </div>
+                 
                 </div>
             </div>
         </div>

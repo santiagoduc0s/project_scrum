@@ -25,4 +25,6 @@ public interface IService {
 
 	Tarea buscarPorNombreTarea(String nombre);
 
+	Tarea buscarPorIdTarea(Long id);
+
 }
