@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
+import com.scrum.ude.entity.Curso;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
@@ -198,6 +199,29 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
    		}
    		return tarea;
+
+   	}
+	
+	
+	@Override
+   	public Curso codigoCurso(int codigo) {
+
+   		
+   		Query query = em.createQuery("select c from Curso c where c.codigoCurso=:codigo");
+   		query.setParameter("codigo",codigo);
+
+   		Curso curso = null;
+   		try {
+   			log.info("Chequear ");
+   			curso = (Curso) query.getSingleResult();
+   			
+   			
+   			
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  nombre con dicha tarea");
+
+   		}
+   		return curso;
 
    	}
     

@@ -101,6 +101,26 @@ public class ProyectoController {
 
 	}
 	
+	// ver el proyecto para ser modificado
+		@GetMapping("/verProyecto/{id}")
+		public String verProyectoParaModificar(@PathVariable(value = "id") Long id, Model model) {
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			Proyecto proyecto = usuarioImpl.buscarPorIdProyecto(id);
+
+			model.addAttribute("proyecto", proyecto);
+			
+			model.addAttribute("autoridad", auth.getAuthorities().toString());
+			
+		   //buscar tareas con el proyecto asociado
+			//Tarea tarea=tareaDAO.
+
+			return "/proyecto/modificarProyecto";
+
+		}
+	
+	
 	// aca elimino un  proyecto
 		@GetMapping(value = "/eliminarProyecto/{id}")
 		public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {

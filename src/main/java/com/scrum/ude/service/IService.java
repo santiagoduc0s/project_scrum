@@ -3,6 +3,7 @@ package com.scrum.ude.service;
 import java.util.List;
 
 import com.scrum.ude.entity.CodigoRegistro;
+import com.scrum.ude.entity.Curso;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
@@ -28,5 +29,8 @@ public interface IService {
 	Tarea buscarPorIdTarea(Long id);
 
 	Usuario buscarPorCedula(Long cedula);
+
+
+	Curso codigoCurso(int codigo);
 
 }

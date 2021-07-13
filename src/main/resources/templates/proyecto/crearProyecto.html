@@ -78,7 +78,7 @@
 							<th>Descripcion</th>
 							<th>Codigo Proyecto</th>
 							<th>VER</th>
-							
+							<th>Modificar</th>
 							<th>eliminar</th>
 						</tr>
 					</thead>
@@ -89,6 +89,8 @@
 							<td th:text="${proyecto.codigoProyecto}"></td>
 							<td><a class="btn btn-primary btn-sm"
 								th:href="@{/verProyectoTarea/} + ${proyecto.id}" th:text="'ver Proyecto'"></a></td>
+								<td><a class="btn btn-primary btn-sm"
+								th:href="@{/verProyecto/} + ${proyecto.id}" th:text="'modificar Proyecto'"></a></td>
 								<td><a class="btn btn-danger btn-sm"
 								th:href="@{/eliminarProyecto/} + ${proyecto.id}" th:text="'eliminar'"
 								onclick="return confirm('Est�s seguro que quieres eliminar?');"></a></td>
