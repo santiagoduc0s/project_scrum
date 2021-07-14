@@ -47,10 +47,27 @@ public class CursoController {
 //	// navegar a vista de Proyectos y busco los proyectos para mostrar del usuario
 	@GetMapping("/verCurso")
 	public String vistaProyecto(Model model) {
-	
-//
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+		
+		Inscripto inscripto= usuarioImpl.buscarUsuarioIncripto(user.getId());
+		model.addAttribute("inscripto",inscripto);
+
 		return "/curso/cursos";
 	}
+	
+	@GetMapping("/continuacionCurso")
+	public String vistaContinuacionCurso(Model model) {
+		
+		
+
+		return "/curso/iniciarCurso";
+	}
+	
+	
 	// proceso de validacion de curso e iniciar
 	@PostMapping("/validarCurso")
 	public String crearProyecto(Model model,@RequestParam(value="codigo")int codigoCurso, RedirectAttributes flash) {
@@ -68,7 +85,7 @@ public class CursoController {
 		inscripto.setCurso(curso);
 		inscripto.setUsuario(user);
 			
-		inscriptoDAO.save(inscripto)	;
+		inscriptoDAO.save(inscripto);
 		}
 
     	 return "redirect:/iniciarCurso";

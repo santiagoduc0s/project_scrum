@@ -48,7 +48,7 @@
 	</div>
 		</nav>
 		
-				<div class="card" style="width: 18rem;">
+				<div th:if="${inscripto == null}" class="card" style="width: 18rem;">
   <img class="card-img-top" src="/img/valoresScrum.png" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">Scrum</h5>
@@ -72,6 +72,20 @@
                 </form>	
 						</div>
                      </div>
+                       </div>
+  </div>
+</div>
+
+<div th:if="${inscripto != null}" class="card" style="width: 18rem;">
+  <img class="card-img-top" src="/img/valoresScrum.png" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Scrum</h5>
+    <p class="card-text">Este curso le va a brindar una herramiento para su futuro.</p>
+     <div class="board-item-content">
+                            	 <a th:href="@{/continuacionCurso}" class="btn btn-danger" >
+   								 Continuar Curso
+  							</a>
+						
                        </div>
   </div>
 </div>

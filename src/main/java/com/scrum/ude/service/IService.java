@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Curso;
+import com.scrum.ude.entity.Inscripto;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
@@ -32,5 +33,7 @@ public interface IService {
 
 
 	Curso codigoCurso(int codigo);
+
+	Inscripto buscarUsuarioIncripto(Long id);
 
 }

@@ -21,6 +21,7 @@ import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Curso;
+import com.scrum.ude.entity.Inscripto;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
@@ -224,6 +225,31 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
    		return curso;
 
    	}
+	
+	@Override
+   	public Inscripto buscarUsuarioIncripto(Long id) {
+
+   		
+   		Query query = em.createQuery("select i from Inscripto i where i.usuario.id=:id");
+   		query.setParameter("id",id);
+
+   		Inscripto inscripto = null;
+   		try {
+   			log.info("Chequear ");
+   			inscripto = (Inscripto) query.getSingleResult();
+   			
+   			
+   			
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado   usuario inscripto");
+
+   		}
+   		return inscripto;
+
+   	}
+    
+	
+	
     
 	@Override
    	public Tarea buscarPorIdTarea(Long id) {
