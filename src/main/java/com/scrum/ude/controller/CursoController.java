@@ -113,6 +113,13 @@ public class CursoController {
 //			return "redirect:/vistaProyecto";
 //		}
 //
-
+	
+	
+	@GetMapping(value="/verCuestionario")
+public String verCuestionario() {
+		
+		
+		return "/curso/verCuestionario";
+	}
 }
 //
