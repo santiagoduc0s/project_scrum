@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
@@ -31,7 +32,6 @@ import com.scrum.ude.service.Interfaces.IService;
 @Service
 public class UsuarioServiceImpl implements UserDetailsService, IService {
 
-	
 	private static final Logger log = LogManager.getLogger(UsuarioServiceImpl.class);
     @Autowired
     IUsuarioDAO iUsuarioDAO;
@@ -47,11 +47,11 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
      //Buscar el usuario con el repositorio y si no existe lanzar una exepcion
      com.scrum.ude.entity.Usuario appUser = 
                  iUsuarioDAO.findByUserName(userName);
-     
+//     RedirectAttributes flash = null;
+//     flash.addAttribute("danger","Incorrecto el logueo");
      UserDetails users=null;
 	    //Mapear nuestra lista de Authority con la de spring security 
     
-     
     List  rol = new ArrayList<>();
    	 
         // ROLE_USER, ROLE_ADMIN,..

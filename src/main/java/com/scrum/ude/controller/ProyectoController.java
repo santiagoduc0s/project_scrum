@@ -3,7 +3,6 @@ package com.scrum.ude.controller;
 import java.util.List; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,7 +61,8 @@ public class ProyectoController {
 	@PostMapping("/crearProyecto")
 	public String crearProyecto(Model model, Proyecto proyecto, RedirectAttributes flash) {
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+		
 		UserDetails userDetail = (UserDetails) auth.getPrincipal();
 
 		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
@@ -90,7 +90,8 @@ public class ProyectoController {
 	@GetMapping("/verProyectoTarea/{id}")
 	public String verProyectoWithTarea(@PathVariable(value = "id") Long id, Model model) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+		
 		
 		Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
@@ -109,7 +110,8 @@ public class ProyectoController {
 		@GetMapping("/verProyecto/{id}")
 		public String verProyectoParaModificar(@PathVariable(value = "id") Long id, Model model) {
 			
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Authentication auth = usuarioController.retornarUsuarioLogueado();
+			
 			
 			Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 

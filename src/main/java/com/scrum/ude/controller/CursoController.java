@@ -1,8 +1,6 @@
 package com.scrum.ude.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +15,7 @@ import com.scrum.ude.entity.Inscripto;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.CursoServiceImpl;
 import com.scrum.ude.service.UsuarioServiceImpl;
-//
+
 @Controller
 public class CursoController {
 //
@@ -31,14 +29,20 @@ public class CursoController {
 	private UsuarioServiceImpl usuarioImpl; 
 	
 	@Autowired
+	private UsuarioController usuarioController; 
+	
+	@Autowired
 	private CursoServiceImpl cursoImpl; 
 
-//	// navegar a vista Curso y busco por el usuario si se ha inscripto al curso
+
+	// navegar a vista Curso y busco por el usuario si se ha inscripto al curso
 	@GetMapping("/verCurso")
 	public String vistaCursos(Model model) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+		
 		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		
 
 		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
 		
@@ -61,8 +65,9 @@ public class CursoController {
 	@PostMapping("/validarCurso")
 	public String crearProyecto(Model model,@RequestParam(value="codigo")int codigoCurso, RedirectAttributes flash) {
 //
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		 Authentication auth = usuarioController.retornarUsuarioLogueado();
+		
+		 UserDetails userDetail = (UserDetails) auth.getPrincipal();
 
 		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
 		

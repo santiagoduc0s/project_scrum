@@ -37,16 +37,22 @@
                 <div class="col-12 forgot">
                      <a th:href="@{/registroUsuario}">Registrarse</a>
                 </div>
+                
+                 <div class="alert alert-danger" th:if="${danger != null}"
+			th:text="${danger}"></div>
+			
+			 <div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
                  
-                <div th:if="${param.error}" class="alert alert-danger" role="alert">
-		            Invalido usuario o password
-		        </div>
-		         <div th:if="${param.habilitado}" class="alert alert-danger" role="alert">
-		            Usuario no Habilitado
-		        </div>
-		        <div th:if="${param.logout}" class="alert alert-success" role="alert">
-		            Has cerrado Sesion
-		        </div>
+<!--                 <div th:if="${param.error}" class="alert alert-danger" role="alert"> -->
+<!-- 		            Invalido usuario o password -->
+<!-- 		        </div> -->
+<!-- 		         <div th:if="${param.habilitado}" class="alert alert-danger" role="alert"> -->
+<!-- 		            Usuario no Habilitado -->
+<!-- 		        </div> -->
+<!-- 		        <div th:if="${param.logout}" class="alert alert-success" role="alert"> -->
+<!-- 		            Has cerrado Sesion -->
+<!-- 		        </div> -->
             </div>
         </div>
     </div>

@@ -59,10 +59,11 @@ public class UsuarioController {
 	
 	//aca proceso los datos  del registro usuario
 	@PostMapping("/registroUsuario")
-	public String procesar(Usuario usuarioDTO, Model model, BindingResult result,@RequestParam String repeatPassword) {
+	public String procesar(Usuario usuarioDTO, Model model, BindingResult result,@RequestParam String repeatPassword, RedirectAttributes flash) {
 
 		if (result.hasErrors()||!usuarioDTO.getPassword().equals(repeatPassword)) {
-
+			
+			flash.addFlashAttribute("danger","Se encontrado un error Choto");
 			return "/registroUsuario/registroUsuario";
 		}
 
@@ -85,7 +86,8 @@ public class UsuarioController {
 				return "/registroUsuario/registroUsuario";	
 			}
 			usuarioDAO.save(usuarioDTO);
-			//usuarioService.agregarUsuario(usuarioDTO);
+			 
+			flash.addFlashAttribute("success","Usuario Registrado con Exito");
 
 			return "/login/index";
 		} else {

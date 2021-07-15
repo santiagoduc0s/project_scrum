@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.UsuarioServiceImpl;
@@ -61,6 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { 
  
        //setea la password codificada a la base
+    	
+    	
        
     	auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());  
         

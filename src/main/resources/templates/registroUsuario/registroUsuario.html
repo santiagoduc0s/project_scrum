@@ -90,22 +90,19 @@ function validarContrasena(){
 	
 	if(pass==pass1){
         //Si son iguales
-        //console.log("Las contraseñas son iguales");
-    	//alert("Contraseñas Correctas");
+        //console.log("Las contraseï¿½as son iguales");
+    	//alert("Contraseï¿½as Correctas");
         return true;
 	}else{
-		alert("Contraseñas incorrectas");
+		//alert("Password incorrecta");
 		btn.setAttribute('disabled', '')
-		 console.log("Las contraseñas son iguales");
+		 console.log("Las contraseï¿½as son iguales");
 		
 	}
 	
     return false;
 }
 </script>
-
-
-
 
 </head>
 <body>
@@ -158,6 +155,11 @@ function validarContrasena(){
                 <div th:if="${param.error}" class="alert alert-danger" role="alert">
 		            los campos no pueden estar vacios
 		        </div>
+		          <div class="alert alert-danger" th:if="${danger != null}"
+			th:text="${danger}"></div>
+			 <div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		        
 		        <div th:if="${param.logout}" class="alert alert-success" role="alert">
 		            Has cerrado Sesion
 		        </div>
