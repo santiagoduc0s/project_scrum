@@ -1,7 +1,4 @@
 package com.scrum.ude.controller;
-
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,24 +7,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.scrum.ude.dao.ITareaDAO;
-import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
-import com.scrum.ude.service.UsuarioServiceImpl;
+import com.scrum.ude.service.ProyectoServiceImpl;
+import com.scrum.ude.service.TareaServiceImpl;
 
 @Controller
 public class TareaController {
 	
 	@Autowired
-	private UsuarioController usuarioController;
-
-	@Autowired
-	private IUsuarioDAO usuarioDAO;
-	@Autowired
-	private UsuarioServiceImpl usuarioServiceImp;
+	private ProyectoServiceImpl proyectoServiceImp;
 	
+	@Autowired
+	private TareaServiceImpl tareaServiceImp;
+
+
 	@Autowired
 	private ITareaDAO tareaDAO;
 
@@ -45,9 +40,9 @@ public class TareaController {
 	@PostMapping("/crearTarea")
 	public String crearTarea(Model model,@RequestParam(value="pass",defaultValue="0")Long idProyecto, Tarea tarea) {
 
-		Proyecto proyecto=usuarioServiceImp.buscarPorIdProyecto(idProyecto);
+		Proyecto proyecto=proyectoServiceImp.buscarPorIdProyecto(idProyecto);
 		tarea.setProyecto(proyecto);
-		Tarea tareaBase=usuarioServiceImp.buscarPorNombreTarea(tarea.getNombre());
+		Tarea tareaBase=tareaServiceImp.buscarPorNombreTarea(tarea.getNombre());
 		
 		if(tareaBase==null) {
 			tareaDAO.save(tarea);
@@ -55,7 +50,6 @@ public class TareaController {
 			// ya existe dicha tarea 
 			
 		 }
-		
 		
     	 return "redirect:/verProyectoTarea/"+idProyecto+"";
 	}
@@ -65,7 +59,7 @@ public class TareaController {
 			public String eliminarTarea(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 				Long idProyecto=null;
 				if (id > 0) {
-				Tarea tarea= usuarioServiceImp.buscarPorIdTarea(id);
+				Tarea tarea= tareaServiceImp.buscarPorIdTarea(id);
 				idProyecto=tarea.getProyecto().getId();
 					tareaDAO.deleteById(id);
 					flash.addFlashAttribute("success", "Tarea  eliminada con éxito!");

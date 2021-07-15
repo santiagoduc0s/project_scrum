@@ -21,21 +21,22 @@ import com.scrum.ude.dao.ICodigoRegistro;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
+import com.scrum.ude.service.CodigoServiceImpl;
 import com.scrum.ude.service.UsuarioServiceImpl;
 
 @Controller
 public class UsuarioController {
 	
 	@Autowired
-	IUsuarioDAO usuarioDAO;
+	private IUsuarioDAO usuarioDAO;
 	@Autowired
-	WebSecurityConfig seguridad;
+	private WebSecurityConfig seguridad;
 	
 	@Autowired
-	private ICodigoRegistro codigoRegist;
+	private CodigoServiceImpl codigoImpl;
 	
 	@Autowired
-	UsuarioServiceImpl usuarioService;
+	 private UsuarioServiceImpl usuarioService;
 	
 	// retorna el usuario Logeado para todo el contexto
 	
@@ -71,7 +72,7 @@ public class UsuarioController {
 			
 			usuarioDTO.setRol("ROLE_USER");
 
-			CodigoRegistro  codigoRegistro = usuarioService.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
+			CodigoRegistro  codigoRegistro = codigoImpl.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
 			
 			if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
 			
@@ -83,7 +84,8 @@ public class UsuarioController {
 				
 				return "/registroUsuario/registroUsuario";	
 			}
-			usuarioService.agregarUsuario(usuarioDTO);
+			usuarioDAO.save(usuarioDTO);
+			//usuarioService.agregarUsuario(usuarioDTO);
 
 			return "/login/index";
 		} else {
@@ -224,8 +226,6 @@ public class UsuarioController {
 				
 					return "/user/modificarUser";
 				
-//				 ModelAndView modelAndView = new ModelAndView();
-//				error(modelAndView);
 			}
 		
 			user.setNombre(usuario.getNombre());

@@ -1,6 +1,6 @@
 package com.scrum.ude.controller;
 
-import java.util.List;
+import java.util.List; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.scrum.ude.dao.IProyectoDAO;
 import com.scrum.ude.dao.ITareaDAO;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Usuario;
+import com.scrum.ude.service.ProyectoServiceImpl;
 import com.scrum.ude.service.UsuarioServiceImpl;
 
 @Controller
@@ -24,8 +24,12 @@ public class ProyectoController {
 
 	@Autowired
 	private IUsuarioDAO usuarioDAO;
+	
+	@Autowired
+	private ProyectoServiceImpl proyectoImpl; 
 	@Autowired
 	private UsuarioServiceImpl usuarioImpl; 
+	
 	@Autowired
 	private UsuarioController usuarioController;
 	
@@ -47,7 +51,7 @@ public class ProyectoController {
 		auth.getName();
 		Usuario user = usuarioImpl.findOne(auth.getName());
 
-		List<Proyecto> proyectos = (List<Proyecto>) usuarioImpl.buscarProyectoPorUsuario(user.getId());
+		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 
 		model.addAttribute("proyectos", proyectos);
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
@@ -64,7 +68,7 @@ public class ProyectoController {
 		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
 		proyecto.setUsuario(user);
 		
-		Proyecto proyect = (Proyecto) usuarioImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
+		Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
 			
 			if(proyect==null) {
 				
@@ -77,7 +81,7 @@ public class ProyectoController {
 					return "redirect:/vistaProyecto";
 			    	
 			    }
-			List<Proyecto> proyectos = (List<Proyecto>) usuarioImpl.buscarProyectoPorUsuario(user.getId());
+			List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 			model.addAttribute("proyectos", proyectos);
     	 return "redirect:/vistaProyecto";
 	}
@@ -88,7 +92,7 @@ public class ProyectoController {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		Proyecto proyecto = usuarioImpl.buscarPorIdProyecto(id);
+		Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
 		model.addAttribute("proyecto", proyecto);
 		
@@ -107,7 +111,7 @@ public class ProyectoController {
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
-			Proyecto proyecto = usuarioImpl.buscarPorIdProyecto(id);
+			Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
 			model.addAttribute("proyecto", proyecto);
 			

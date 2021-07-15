@@ -25,6 +25,7 @@ import com.scrum.ude.entity.Inscripto;
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
+import com.scrum.ude.service.Interfaces.IService;
 
 
 @Service
@@ -82,24 +83,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
 	}
     
-    @Override
-  	public CodigoRegistro findCodigo(String codigo) {
-
-  		
-  		Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
-  		query.setParameter("codigo", codigo);
-
-  		CodigoRegistro codigoRegistro = null;
-  		try {
-  			log.info("Chequear ");
-  			codigoRegistro = (CodigoRegistro) query.getSingleResult();
-  		} catch (Exception nre) {
-  			 log.info("No se ha encontrado  codigoRegistro");
-
-  		}
-  		return codigoRegistro;
-
-  	}
     
     
     @Override
@@ -121,110 +104,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
 	}
     
-   
-	@Override
-   	public List<Proyecto> buscarProyectoPorUsuario(Long id) {
-
-   		
-   		Query query = em.createQuery("select p from Proyecto p where p.usuario.id=:id");
-   		query.setParameter("id", id);
-
-   		List<Proyecto> proyectos = null;
-   		try {
-   			log.info("Chequear ");
-   			proyectos = (List<Proyecto>) query.getResultList();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  usuarios");
-
-   		}
-   		return proyectos;
-
-   	}
-	
-	
-	
-	@Override
-   	public Proyecto buscarProyectoPorUsuarioWithTitulo(Long id,String titulo) {
-
-   		
-   		Query query = em.createQuery("select p from Proyecto p where p.usuario.id=:id and p.titulo=:titulo");
-   		query.setParameter("id", id);
-   		query.setParameter("titulo", titulo);
-
-   		Proyecto proyecto = null;
-   		try {
-   			log.info("Chequear ");
-   			proyecto = (Proyecto) query.getSingleResult();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  usuarios");
-
-   		}
-   		return proyecto;
-
-   	}
-    
-    @Override
-   	public Proyecto buscarPorIdProyecto(Long id) {
-
-   		
-   		Query query = em.createQuery("select p from Proyecto p where p.id=:id");
-   		query.setParameter("id", id);
-
-   		Proyecto proyecto = null;
-   		try {
-   			log.info("Chequear ");
-   			proyecto = (Proyecto) query.getSingleResult();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  proyecto");
-
-   		}
-   		return proyecto;
-
-   	}
-    
-    
-    
-	@Override
-   	public Tarea buscarPorNombreTarea(String nombre) {
-
-   		
-   		Query query = em.createQuery("select t from Tarea t where t.nombre=:nombre");
-   		query.setParameter("nombre", nombre);
-
-   		Tarea tarea = null;
-   		try {
-   			log.info("Chequear ");
-   			tarea = (Tarea) query.getSingleResult();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  nombre con dicha tarea");
-
-   		}
-   		return tarea;
-
-   	}
-	
-	
-	@Override
-   	public Curso codigoCurso(int codigo) {
-
-   		
-   		Query query = em.createQuery("select c from Curso c where c.codigoCurso=:codigo");
-   		query.setParameter("codigo",codigo);
-
-   		Curso curso = null;
-   		try {
-   			log.info("Chequear ");
-   			curso = (Curso) query.getSingleResult();
-   			
-   			
-   			
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  nombre con dicha tarea");
-
-   		}
-   		return curso;
-
-   	}
 	
 	@Override
    	public Inscripto buscarUsuarioIncripto(Long id) {
@@ -249,31 +128,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
    	}
     
 	
-	
-    
-	@Override
-   	public Tarea buscarPorIdTarea(Long id) {
-
-   		
-   		Query query = em.createQuery("select t from Tarea t where t.id=:id");
-   		query.setParameter("id", id);
-
-   		Tarea tarea = null;
-   		try {
-   			log.info("Chequear ");
-   			tarea = (Tarea) query.getSingleResult();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  nombre con dicha tarea");
-
-   		}
-   		return tarea;
-
-   	}
-    
-    
-    
-    
-
 
 	@Override
   	public Usuario buscarPorCedula(Long cedula) {

@@ -15,6 +15,7 @@ import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.Curso;
 import com.scrum.ude.entity.Inscripto;
 import com.scrum.ude.entity.Usuario;
+import com.scrum.ude.service.CursoServiceImpl;
 import com.scrum.ude.service.UsuarioServiceImpl;
 //
 @Controller
@@ -28,6 +29,9 @@ public class CursoController {
 	
 	@Autowired
 	private UsuarioServiceImpl usuarioImpl; 
+	
+	@Autowired
+	private CursoServiceImpl cursoImpl; 
 
 //	// navegar a vista Curso y busco por el usuario si se ha inscripto al curso
 	@GetMapping("/verCurso")
@@ -62,7 +66,7 @@ public class CursoController {
 
 		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
 		
-		Curso curso= usuarioImpl.codigoCurso(codigoCurso);
+		Curso curso= cursoImpl.codigoCurso(codigoCurso);
     	
 	Inscripto inscripto= new Inscripto();
 	if(curso!=null) {
