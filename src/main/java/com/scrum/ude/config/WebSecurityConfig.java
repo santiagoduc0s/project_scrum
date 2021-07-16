@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.UsuarioServiceImpl;
@@ -33,12 +32,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
          .authorizeRequests()
 	        .antMatchers(resources).permitAll()  
 	        .antMatchers("/","/login","/registroUsuario").permitAll()
+	        .antMatchers("/").access("hasRole('ADMIN')")
+	        .antMatchers("/default*").access("hasRole('USER')")
              .anyRequest()
              .authenticated()
              .and()
          .formLogin()
              .loginPage("/login")
+             .permitAll()
              .defaultSuccessUrl("/menu")
+//             .failureUrl("/login?habilitado=true")
+//             .failureUrl("/login?error=true")
+//             .usernameParameter("username")
+//             .passwordParameter("password")
              .and()
          .logout()
              .permitAll()
@@ -47,7 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
        
     }
     BCryptPasswordEncoder bCryptPasswordEncoder;
-   
     //Crea el encriptador de contraseñas	
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -61,11 +66,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { 
  
-       //setea la password codificada a la base
-    	
-    	
-       
-    	auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());  
+        // Setting Service to find User in the database.
+        // And Setting PassswordEncoder
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());  
         
+        // Usuario usuario= (Usuario) auth.getObject();
+         
+         //System.out.println(usuario.getNombre());
     }
 }

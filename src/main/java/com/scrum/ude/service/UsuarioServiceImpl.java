@@ -34,7 +34,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
 	private static final Logger log = LogManager.getLogger(UsuarioServiceImpl.class);
     @Autowired
-    IUsuarioDAO iUsuarioDAO;
+     private IUsuarioDAO iUsuarioDAO;
     @Autowired
     private WebSecurityConfig ws;
     

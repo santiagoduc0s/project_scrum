@@ -85,7 +85,7 @@ public class UsuarioController {
 				
 				return "/registroUsuario/registroUsuario";	
 			}
-			usuarioDAO.save(usuarioDTO);
+			usuarioService.agregarUsuario(usuarioDTO);
 			 
 			flash.addFlashAttribute("success","Usuario Registrado con Exito");
 
