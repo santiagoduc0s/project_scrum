@@ -93,5 +93,22 @@ public class CursoController {
 
 	}
 
+	@GetMapping("/navegarCuestionario")
+	public String iniciarCuestionario() {
+		
+		return "/curso/verCuestionario";
+	}
+	
+	@GetMapping("/cuestionario")
+	public String siguientePregunta() {
+		
+		return "/curso/cuestionario";
+	}
+	
+	@GetMapping("/cuestionario1")
+	public String siguientePregunta1() {
+		
+		return "/curso/cuestionario1";
+	}
 
 }
