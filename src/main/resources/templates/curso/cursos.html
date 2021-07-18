@@ -2,12 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
  <head th:replace="layout/layout :: head"></head>
 
+
 <body>
 <div>
-
+<header th:replace="layout/layout :: header">
+</header>
 </div>
 
-<header th:replace="layout/layout :: header"></header>
+
 		
 				<div th:if="${inscripto == null}" class="card" style="width: 18rem;">
   <img class="card-img-top" src="/img/valoresScrum.png" alt="Card image cap">

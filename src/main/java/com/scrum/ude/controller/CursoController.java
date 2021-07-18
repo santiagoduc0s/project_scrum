@@ -48,6 +48,7 @@ public class CursoController {
 		
 		Inscripto inscripto= usuarioImpl.buscarUsuarioIncripto(user.getId());
 		model.addAttribute("inscripto",inscripto);
+		model.addAttribute("autoridad", auth.getAuthorities().toString());
 
 		return "/curso/cursos";
 	}
