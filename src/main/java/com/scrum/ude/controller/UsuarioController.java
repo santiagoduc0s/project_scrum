@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.scrum.ude.config.WebSecurityConfig;
-import com.scrum.ude.dao.ICodigoRegistro;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
@@ -30,7 +28,7 @@ public class UsuarioController {
 	@Autowired
 	private IUsuarioDAO usuarioDAO;
 	@Autowired
-	private WebSecurityConfig seguridad;
+	 private WebSecurityConfig ws;
 	
 	@Autowired
 	private CodigoServiceImpl codigoImpl;
@@ -47,7 +45,6 @@ public class UsuarioController {
 	}
 	
 	//navego a la vista de registro usuario 
-	
 	@GetMapping("/registroUsuario")
 	public String redirigir(Model model) {
 		Usuario usuario = new Usuario();
@@ -173,14 +170,13 @@ public class UsuarioController {
 		return "/admin/ModificarUsuariosPerfilAdmin";
 	}
 	// Perfil Usuario ver datos personales
-	@GetMapping("/verDatosPersonales")
-	public String verDatosPersonales(Model model) {
+	@GetMapping("/verDatosPersonales/{id}")
+	public String verDatosPersonales(@PathVariable(value = "id") Long id,Model model) {
 		
 		 Authentication auth = retornarUsuarioLogueado();
-	     
-		 UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		 Usuario user=usuarioService.buscarPorId(id);
 		
-		 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+		 //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
 		 model.addAttribute("id",user.getId());
 		 model.addAttribute("usuario",user);
 		//Usuario user= 
@@ -216,13 +212,14 @@ public class UsuarioController {
 		return "/admin/listadoUsuarios";
 		
 	}
+	
 	// Se procesan datos de la modificacion del  propio Usuario
 	
 	@PostMapping("/modificarDatosPersonales")
-	public String modificarDatosPersonalesUsuario(Usuario usuario ,@RequestParam(value = "id") Long id,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
+	public String modificarDatosPersonalesUsuario(Model model,Usuario usuario ,@RequestParam(value = "id") Long id,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
 	
 		Usuario user=usuarioService.buscarPorId(id);
-		if(seguridad.passwordEncoder().matches(contrasena, user.getPassword())){
+		if(ws.passwordEncoder().matches(contrasena, user.getPassword())){
 			
 				if(!confirmacionContrasena.equals(nuevaContrasena)) {
 				
@@ -235,17 +232,24 @@ public class UsuarioController {
 			user.setCedula(usuario.getCedula());
 			user.setMail(usuario.getMail());
 			user.setUserName(usuario.getUserName());
-			String contra =seguridad.passwordEncoder().encode(nuevaContrasena);
+			//user.setPassword(user.getPassword());
 			
+			if(!nuevaContrasena.isEmpty()) {
+			
+			String contra =ws.passwordEncoder().encode(nuevaContrasena);
 			user.setPassword(contra);
+			}
 			
 			usuarioDAO.save(user);
+			 
+			model.addAttribute("usuario",user);
 			
 		}
-
-		return "redirect:/menu";
+		
+		 return "redirect:/menuCambiado/"+user.getUserName()+"";
 		
 	}
+	
 	
 	// Aun no decido errores para la pantalla
 	public String error(ModelAndView model) {

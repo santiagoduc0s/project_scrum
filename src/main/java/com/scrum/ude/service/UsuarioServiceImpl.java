@@ -1,6 +1,6 @@
 package com.scrum.ude.service;
 
-import java.util.ArrayList ;   
+import java.util.ArrayList ;    
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,23 +14,18 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scrum.ude.config.WebSecurityConfig;
+import com.scrum.ude.controller.UsuarioController;
 import com.scrum.ude.dao.IUsuarioDAO;
-import com.scrum.ude.entity.CodigoRegistro;
-import com.scrum.ude.entity.Curso;
 import com.scrum.ude.entity.Inscripto;
-import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.Interfaces.IService;
 
-
 @Service
-public class UsuarioServiceImpl implements UserDetailsService, IService {
+public class UsuarioServiceImpl implements UserDetailsService,  IService {
 
 	private static final Logger log = LogManager.getLogger(UsuarioServiceImpl.class);
     @Autowired
@@ -49,7 +44,12 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
                  iUsuarioDAO.findByUserName(userName);
 //     RedirectAttributes flash = null;
 //     flash.addAttribute("danger","Incorrecto el logueo");
-     UserDetails users=null;
+     UserDetails user=null;
+    
+     if(appUser==null) {
+    
+    	 return user;
+     }
 	    //Mapear nuestra lista de Authority con la de spring security 
     
     List  rol = new ArrayList<>();
@@ -59,8 +59,8 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
             rol.add(grantedAuthority);
 		
     //Crear El objeto UserDetails que va a ir en sesion y retornarlo.
-     users = (UserDetails) new User(appUser.getUserName(), appUser.getPassword(),rol);
-     return users;
+     user = (UserDetails) new User(appUser.getUserName(), appUser.getPassword(),rol);
+     return user;
 	
     }
     

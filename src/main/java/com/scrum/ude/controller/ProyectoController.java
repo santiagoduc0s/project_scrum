@@ -54,6 +54,10 @@ public class ProyectoController {
 
 		model.addAttribute("proyectos", proyectos);
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
+		
+		  UserDetails userDetail = (UserDetails) auth.getPrincipal();
+	      Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+	      model.addAttribute("usuario",us);
 
 		return "/proyecto/crearProyecto";
 	}
@@ -100,7 +104,11 @@ public class ProyectoController {
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
 		
 	   //buscar tareas con el proyecto asociado
-		//Tarea tarea=tareaDAO.
+		//Tarea tarea=tareaDA
+		  UserDetails userDetail = (UserDetails) auth.getPrincipal();
+	      Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+	      model.addAttribute("usuario",user);
+
 
 		return "/proyecto/proyectoConTarea";
 

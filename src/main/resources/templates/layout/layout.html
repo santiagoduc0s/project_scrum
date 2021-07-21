@@ -36,12 +36,12 @@
      			<p class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
   			</button>
   				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales}">Datos Personales</a>
+    				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales/}+ ${usuario.id}">Datos Personales</a>
     				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
     				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Codigo Curso</a>
     				<a class="dropdown-item" th:href="@{/verCurso}" >listar cursos</a>
     				<a class="dropdown-item" href="/vistaProyecto">ver proyectos</a>
-     			<form th:action="@{/logout}" method="post">
+     			<form th:action="@{/salida}" method="post">
             		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
            
         	</form>

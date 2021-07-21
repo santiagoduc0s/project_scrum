@@ -28,28 +28,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	
-    	 http
-         .authorizeRequests()
-	        .antMatchers(resources).permitAll()  
-	        .antMatchers("/","/login","/registroUsuario").permitAll()
-//	        .antMatchers("/").access("hasRole('ADMIN')")
-//	        .antMatchers("/default*").access("hasRole('USER')")
-             .anyRequest()
-             .authenticated()
-             .and()
-         .formLogin()
-             .loginPage("/login")
-             .permitAll()
-             .defaultSuccessUrl("/menu")
-             .and()
-         .logout()
-             .permitAll()
-             .logoutSuccessUrl("/login?logout");
-    	
-       
+   //	 http
+//         .authorizeRequests()
+//	        .antMatchers(resources).permitAll()  
+//	        .antMatchers("/","/login","/registroUsuario").permitAll()
+////	        .antMatchers("/").access("hasRole('ADMIN')")
+////	        .antMatchers("/default*").access("hasRole('USER')")
+  //           .anyRequest()
+  //           .authenticated();
+//             .and()
+//         .formLogin()
+//             .loginPage("/lo")
+//             .permitAll()
+//             .defaultSuccessUrl("/menu")
+//             .and()
+//         .logout()
+//            // .permitAll();
+//             .logoutSuccessUrl("/login");
+//    	
+//       
     }
     BCryptPasswordEncoder bCryptPasswordEncoder;
     //Crea el encriptador de contraseñas	
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
 		 BCryptPasswordEncoder  encoder = new BCryptPasswordEncoder();
@@ -66,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         // And Setting PassswordEncoder
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());  
         
-        // Usuario usuario= (Usuario) auth.getObject();
+       //7  Usuario usuario= (Usuario) auth.getObject();
          
          //System.out.println(usuario.getNombre());
     }
