@@ -136,7 +136,7 @@ public class ProyectoController {
 
 		}
 		
-		// ver el proyecto para ser modificado
+		// ver el proyecto para ser modificado //Fijate
 				@PostMapping("/guardarModificacionProyecto")
 				public String verProyectoParaModificar(Proyecto proyecto,@RequestParam(value="id")Long id, Model model) {
 					
