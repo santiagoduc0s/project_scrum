@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.scrum.ude.dao.IProyectoDAO;
 import com.scrum.ude.dao.ITareaDAO;
@@ -124,7 +125,7 @@ public class ProyectoController {
 			Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
 			model.addAttribute("proyecto", proyecto);
-			
+			model.addAttribute("id", id);
 			
 			model.addAttribute("autoridad", auth.getAuthorities().toString());
 			
@@ -137,7 +138,7 @@ public class ProyectoController {
 		
 		// ver el proyecto para ser modificado
 				@PostMapping("/guardarModificacionProyecto")
-				public String verProyectoParaModificar(Proyecto proyecto, Model model) {
+				public String verProyectoParaModificar(Proyecto proyecto,@RequestParam(value="id")Long id, Model model) {
 					
 					Authentication auth = usuarioController.retornarUsuarioLogueado();
 					
@@ -147,6 +148,7 @@ public class ProyectoController {
 
 					//model.addAttribute("proyecto", proyecto);
 					proyecto.setUsuario(user);
+					proyecto.setId(id);
 					 proyectoDAO.save(proyecto);
 					
 					model.addAttribute("autoridad", auth.getAuthorities().toString());
