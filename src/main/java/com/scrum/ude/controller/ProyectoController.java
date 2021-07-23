@@ -125,6 +125,7 @@ public class ProyectoController {
 
 			model.addAttribute("proyecto", proyecto);
 			
+			
 			model.addAttribute("autoridad", auth.getAuthorities().toString());
 			
 		   //buscar tareas con el proyecto asociado
@@ -133,6 +134,33 @@ public class ProyectoController {
 			return "/proyecto/modificarProyecto";
 
 		}
+		
+		// ver el proyecto para ser modificado
+				@PostMapping("/guardarModificacionProyecto")
+				public String verProyectoParaModificar(Proyecto proyecto, Model model) {
+					
+					Authentication auth = usuarioController.retornarUsuarioLogueado();
+					
+					auth.getName();
+					Usuario user = usuarioImpl.findOne(auth.getName());
+					//Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+
+					//model.addAttribute("proyecto", proyecto);
+					proyecto.setUsuario(user);
+					 proyectoDAO.save(proyecto);
+					
+					model.addAttribute("autoridad", auth.getAuthorities().toString());
+					
+					
+					List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+
+					model.addAttribute("proyectos", proyectos);
+				   //buscar tareas con el proyecto asociado
+					//Tarea tarea=tareaDAO.
+
+					return "redirect:/vistaProyecto";
+
+				}
 	
 	
 	// aca elimino un  proyecto

@@ -15,12 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.scrum.ude.config.WebSecurityConfig;
-import com.scrum.ude.controller.UsuarioController;
 import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.Inscripto;
-import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.Interfaces.IService;
 
