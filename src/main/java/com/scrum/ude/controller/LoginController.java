@@ -39,7 +39,7 @@ public class LoginController {
 	 private WebSecurityConfig ws;
 
    //primer acceso a la aplicacion login
-	@GetMapping("/lo")
+	@GetMapping("/login")
     public String index() {
 		//Usuario usuario = new Usuario();
 
@@ -47,7 +47,7 @@ public class LoginController {
 		return "/login/index";
     }
 	
-	@PostMapping("/lo")
+	@PostMapping("/login")
     public String buscar(@RequestParam(value="username") String user,@RequestParam(value="password") String password,RedirectAttributes flash) {
 		
 		//Usuario us= usuarioService.findOne(user);

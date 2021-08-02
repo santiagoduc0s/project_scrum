@@ -1,24 +1,36 @@
 package com.scrum.ude.entity;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column ;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 
 @Entity
-public class Curso {
+public class Curso implements Serializable {
 	
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 @Id
 @GeneratedValue(strategy =GenerationType.AUTO)
 private Long id;
 
-@Column
-private int codigoCurso;
+@OneToMany
+private List<Capitulo> capitulos;
 
 @Column
-private String nombre;
+private String titulo;
 
+@Column
+private String descripcion;
 
 
 public Curso() {
@@ -33,21 +45,31 @@ public void setId(Long id) {
 	this.id = id;
 }
 
-public int getCodigoCurso() {
-	return codigoCurso;
+public List<Capitulo> getCapitulos() {
+	return capitulos;
 }
 
-public void setCodigoCurso(int codigoCurso) {
-	this.codigoCurso = codigoCurso;
+public void setCapitulos(List<Capitulo> capitulos) {
+	this.capitulos = capitulos;
 }
 
-public String getNombre() {
-	return nombre;
+public String getTitulo() {
+	return titulo;
 }
 
-public void setNombre(String nombre) {
-	this.nombre = nombre;
+public void setTitulo(String titulo) {
+	this.titulo = titulo;
 }
+
+public String getDescripcion() {
+	return descripcion;
+}
+
+public void setDescripcion(String descripcion) {
+	this.descripcion = descripcion;
+}
+
+
 
 
 

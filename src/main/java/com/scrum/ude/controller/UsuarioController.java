@@ -1,5 +1,7 @@
 package com.scrum.ude.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List; 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,14 +74,42 @@ public class UsuarioController {
 
 			CodigoRegistro  codigoRegistro = codigoImpl.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
 			
+			Date fechaHoy=new Date();
+			
+			Calendar calendar1 = Calendar.getInstance();
+			
+			calendar1.setTime(fechaHoy);
+			 
+			 Calendar calendar2 = Calendar.getInstance();
+			 calendar2.setTime(codigoRegistro.getFecha());
+			
+			
+			//int dias=calendar2.get(Calendar.DAY_OF_MONTH)-calendar1.get(Calendar.DAY_OF_MONTH);
+			int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
+			
+			calendar2.set(Calendar.DAY_OF_MONTH,dias);
+			
+			System.out.println(calendar2.get(Calendar.DAY_OF_MONTH));
+			
+		if(calendar2.after(calendar1)|| calendar2.get(Calendar.DAY_OF_MONTH)==calendar1.get(Calendar.DAY_OF_MONTH)) {
+				
 			if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
 			
 				codigoRegistro.setUsado(true);
 				usuarioDTO.setCodigoRegistro(codigoRegistro);
 					
 			}
+			
+			
 			else {
 				
+				return "/registroUsuario/registroUsuario";	
+			}
+			
+         }
+			
+			else {
+				System.out.println("tiempo excedido para el codigo registro");
 				return "/registroUsuario/registroUsuario";	
 			}
 			usuarioService.agregarUsuario(usuarioDTO);

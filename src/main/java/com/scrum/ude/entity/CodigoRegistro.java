@@ -1,6 +1,7 @@
 package com.scrum.ude.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +27,9 @@ private String codigo;
 
 @Column
 private boolean usado;
+
+@Column
+private Date fecha;
 
 public CodigoRegistro() {
 	
@@ -54,6 +58,16 @@ public boolean isUsado() {
 public void setUsado(boolean usado) {
 	this.usado = usado;
 }
+
+public Date getFecha() {
+	return fecha;
+}
+
+public void setFecha(Date fecha) {
+	this.fecha = fecha;
+}
+
+
 
 
 }

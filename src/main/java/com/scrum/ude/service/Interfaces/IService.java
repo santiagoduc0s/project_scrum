@@ -1,6 +1,5 @@
 package com.scrum.ude.service.Interfaces;
 
-import com.scrum.ude.entity.Inscripto;
 import com.scrum.ude.entity.Usuario;
 
 public interface IService {
@@ -28,6 +27,6 @@ public interface IService {
 
 	//Curso codigoCurso(int codigo);
 
-	Inscripto buscarUsuarioIncripto(Long id);
+	//Inscripto buscarUsuarioIncripto(Long id);
 
 }

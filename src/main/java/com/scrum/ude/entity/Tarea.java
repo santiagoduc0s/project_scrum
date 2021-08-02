@@ -32,9 +32,9 @@ public class Tarea implements Serializable {
 	private String status;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_PROYECTO")
+	@JoinColumn(name="Proyecto")
 	private Proyecto proyecto;
-	
+
 	public Tarea() {
 		
 		
@@ -72,18 +72,17 @@ public class Tarea implements Serializable {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "Tarea [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", status=" + status + "]";
+	}
+
 	public Proyecto getProyecto() {
 		return proyecto;
 	}
 
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
-	}
-
-	@Override
-	public String toString() {
-		return "Tarea [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", status=" + status
-				+ ", proyecto=" + proyecto + "]";
 	}
 	
 }

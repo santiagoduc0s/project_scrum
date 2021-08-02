@@ -1,16 +1,20 @@
 package com.scrum.ude.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+
 @Entity
 public class Usuario implements Serializable {
 
@@ -19,6 +23,13 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "usuario_Paginas")
+	@JoinColumn(name="Usuario_id")
+	private List<Pagina> pagina;	
+	@ManyToMany
+	private List<Proyecto> proyecto;
 
 	@Column
 	private String nombre;
@@ -39,9 +50,6 @@ public class Usuario implements Serializable {
 	
 	@Column
 	private String rol;
-	
-	@OneToMany(mappedBy = "usuario")
-	private Set<Proyecto> proyectos;
 	
 	@OneToOne
 	private CodigoRegistro codigoRegistro;
@@ -104,13 +112,6 @@ public class Usuario implements Serializable {
 	}
 	
 
-	public Set<Proyecto> getProyectos() {
-		return proyectos;
-	}
-
-	public void setProyectos(Set<Proyecto> proyectos) {
-		this.proyectos = proyectos;
-	}
 
 	public String getPassword() {
 		return password;
@@ -128,6 +129,24 @@ public class Usuario implements Serializable {
 		this.userName = userName;
 	}
 	
+	
+
+	public List<Pagina> getPagina() {
+		return pagina;
+	}
+
+	public void setPagina(List<Pagina> pagina) {
+		this.pagina = pagina;
+	}
+
+	public List<Proyecto> getProyecto() {
+		return proyecto;
+	}
+
+	public void setProyecto(List<Proyecto> proyecto) {
+		this.proyecto = proyecto;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

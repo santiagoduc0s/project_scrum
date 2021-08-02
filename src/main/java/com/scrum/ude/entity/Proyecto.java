@@ -1,34 +1,29 @@
 package com.scrum.ude.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Proyecto implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 
-	@Id()
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private  Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_usuario")
-	private Usuario usuario;
+	@ManyToMany
+	private List<Usuario> usuario;
 	
 	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Tarea> tarea;
@@ -52,14 +47,6 @@ public class Proyecto implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public String getTitulo() {
@@ -88,6 +75,15 @@ public class Proyecto implements Serializable {
 
 	public String getCodigoProyecto() {
 		return codigoProyecto;
+	}
+	
+
+	public List<Usuario> getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(List<Usuario> usuario) {
+		this.usuario = usuario;
 	}
 
 	public void setCodigoProyecto(String codigoProyecto) {
