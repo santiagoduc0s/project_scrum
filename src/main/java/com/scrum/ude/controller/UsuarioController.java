@@ -84,7 +84,7 @@ public class UsuarioController {
 			 calendar2.setTime(codigoRegistro.getFecha());
 			
 			
-			System.out.println("dddd");
+			//int dias=calendar2.get(Calendar.DAY_OF_MONTH)-calendar1.get(Calendar.DAY_OF_MONTH);
 			int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
 			
 			calendar2.set(Calendar.DAY_OF_MONTH,dias);
