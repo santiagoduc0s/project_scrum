@@ -20,11 +20,11 @@ public class CursoServiceImpl implements ICurso {
 	private EntityManager em;
 	
 	@Override
-   	public Curso codigoCurso(int codigo) {
+   	public Curso codigoCurso(Long id) {
 
    		
-   		Query query = em.createQuery("select c from Curso c where c.codigoCurso=:codigo");
-   		query.setParameter("codigo",codigo);
+   		Query query = em.createQuery("select c from Curso c JOIN FETCH c.capitulos  where c.id=:id");
+   		query.setParameter("id",id);
 
    		Curso curso = null;
    		try {

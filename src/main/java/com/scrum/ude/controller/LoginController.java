@@ -72,17 +72,17 @@ public class LoginController {
 			flash.addFlashAttribute("danger","error password o usuario");
 		
 			return "/login/index";
-			//System.out.println("jajaj");
+			
 		}
         
 		
 		return "redirect:/menu";
     }
 	
-	@PostMapping("/salida")
+	@PostMapping("/")
 	public String logout() {
 		SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false); 
-		return"/login/index";
+		return"redirect:/menu";
 		
 	}
 

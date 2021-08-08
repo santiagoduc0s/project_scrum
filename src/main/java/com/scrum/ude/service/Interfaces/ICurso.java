@@ -4,6 +4,6 @@ import com.scrum.ude.entity.Curso;
 
 public interface ICurso {
 
-	Curso codigoCurso(int codigo);
+	Curso codigoCurso(Long id);
 
 }

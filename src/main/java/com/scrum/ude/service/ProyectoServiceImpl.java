@@ -25,8 +25,9 @@ public class ProyectoServiceImpl implements IProyecto  {
 	@Override
    	public List<Proyecto> buscarProyectoPorUsuario(Long id) {
 
-   		
-   		Query query = em.createQuery("select p from Proyecto p where p.usuario.id=:id");
+		//String sql="SELECT p.* FROM proyecto p, usuario u WHERE u.id=p.id AND  u.id=1";
+   		//Query query =em.createNativeQuery(sql);
+		Query query = em.createQuery("select p from  Proyecto p JOIN FETCH p.usuario u where  u.id=:id");
    		query.setParameter("id", id);
 
    		List<Proyecto> proyectos = null;
@@ -47,7 +48,7 @@ public class ProyectoServiceImpl implements IProyecto  {
    	public Proyecto buscarProyectoPorUsuarioWithTitulo(Long id,String titulo) {
 
    		
-   		Query query = em.createQuery("select p from Proyecto p where p.usuario.id=:id and p.titulo=:titulo");
+   		Query query = em.createQuery("select p from Proyecto p JOIN FETCH p.usuario u where u.id=:id and p.titulo=:titulo");
    		query.setParameter("id", id);
    		query.setParameter("titulo", titulo);
 

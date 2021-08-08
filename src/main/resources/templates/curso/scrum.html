@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/app :: head"></head>
+
+<body>
+
+<nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
+
+<div class="container">
+    <div class="card m-5">
+     <h1>SCRUM</h1>
+         <table class="table table-striped">
+<!-- 					<thead> -->
+<!-- 						<tr> -->
+						     
+<!-- 							<th>Proyecto</th> -->
+<!-- 							<th>Descripcion</th> -->
+<!-- 							<th>Codigo Proyecto</th> -->
+<!-- 							<th>VER</th> -->
+<!-- 							<th>Creador</th> -->
+<!-- 							<th>eliminar</th> -->
+<!-- 							 <h1 th:text="${success}"></h1> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+					<tbody>
+ 						<tr th:each="curso: ${curso.capitulos}"> 
+ 							<td th:text="${curso.titulo}" ></td> 
+							<td><a class="btn btn-primary btn-sm"  th:href="@{/verCapitulo/} + ${curso.id}"  
+								th:text="'Iniciar'"></a>
+								</td>
+							</tr>
+ 					</tbody> 
+				</table> 
+   
+   
+   
+    </div>
+</div>
+
+
+<!--Scrips-->
+<div th:replace="layout/app :: scripts"></div>
+
+</body>
+
+</html>

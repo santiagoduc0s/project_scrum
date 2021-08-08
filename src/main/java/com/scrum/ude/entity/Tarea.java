@@ -2,6 +2,7 @@ package com.scrum.ude.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +32,7 @@ public class Tarea implements Serializable {
 	@Column
 	private String status;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
 	@JoinColumn(name="Proyecto")
 	private Proyecto proyecto;
 

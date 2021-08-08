@@ -25,7 +25,7 @@ private static final long serialVersionUID = 1L;
 	@ManyToMany
 	private List<Usuario> usuario;
 	
-	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
 	private Set<Tarea> tarea;
 	
 	@Column
@@ -36,6 +36,9 @@ private static final long serialVersionUID = 1L;
 	
 	@Column
 	private String  codigoProyecto;
+	
+	@Column
+	private boolean creador;
 	
 	public Proyecto() {
 		
@@ -72,11 +75,20 @@ private static final long serialVersionUID = 1L;
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	
 
 	public String getCodigoProyecto() {
 		return codigoProyecto;
 	}
 	
+
+	public boolean isCreador() {
+		return creador;
+	}
+
+	public void setCreador(boolean creador) {
+		this.creador = creador;
+	}
 
 	public List<Usuario> getUsuario() {
 		return usuario;

@@ -84,7 +84,7 @@ public class UsuarioController {
 			 calendar2.setTime(codigoRegistro.getFecha());
 			
 			
-			//int dias=calendar2.get(Calendar.DAY_OF_MONTH)-calendar1.get(Calendar.DAY_OF_MONTH);
+			System.out.println("dddd");
 			int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
 			
 			calendar2.set(Calendar.DAY_OF_MONTH,dias);
@@ -141,6 +141,8 @@ public class UsuarioController {
 			Usuario usuario= new Usuario();
 			
 			model.addAttribute("usuario", usuario);
+			
+			model.addAttribute("autoridad",auth.getAuthorities().toString());
 			return "/admin/listadoUsuarios";
 			
 		}
@@ -189,12 +191,13 @@ public class UsuarioController {
 		Optional<Usuario> usuario = Optional.ofNullable(new Usuario());
 		//ModelAndView mv= new ModelAndView();
 		if (id > 0) {
-
+			 Authentication auth = retornarUsuarioLogueado();
 			  usuario= usuarioDAO.findById(id);
 			
 			  flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
 			  model.addAttribute("id", id);
 			  model.addAttribute("usuario", usuario);
+			  model.addAttribute("autoridad",auth.getAuthorities().toString());
 			
 		}
 		return "/admin/ModificarUsuariosPerfilAdmin";

@@ -1,46 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/layout :: head">
-</head>
-<body>
-<div>
-<header th:replace="layout/layout :: header">
-</header>
-</div>
 
-		
-				  <form class="col-12" th:action="@{/crearProyecto}"  th:object="${proyecto}"
-						method="post">
-						<label>Crear Proyecto</label>
-                   <div class="form-group" id="user-group">
-                   <div class="col-md-4">
-                        <input type="text" class="form-control" th:field="*{titulo}"  />
-                    </div>
-                    </div><label>Descripcion</label>
-                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" th:field="*{Descripcion}"  />
-                    </div>
-                    <label>Codigo Proyecto</label>
-                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" th:field="*{codigoProyecto}"  />
-                    </div>
-                   
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Guardar </button>
-                    
-                    
-                </form>
-                 <div class="alert alert-success" th:if="${success != null}"
-			th:text="${success}"></div>
-                
-                  <table class="table table-striped">
+<head th:replace="layout/app :: head"></head>
+
+<body>
+
+<nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
+
+<div class="container">
+
+    <div class="row mt-3">
+        <div class="col text-center">
+            <button class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                <span>&#10010;</span> Crear proyecto
+            </button>
+        </div>
+   
+    </div>
+
+    <div class="list-group mt-3">
+    <div class="list-group-item list-group-item-action">
+         <table class="table table-striped">
 					<thead>
 						<tr>
+						     
 							<th>Proyecto</th>
 							<th>Descripcion</th>
 							<th>Codigo Proyecto</th>
 							<th>VER</th>
-							<th>Modificar</th>
+							<th>Creador</th>
 							<th>eliminar</th>
+							 <h1 th:text="${success}"></h1>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,22 +40,66 @@
 							<td th:text="${proyecto.codigoProyecto}"></td>
 							<td><a class="btn btn-primary btn-sm"
 								th:href="@{/verProyectoTarea/} + ${proyecto.id}" th:text="'ver Proyecto'"></a></td>
-								<td><a class="btn btn-primary btn-sm"
-								th:href="@{/verProyecto/} + ${proyecto.id}" th:text="'modificar Proyecto'"></a></td>
+								
+								<td><a class="btn btn-primary btn-sm" th:if="${proyecto.creador == true}"  th:href="@{/verProyecto/} + ${proyecto.id}" 
+								th:text="'modificar Proyecto'"></a>
+								</td>
 								<td><a class="btn btn-danger btn-sm"
 								th:href="@{/eliminarProyecto/} + ${proyecto.id}" th:text="'eliminar'"
-								onclick="return confirm('Est�s seguro que quieres eliminar?');"></a></td>
+								onclick="return confirm('Estas seguro que quieres eliminar?');"></a></td>
 						</tr>
 					</tbody>
 
 				</table>
-                
-               <a class="dropdown-item"  th:text="${proyect}" href="/menu">crear proyectos</a>
-                
-              
-		
-		
-	
- 
+    </div>
+     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Proyecto</h5>
+                <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-create-project" th:action="@{/crearProyecto}"  th:object="${proyecto}" method="post">
+                    <div class="form-group">
+                        <fieldset>
+                            <label class="form-label" for="name">Nombre</label>
+                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto" th:field="*{titulo}" >
+                        </fieldset>
+                    </div>
+                     <div class="form-group">
+                        <fieldset>
+                            <label class="form-label" for="name">Codigo Proyecto</label>
+                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto" th:field="*{codigoProyecto}" >
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="form-label mt-4">Descripcion</label>
+                        <textarea class="form-control" id="description" rows="3"
+                                  placeholder="Descripcion del proyecto"  th:field="*{Descripcion}"></textarea>
+                    </div>
+                     <div class="modal-footer">
+                <button type="submit" form="form-create-project" class="btn btn-dark mx-auto" style="">Crear</button>
+            </div>
+                     </form>
+                    
+            </div>
+           
+           
+        </div>
+    </div>
+</div>
+
+<!--Scrips-->
+<!--Scrips-->
+<div th:replace="layout/app :: scripts"></div>
+
 </body>
 </html>

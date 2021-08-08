@@ -26,31 +26,30 @@ public class CursoController {
 	@Autowired
 	private UsuarioController usuarioController; 
 	
-//	@Autowired
-//	private CursoServiceImpl cursoImpl; 
+	@Autowired
+	private CursoServiceImpl cursoImpl; 
 
 
 	// navegar a vista Curso y busco por el usuario si se ha inscripto al curso
-//	@GetMapping("/verCurso")
-//	public String vistaCursos(Model model) {
+	@GetMapping("/verCurso")
+	public String cursoScrum(Model model) {
 //		
-//		Authentication auth = usuarioController.retornarUsuarioLogueado();
-//		
-//		UserDetails userDetail = (UserDetails) auth.getPrincipal();
-//		
-//
-//		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-//		
-//		Inscripto inscripto= usuarioImpl.buscarUsuarioIncripto(user.getId());
-//		model.addAttribute("inscripto",inscripto);
-//		model.addAttribute("autoridad", auth.getAuthorities().toString());
-//		
-//		
-//	      Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
-//	      model.addAttribute("usuario",us);
-//
-//		return "/curso/cursos";
-//	}
+	Authentication auth = usuarioController.retornarUsuarioLogueado();
+		
+	UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+	model.addAttribute("autoridad", auth.getAuthorities().toString());
+    
+	Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+	Long id =(long) 1;
+	Curso  curso= cursoImpl.codigoCurso(id);
+	
+	model.addAttribute("curso",curso);
+	
+	model.addAttribute("usuario",us);
+
+		return "/curso/scrum";
+	}
 	
 	//Luego de inscribirse cuando nanega hacia la lista  de cursos toca el boton continuar y sigue donde se quedo
 //	@GetMapping("/continuacionCurso")
