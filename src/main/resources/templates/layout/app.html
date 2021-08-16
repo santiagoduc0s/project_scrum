@@ -33,7 +33,7 @@
             border-width: 5px !important;
             border-style: solid !important;
             border-color: rgba(0, 128, 255, 0.9) !important;
-            width: 90%;  /*Tested and working as expected: */
+            width: 90%; /*Tested and working as expected: */
             padding-top: 1%;
             margin: 0px auto;
             float: none;
@@ -66,14 +66,19 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">[[${#httpServletRequest.remoteUser}]]</a>
                     <div class="dropdown-menu">
-                    <a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales/}+ ${usuario.id}">Datos Personales</a>
-                        <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
-    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Codigo Curso</a>
+                        <a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item"
+                           th:href="@{/verDatosPersonales/}+ ${usuario.id}">Datos Personales</a>
+                        <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">
+                            Listado Usuarios
+                        </a>
+                        <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">
+                            Generar Codigo Curso
+                        </a>
                         <div class="dropdown-divider"></div>
-                      <form th:action="@{/}" method="post">
-            		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
-           
-        	</form>
+                        <form th:action="@{/}" method="post" id="form-logout" class="d-none"></form>
+                        <a href="#" class="dropdown-item" onclick="document.getElementById('form-logout').submit()">
+                            Cerrar Sesion
+                        </a>
                     </div>
                 </li>
             </ul>
