@@ -38,6 +38,36 @@
             margin: 0px auto;
             float: none;
         }
+
+        .btn-dark:hover {
+            color: #545454;
+            background-color: #ffffff;
+            border-color: #b7c2ce;
+        }
+
+        .close {
+            display: inline-block;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #495057;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: .5rem 1rem;
+            font-size: .875rem;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            position: absolute !important;
+            right: -5px !important;
+            top: -5px !important;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +123,11 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/notify.js}"></script>
+
+    <script th:if="${success != null}">
+
+    </script>
 </div>
 
 </body>

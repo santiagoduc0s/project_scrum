@@ -15,44 +15,44 @@
                 <span>&#10010;</span> Crear proyecto
             </button>
         </div>
-   
+
     </div>
 
     <div class="list-group mt-3">
-    <div class="list-group-item list-group-item-action">
-         <table class="table table-striped">
-					<thead>
-						<tr>
-						     
-							<th>Proyecto</th>
-							<th>Descripcion</th>
-							<th>Codigo Proyecto</th>
-							<th>VER</th>
-							<th>Creador</th>
-							<th>eliminar</th>
-							 <h1 th:text="${success}"></h1>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="proyecto: ${proyectos}">
-							<td th:text="${proyecto.titulo}"></td>
-							<td th:text="${proyecto.descripcion}"></td>
-							<td th:text="${proyecto.codigoProyecto}"></td>
-							<td><a class="btn btn-primary btn-sm"
-								th:href="@{/verProyectoTarea/} + ${proyecto.id}" th:text="'ver Proyecto'"></a></td>
-								
-								<td><a class="btn btn-primary btn-sm" th:if="${proyecto.creador == true}"  th:href="@{/verProyecto/} + ${proyecto.id}" 
-								th:text="'modificar Proyecto'"></a>
-								</td>
-								<td><a class="btn btn-danger btn-sm"
-								th:href="@{/eliminarProyecto/} + ${proyecto.id}" th:text="'eliminar'"
-								onclick="return confirm('Estas seguro que quieres eliminar?');"></a></td>
-						</tr>
-					</tbody>
+        <div class="list-group-item list-group-item-action">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
 
-				</table>
+                    <th>Proyecto</th>
+                    <th>Descripcion</th>
+                    <th>Codigo Proyecto</th>
+                    <th></th>
+                    <th></th>
+                    <h1 th:text="${success}"></h1>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="proyecto: ${proyectos}">
+                    <td>
+                        <a th:text="${proyecto.titulo}" th:href="@{/verProyectoTarea/} + ${proyecto.id}"
+                           style="color: #585858; text-decoration: none;"></a>
+                    </td>
+                    <td th:text="${proyecto.descripcion}"></td>
+                    <td th:text="${proyecto.codigoProyecto}"></td>
+
+                    <td>
+                        <a class="btn btn-primary btn-sm" th:if="${proyecto.creador == true}" th:href="@{/verProyecto/} + ${proyecto.id}">Editar</a>
+                    </td>
+                    <td><a class="btn btn-danger btn-sm"
+                           th:href="@{/eliminarProyecto/} + ${proyecto.id}" th:text="'eliminar'"
+                           onclick="return confirm('Estas seguro que quieres eliminar?');"></a></td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
     </div>
-     </div>
 </div>
 
 <!-- Modal -->
@@ -67,32 +67,35 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-create-project" th:action="@{/crearProyecto}"  th:object="${proyecto}" method="post">
+                <form id="form-create-project" th:action="@{/crearProyecto}" th:object="${proyecto}" method="post">
                     <div class="form-group">
                         <fieldset>
                             <label class="form-label" for="name">Nombre</label>
-                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto" th:field="*{titulo}" >
+                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto"
+                                   th:field="*{titulo}">
                         </fieldset>
                     </div>
-                     <div class="form-group">
+                    <div class="form-group">
                         <fieldset>
                             <label class="form-label" for="name">Codigo Proyecto</label>
-                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto" th:field="*{codigoProyecto}" >
+                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto"
+                                   th:field="*{codigoProyecto}">
                         </fieldset>
                     </div>
                     <div class="form-group">
                         <label for="description" class="form-label mt-4">Descripcion</label>
                         <textarea class="form-control" id="description" rows="3"
-                                  placeholder="Descripcion del proyecto"  th:field="*{Descripcion}"></textarea>
+                                  placeholder="Descripcion del proyecto" th:field="*{Descripcion}"></textarea>
                     </div>
-                     <div class="modal-footer">
-                <button type="submit" form="form-create-project" class="btn btn-dark mx-auto" style="">Crear</button>
+                    <div class="modal-footer">
+                        <button type="submit" form="form-create-project" class="btn btn-dark mx-auto" style="">Crear
+                        </button>
+                    </div>
+                </form>
+
             </div>
-                     </form>
-                    
-            </div>
-           
-           
+
+
         </div>
     </div>
 </div>
