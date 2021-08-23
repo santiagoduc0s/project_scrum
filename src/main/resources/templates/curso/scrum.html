@@ -9,6 +9,8 @@
 
 <div class="container">
     <div class="card m-5">
+    
+ 
      <h1>SCRUM</h1>
          <table class="table table-striped">
 <!-- 					<thead> -->
@@ -25,8 +27,14 @@
 <!-- 					</thead> -->
 					<tbody>
  						<tr th:each="curso: ${curso.capitulos}"> 
- 							<td th:text="${curso.titulo}" ></td> 
-							<td><a class="btn btn-primary btn-sm"  th:href="@{/verCapitulo/} + ${curso.id}"  
+ 							<td>
+							<p>
+  <a class="btn btn-primary" role="button"  data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample" th:text="${curso.titulo}">
+  </a>
+</p>
+
+</td> 
+<td><a class="btn btn-primary btn-sm"  th:href="@{/verCapitulo/} + ${curso.id}"  
 								th:text="'Iniciar'"></a>
 								</td>
 							</tr>

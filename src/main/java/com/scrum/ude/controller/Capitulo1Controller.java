@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.scrum.ude.entity.Capitulo;
 import com.scrum.ude.entity.Pagina;
 import com.scrum.ude.service.CapituloServiceImpl;
 
@@ -23,10 +24,11 @@ public class Capitulo1Controller {
 
 	public String verPaginas(Model model,@PathVariable(value = "id") Long id) {
 
-	List<Pagina> pagina= capituloImpl.buscarPaginas(id);
+	Capitulo capitulo= capituloImpl.buscarPaginas(id);
 	
 	model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
-		model.addAttribute("pagina",pagina);
+		model.addAttribute("pagina",capitulo);
+		
 		
 		return "/curso/paginaUno"; 
 
@@ -34,3 +36,6 @@ public class Capitulo1Controller {
 
 
 }
+
+
+
