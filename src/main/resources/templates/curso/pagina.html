@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/app :: head"></head>
+
+<body>
+
+<nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
+
+<div class="container">
+    <div class="card m-5">
+     <h1 th:text="${pagina.titulo}"></h1>
+     
+     <p th:text="${pagina.contenido}"> </p>
+        
+   
+   
+   
+    </div>
+</div>
+
+
+<!--Scrips-->
+<div th:replace="layout/app :: scripts"></div>
+
+</body>
+
+</html>
