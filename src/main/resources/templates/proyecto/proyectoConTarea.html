@@ -32,12 +32,13 @@
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="backlog">
                        
-                        <div class="board-item" th:each="proyec: ${proyecto.tarea}">
+                        <div class="board-item" th:each=" tarea: ${tareas}" >
+                        <div th:if="${tarea.status == 'BACKLOG'}">
                        
-                            <div class="board-item-content" id="1"><span th:text="${proyec.nombre}"></span>
+                            <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
                             
-                            <span th:text="${proyec.descripcion}"></span>
-                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${proyec.id}">Eliminar</a>
+                            <span th:text="${tarea.descripcion}"></span>
+                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
                             </div>
                         </div>
                          <div class="board-item">
@@ -53,6 +54,7 @@
                      </div>
                   </div>
                     </div>
+                    </div>
                  
                 </div>
             </div>
@@ -62,21 +64,15 @@
                 <div class="board-column-header">Todo</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="todo">
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>1</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>2</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>3</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>4</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>5</div>
-                        </div>
+                        <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'TODO'}">
+                         
+                        <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
+                            
+                            <span th:text="${tarea.descripcion}"></span>
+                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                            </div> 
+                        
+                    </div>
                     </div>
                 </div>
             </div>
@@ -86,21 +82,16 @@
                 <div class="board-column-header">Working</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="working">
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>6</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>7</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>8</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>9</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>10</div>
-                        </div>
+                        
+                         <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'WORKING'}">
+                         
+                        <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
+                            
+                            <span th:text="${tarea.descripcion}"></span>
+                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                            </div> 
+                        
+                    </div>
                     </div>
                 </div>
             </div>
@@ -110,21 +101,16 @@
                 <div class="board-column-header">Done</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="done">
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>11</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>12</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>13</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>14</div>
-                        </div>
-                        <div class="board-item">
-                            <div class="board-item-content"><span>Item #</span>15</div>
-                        </div>
+                      
+                         <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'DONE'}">
+                         
+                        <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
+                            
+                            <span th:text="${tarea.descripcion}"></span>
+                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                            </div> 
+                        
+                    </div>
                     </div>
                 </div>
             </div>

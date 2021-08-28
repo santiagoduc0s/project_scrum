@@ -115,6 +115,9 @@ public class ProyectoController {
 
 		model.addAttribute("proyecto", proyecto);
 		
+		// Tareas correspondiente al proyecto
+		model.addAttribute("tareas",proyecto.getTarea());
+		
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
 		
 	   //buscar tareas con el proyecto asociado
