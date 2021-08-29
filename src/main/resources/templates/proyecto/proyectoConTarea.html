@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-    
-</head>
+<head th:replace="layout/app :: head"></head>
 
 <body>
 
-<header th:replace="layout/layout :: header">
-</header>
+<nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
- <h1  th:text="${proyecto.titulo}"></h1>
-    <div class="text-center" style="margin-top: 20px; margin-bottom: 20px;">
-        <a  class="btn btn-primary" th:href="@{/crearTarea/} + ${proyecto.id}"> Crear Tarea</a>
+<div class="mx-5">
+
+    <div class="row my-3">
+        <div class="col text-center">
+            <button class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                <span>&#10010;</span> Crear proyecto
+            </button>
+        </div>
     </div>
 
     <div class="drag-container"></div>
@@ -31,29 +25,32 @@
                 <div class="board-column-header">backlog</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="backlog">
-                       
-                        <div class="board-item" th:each="proyec: ${proyecto.tarea}">
-                       
-                            <div class="board-item-content" id="1"><span th:text="${proyec.nombre}"></span>
-                            
-                            <span th:text="${proyec.descripcion}"></span>
-                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${proyec.id}">Eliminar</a>
+                        <div class="board-item" th:each="tarea: ${proyecto.tarea}">
+                            <div class="board-item-content" th:id="${tarea.id}"><span th:text="${tarea.nombre}"></span>
+
+                                <span th:text="${proyecto.descripcion}"></span>
+                                <a class="btn btn-danger" th:href="@{/eliminarTarea/} + ${proyec.id}">Eliminar</a>
                             </div>
                         </div>
-                         <div class="board-item">
-                            <div class="board-item-content">
-                            	 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false">
-   								 Tarea x
-  							</button>
-								<div class="collapse" id="collapseExample">
-  								<div class="card card-body">
-  									  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  							</div>
-						</div>
-                     </div>
-                  </div>
+
+                        <div class="board-item">
+                            <div class="board-item-content" id="1">
+                                <a href="#">Arreglar el boton de la vista de productos</a>
+                            </div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="2"><span>Item #</span>2</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="3"><span>Item #</span>3</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="4"><span>Item #</span>4</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="board-item-content" id="5"><span>Item #</span>5</div>
+                        </div>
                     </div>
-                 
                 </div>
             </div>
         </div>
@@ -132,32 +129,55 @@
     </div>
 
     <div style="width: 100%; margin-bottom: 50px;"></div>
+</div>
 
-
-
-    <!--
-    <div class="hover-bg">
-        DELETE IT
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Tarea</h5>
+                <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-create-project" action="#" method="POST">
+                    <div class="form-group">
+                        <fieldset>
+                            <label class="form-label" for="name">Titulo</label>
+                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto">
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="form-label mt-4">Descripcion</label>
+                        <textarea class="form-control" id="description" rows="3"
+                                  placeholder="Descripcion del proyecto"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="column" class="form-label mt-4">Columna</label>
+                        <select class="form-select" id="column">
+                            <option>Backlog</option>
+                            <option>Todo</option>
+                            <option>Working</option>
+                            <option>Done</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="form-create-project" class="btn btn-dark mx-auto" style="">Crear</button>
+            </div>
+        </div>
     </div>
-    -->
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-
-    <!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations.min.js"></script>
-    
-    -->
-
-    <script src="https://cdn.jsdelivr.net/gh/haltu/muuri@0.9.3/dist/muuri.min.js"></script>
-<script th:src="@{/js/init.js}"></script>
+<div th:replace="layout/app :: scripts"></div>
 </body>
+
+<script>
+
+</script>
 
 </html>

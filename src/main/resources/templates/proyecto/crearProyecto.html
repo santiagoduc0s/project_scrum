@@ -20,16 +20,15 @@
 
     <div class="list-group mt-3">
         <div class="list-group-item list-group-item-action">
-            <table class="table table-striped table-hover">
+            <h3 th:if="${proyectos.size() == 0}">No hay proyectos</h3>
+            <table th:if="${proyectos.size() != 0}" class="table table-striped table-hover">
                 <thead>
                 <tr>
-
                     <th>Proyecto</th>
                     <th>Descripcion</th>
                     <th>Codigo Proyecto</th>
                     <th></th>
                     <th></th>
-                    <h1 th:text="${success}"></h1>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,11 +41,14 @@
                     <td th:text="${proyecto.codigoProyecto}"></td>
 
                     <td>
-                        <a class="btn btn-primary btn-sm" th:if="${proyecto.creador == true}" th:href="@{/verProyecto/} + ${proyecto.id}">Editar</a>
+                        <a class="btn btn-primary btn-sm" th:if="${proyecto.creador == true}"
+                           th:href="@{/verProyecto/} + ${proyecto.id}">Editar</a>
                     </td>
-                    <td><a class="btn btn-danger btn-sm"
-                           th:href="@{/eliminarProyecto/} + ${proyecto.id}" th:text="'eliminar'"
-                           onclick="return confirm('Estas seguro que quieres eliminar?');"></a></td>
+                    <td>
+                        <a class="btn btn-danger btn-sm delete-project" th:href="@{/eliminarProyecto/} + ${proyecto.id}">
+                            Eliminar
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
 
@@ -100,7 +102,6 @@
     </div>
 </div>
 
-<!--Scrips-->
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
 

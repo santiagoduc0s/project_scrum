@@ -1,7 +1,8 @@
 package com.scrum.ude.controller;
 
 import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,183 +24,185 @@ import com.scrum.ude.service.UsuarioServiceImpl;
 @Controller
 public class ProyectoController {
 
-	@Autowired
-	private IUsuarioDAO usuarioDAO;
-	
-	@Autowired
-	private ProyectoServiceImpl proyectoImpl; 
-	@Autowired
-	private UsuarioServiceImpl usuarioImpl; 
-	
-	@Autowired
-	private UsuarioController usuarioController;
-	
-	@Autowired
-	private ITareaDAO tareaDAO;
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
 
-	@Autowired
-	private IProyectoDAO proyectoDAO;
+    @Autowired
+    private ProyectoServiceImpl proyectoImpl;
+    @Autowired
+    private UsuarioServiceImpl usuarioImpl;
 
-	// navegar a vista de Proyectos y busco los proyectos para mostrar del usuario
-	@GetMapping("/vistaProyecto")
-	public String vistaProyecto(Model model) {
-		Proyecto proyecto = new Proyecto();
+    @Autowired
+    private UsuarioController usuarioController;
+
+    @Autowired
+    private ITareaDAO tareaDAO;
+
+    @Autowired
+    private IProyectoDAO proyectoDAO;
+
+    // navegar a vista de Proyectos y busco los proyectos para mostrar del usuario
+    @GetMapping("/vistaProyecto")
+    public String vistaProyecto(Model model) {
+        Proyecto proyecto = new Proyecto();
 //		
-		Authentication auth = usuarioController.retornarUsuarioLogueado();
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 //		
-		model.addAttribute("proyecto", proyecto);
+        model.addAttribute("proyecto", proyecto);
 //
-		auth.getName();
-		Usuario user = usuarioImpl.findOne(auth.getName());
+        auth.getName();
+        Usuario user = usuarioImpl.findOne(auth.getName());
 //
-		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 //
-		model.addAttribute("proyectos", proyectos);
-		model.addAttribute("autoridad", auth.getAuthorities().toString());
+        model.addAttribute("proyectos", proyectos);
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
 //		for(Proyecto pro:proyectos) {
 //          if(pro.isCreador()) {
 //        	  
 //        	  model.addAttribute("creador", pro.isCreador());	  
 //          }
 //		}
-		
-		
-		  UserDetails userDetail = (UserDetails) auth.getPrincipal();
-	      Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
-	      model.addAttribute("usuario",us);
-//
-		return "/proyecto/crearProyecto";
-	}
-	// proceso la creacion del proyecto
-	@PostMapping("/crearProyecto")
-	public String crearProyecto(Model model, Proyecto proyecto, RedirectAttributes flash) {
 
-		Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        Usuario us = usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("usuario", us);
+//
+        return "/proyecto/crearProyecto";
+    }
+
+    // proceso la creacion del proyecto
+    @PostMapping("/crearProyecto")
+    public String crearProyecto(Model model, Proyecto proyecto, RedirectAttributes flash) {
+
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 //		
-		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
-		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-		List<Usuario> usuarios= new ArrayList();
-		
-		usuarios.add(user);
-		proyecto.setCreador(true);
-		proyecto.setUsuario(usuarios);
-		
-		Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
-		
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        List<Usuario> usuarios = new ArrayList();
+
+        usuarios.add(user);
+        proyecto.setCreador(true);
+        proyecto.setUsuario(usuarios);
+
+        Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(), proyecto.getTitulo());
+
 //			
-			if(proyect==null) {
+        if (proyect == null) {
 //				
-				String mensajeFlash = "Proyecto Creado Con exito!";
+            String mensajeFlash = "Proyecto creado correctamente";
 //				 
-				proyectoDAO.save(proyecto);
+            proyectoDAO.save(proyecto);
 //				 
-				flash.addFlashAttribute("success",mensajeFlash);
-			 } else {
-					return "redirect:/vistaProyecto";
+            flash.addFlashAttribute("success", mensajeFlash);
+        } else {
+            return "redirect:/vistaProyecto";
 //			    	
-			    }
-		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
-			model.addAttribute("proyectos", proyectos);
-    	 return "redirect:/vistaProyecto";
-	}
+        }
+        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        model.addAttribute("proyectos", proyectos);
 
-	// vista de cada Proyecto son sus respectivas tareas
-	@GetMapping("/verProyectoTarea/{id}")
-	public String verProyectoWithTarea(@PathVariable(value = "id") Long id, Model model) {
-		
-		Authentication auth = usuarioController.retornarUsuarioLogueado();
-		
-		
-		Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+        return "redirect:/vistaProyecto";
+    }
 
-		model.addAttribute("proyecto", proyecto);
-		
-		model.addAttribute("autoridad", auth.getAuthorities().toString());
-		
-	   //buscar tareas con el proyecto asociado
-		//Tarea tarea=tareaDA
-		  UserDetails userDetail = (UserDetails) auth.getPrincipal();
-	      Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-	      model.addAttribute("usuario",user);
+    // vista de cada Proyecto son sus respectivas tareas
+    @GetMapping("/verProyectoTarea/{id}")
+    public String verProyectoWithTarea(@PathVariable(value = "id") Long id, Model model) {
+
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+        Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+
+        model.addAttribute("proyecto", proyecto);
+
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+        //buscar tareas con el proyecto asociado
+        //Tarea tarea=tareaDA
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("usuario", user);
 
 
-		return "/proyecto/proyectoConTarea";
+        return "/proyecto/proyectoConTarea";
 
-	}
-	
-	// ver el proyecto para ser modificado
-		@GetMapping("/verProyecto/{id}")
-		public String verProyectoParaModificar(@PathVariable(value = "id") Long id, Model model) {
-			
-			Authentication auth = usuarioController.retornarUsuarioLogueado();
-			
-			
-			UserDetails userDetail = (UserDetails) auth.getPrincipal();
-	
-			Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-			
-			Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+    }
 
-			model.addAttribute("proyecto", proyecto);
-			model.addAttribute("id", id);
-			model.addAttribute("usuario", user);
-			
-			model.addAttribute("autoridad", auth.getAuthorities().toString());
-			
-		   //buscar tareas con el proyecto asociado
-			//Tarea tarea=tareaDAO.
+    // ver el proyecto para ser modificado
+    @GetMapping("/verProyecto/{id}")
+    public String verProyectoParaModificar(@PathVariable(value = "id") Long id, Model model) {
 
-			return "/proyecto/modificarProyecto";
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-		}
-		
-//		// ver el proyecto para ser modificado //Fijate
-				@PostMapping("/guardarModificacionProyecto")
-				public String verProyectoParaModificar(Proyecto proyecto,@RequestParam(value="id")Long id, Model model) {
+
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+
+        Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+
+        model.addAttribute("proyecto", proyecto);
+        model.addAttribute("id", id);
+        model.addAttribute("usuario", user);
+
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+        //buscar tareas con el proyecto asociado
+        //Tarea tarea=tareaDAO.
+
+        return "/proyecto/modificarProyecto";
+
+    }
+
+    //		// ver el proyecto para ser modificado //Fijate
+    @PostMapping("/guardarModificacionProyecto")
+    public String verProyectoParaModificar(Proyecto proyecto, @RequestParam(value = "id") Long id, Model model) {
 //					
-					Authentication auth = usuarioController.retornarUsuarioLogueado();
-					
-					auth.getName();
-					Usuario user = usuarioImpl.findOne(auth.getName());
-					//Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-					//model.addAttribute("proyecto", proyecto);
-					
-					List<Usuario> usuarios= new ArrayList();
-					usuarios.add(user);
-					
-					if(!proyecto.isCreador()) {
-						
-						proyecto.setCreador(true);
-					}
-					proyecto.setUsuario(usuarios);
-					proyecto.setId(id);
-					 proyectoDAO.save(proyecto);
-					
-					model.addAttribute("autoridad", auth.getAuthorities().toString());
-					
-					
-					List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        auth.getName();
+        Usuario user = usuarioImpl.findOne(auth.getName());
+        //Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
-					model.addAttribute("proyectos", proyectos);
-				   //buscar tareas con el proyecto asociado
-					//Tarea tarea=tareaDAO.
+        //model.addAttribute("proyecto", proyecto);
 
-					return "redirect:/vistaProyecto";
+        List<Usuario> usuarios = new ArrayList();
+        usuarios.add(user);
+
+        if (!proyecto.isCreador()) {
+
+            proyecto.setCreador(true);
+        }
+        proyecto.setUsuario(usuarios);
+        proyecto.setId(id);
+        proyectoDAO.save(proyecto);
+
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+
+        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+
+        model.addAttribute("proyectos", proyectos);
+        //buscar tareas con el proyecto asociado
+        //Tarea tarea=tareaDAO.
+
+        return "redirect:/vistaProyecto";
 //
-				}
-//	
-//	
-	// aca elimino un  proyecto
-		@GetMapping(value = "/eliminarProyecto/{id}")
-		public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    }
 
-			if (id > 0) {
-				proyectoDAO.deleteById(id);
-				flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
-			}
-			return "redirect:/vistaProyecto";
-		}
+    //
+//	
+    // aca elimino un  proyecto
+    @GetMapping(value = "/eliminarProyecto/{id}")
+    public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+
+        if (id > 0) {
+            proyectoDAO.deleteById(id);
+            flash.addFlashAttribute("success", "Proyecto eliminado correctamente");
+        }
+        return "redirect:/vistaProyecto";
+    }
 
 }
