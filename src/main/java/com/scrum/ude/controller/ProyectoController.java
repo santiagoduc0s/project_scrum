@@ -1,7 +1,9 @@
 package com.scrum.ude.controller;
 
 import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
+
+import com.scrum.ude.entity.Tarea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -110,25 +112,21 @@ public class ProyectoController {
 		
 		Authentication auth = usuarioController.retornarUsuarioLogueado();
 		
-		
 		Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
 		model.addAttribute("proyecto", proyecto);
-		
-		// Tareas correspondiente al proyecto
 		model.addAttribute("tareas",proyecto.getTarea());
-		
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
-		
-	   //buscar tareas con el proyecto asociado
-		//Tarea tarea=tareaDA
-		  UserDetails userDetail = (UserDetails) auth.getPrincipal();
-	      Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-	      model.addAttribute("usuario",user);
 
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+		model.addAttribute("usuario", user);
+
+		Tarea tarea= new Tarea();
+		model.addAttribute("ide",id);
+		model.addAttribute("tarea",tarea);
 
 		return "/proyecto/proyectoConTarea";
-
 	}
 	
 	// ver el proyecto para ser modificado
@@ -203,6 +201,11 @@ public class ProyectoController {
 				flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
 			}
 			return "redirect:/vistaProyecto";
+		}
+
+		@GetMapping(value = "/test2")
+		public String test() {
+			return "test/test";
 		}
 
 }

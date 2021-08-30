@@ -48,18 +48,17 @@
 	</div>
 		</nav>
 		
-				  <form class="col-12" th:action="@{/crearTarea}"  th:object="${tarea}"
-						method="post">
+				  <form class="col-12" th:action="@{/crearTarea}"  th:object="${tarea}" method="post">
 						<label>Crear Tarea</label>
-                   <div class="form-group" id="user-group">
+                   <div class="form-group">
                    <div class="col-md-4">
                         <input type="text" class="form-control" th:field="*{nombre}"  />
                     </div>
                     </div><label>Descripcion</label>
-                    <div class="form-group" id="user-group">
+                    <div class="form-group">
                         <input type="text" class="form-control" th:field="*{Descripcion}"  />
                     </div>
-                       <div class="form-group" id="user-group">
+                       <div class="form-group">
                         <input  id="pass" name="pass" hidden type="text" class="form-control" th:value="${ide}"/>
                     </div>
                     

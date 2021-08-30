@@ -12,7 +12,7 @@
     <div class="row my-3">
         <div class="col text-center">
             <button class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
-                <span>&#10010;</span> Crear proyecto
+                <span>&#10010;</span> Crear Tarea
             </button>
         </div>
     </div>
@@ -20,93 +20,75 @@
     <div class="drag-container"></div>
 
     <div class="board">
+
         <div class="board-column backlog">
             <div class="board-column-container">
                 <div class="board-column-header">backlog</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="backlog">
-                       
-                        <div class="board-item" th:each=" tarea: ${tareas}" >
-                        <div th:if="${tarea.status == 'BACKLOG'}">
 
-                            <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
-
-                            <span th:text="${tarea.descripcion}"></span>
-                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                        <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'BACKLOG'}" ondblclick="editar(this.children[0].id)">
+                            <div class="board-item-content" th:id="${tarea.id}">
+                                <span th:text="${tarea.nombre}"></span>
                             </div>
                         </div>
-                         <div class="board-item">
-                            <div class="board-item-content">
-                            	 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false">
-   								 Tarea x
-  							</button>
-								<div class="collapse" id="collapseExample">
-  								<div class="card card-body">
-  									  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  							</div>
-						</div>
-                     </div>
-                  </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="board-column todo">
             <div class="board-column-container">
                 <div class="board-column-header">Todo</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="todo">
-                        <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'TODO'}">
 
-                        <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
-
-                            <span th:text="${tarea.descripcion}"></span>
-                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                        <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'TODO'}" ondblclick="editar(this.children[0].id)">
+                            <div class="board-item-content" th:id="${tarea.id}">
+                                <span th:text="${tarea.nombre}"></span>
                             </div>
+                        </div>
 
-                    </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="board-column working">
             <div class="board-column-container">
                 <div class="board-column-header">Working</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="working">
 
-                         <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'WORKING'}">
-
-                        <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
-
-                            <span th:text="${tarea.descripcion}"></span>
-                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                        <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'WORKING'}" ondblclick="editar(this.children[0].id)">
+                            <div class="board-item-content" th:id="${tarea.id}">
+                                <span th:text="${tarea.nombre}"></span>
                             </div>
+                        </div>
 
-                    </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="board-column done">
             <div class="board-column-container">
                 <div class="board-column-header">Done</div>
                 <div class="board-column-content-wrapper">
                     <div class="board-column-content" id="done">
 
-                         <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'DONE'}">
-
-                        <div class="board-item-content" id="1"><span th:text="${tarea.nombre}"></span>
-
-                            <span th:text="${tarea.descripcion}"></span>
-                             <a  class="btn btn-danger" th:href="@{/eliminarTarea/} + ${tarea.id}">Eliminar</a>
+                        <div class="board-item" th:each=" tarea: ${tareas}" th:if="${tarea.status == 'DONE'}" ondblclick="editar(this.this.children[0].id)">
+                            <div class="board-item-content" th:id="${tarea.id}">
+                                <span th:text="${tarea.nombre}"></span>
                             </div>
+                        </div>
 
-                    </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <div style="width: 100%; margin-bottom: 50px;"></div>
@@ -124,25 +106,37 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-create-project" action="#" method="POST">
+                <form id="form-create-project" th:action="@{/crearTarea}"  th:object="${tarea}" method="POST">
+                    <input name="pass" type="hidden" th:value="${ide}"/>
                     <div class="form-group">
                         <fieldset>
                             <label class="form-label" for="name">Titulo</label>
-                            <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto">
+                            <input
+                                class="form-control"
+                                id="name"
+                                type="text"
+                                placeholder="Nombre del proyecto"
+                                th:field="*{nombre}"
+                            >
                         </fieldset>
                     </div>
                     <div class="form-group">
                         <label for="description" class="form-label mt-4">Descripcion</label>
-                        <textarea class="form-control" id="description" rows="3"
-                                  placeholder="Descripcion del proyecto"></textarea>
+                        <textarea
+                                class="form-control"
+                                id="description"
+                                rows="3"
+                                placeholder="Descripcion del proyecto"
+                                th:field="*{descripcion}"
+                        ></textarea>
                     </div>
                     <div class="form-group">
                         <label for="column" class="form-label mt-4">Columna</label>
-                        <select class="form-select" id="column">
-                            <option>Backlog</option>
-                            <option>Todo</option>
-                            <option>Working</option>
-                            <option>Done</option>
+                        <select class="form-select" id="column" th:field="*{status}">
+                            <option th:value="'BACKLOG'">Backlog</option>
+                            <option th:value="'TODO'">Todo</option>
+                            <option th:value="'WORKING'">Working</option>
+                            <option th:value="'DONE'">Done</option>
                         </select>
                     </div>
                 </form>
@@ -156,9 +150,33 @@
 
 <div th:replace="layout/app :: scripts"></div>
 </body>
-
 <script>
+    fetch(window.location.origin + '/test2')
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (res) {
+            console.log(res);
+        });
 
+    async function editar(tareaId) {
+        const response = await fetch(window.location.origin + '/api/tarea/quick-view/' + tareaId);
+        const tarea = await response.json();
+        console.log(tarea);
+    }
+
+    async function eliminarTarea(tareaId) {
+        window.location.href = window.location.origin + '/eliminarTarea/' + tareaId;
+    }
+
+    async function postData(url = '', data = {}) {
+        // Opciones por defecto estan marcadas con un *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
 </script>
 
 </html>

@@ -39,25 +39,20 @@ public class TareaServiceImpl implements ITarea {
    		return tarea;
 
    	}
-	
+
 	@Override
-   	public Tarea buscarPorIdTarea(Long id) {
+	public Tarea buscarPorIdTarea(Long id) {
+		Query query = em.createQuery("select t from Tarea t where t.id=:id");
+		query.setParameter("id", id);
 
-   		
-   		Query query = em.createQuery("select t from Tarea t where t.id=:id");
-   		query.setParameter("id", id);
+		Tarea tarea = null;
+		try {
+			log.info("Chequear ");
+			tarea = (Tarea) query.getSingleResult();
+		} catch (Exception nre) {
+			log.info("No se ha encontrado  nombre con dicha tarea");
 
-   		Tarea tarea = null;
-   		try {
-   			log.info("Chequear ");
-   			tarea = (Tarea) query.getSingleResult();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  nombre con dicha tarea");
-
-   		}
-   		return tarea;
-
-   	}
-    
-
+		}
+		return tarea;
+	}
 }
