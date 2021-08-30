@@ -20,8 +20,7 @@ public class ApiTareaController {
     private TareaServiceImpl tareaServiceImp;
 
     @GetMapping(value = "/api/tarea/quick-view/{id}")
-    public Tarea quickView(@PathVariable(value = "id") Long id, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public Tarea quickView(@PathVariable(value = "id") Long id) {
         return tareaServiceImp.buscarPorIdTarea(id);
     }
 }
