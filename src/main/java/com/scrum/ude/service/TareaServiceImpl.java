@@ -42,16 +42,13 @@ public class TareaServiceImpl implements ITarea {
 
 	@Override
 	public Tarea buscarPorIdTarea(Long id) {
-		Query query = em.createQuery("select t from Tarea t where t.id=:id");
-		query.setParameter("id", id);
-
 		Tarea tarea = null;
 		try {
 			log.info("Chequear ");
-			tarea = (Tarea) query.getSingleResult();
-		} catch (Exception nre) {
+			return em.find(Tarea.class, id);
+		} catch (Exception e) {
 			log.info("No se ha encontrado  nombre con dicha tarea");
-
+			log.info(e.getMessage());
 		}
 		return tarea;
 	}
