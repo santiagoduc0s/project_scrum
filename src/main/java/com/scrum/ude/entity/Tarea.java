@@ -33,7 +33,7 @@ public class Tarea implements Serializable {
 	private String status;
 	
 	@ManyToOne(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
-	@JoinColumn(name="Proyecto")
+	@JoinColumn(name="proyecto")
 	private Proyecto proyecto;
 
 	public Tarea() {
