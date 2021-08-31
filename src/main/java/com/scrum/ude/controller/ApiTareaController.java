@@ -21,7 +21,9 @@ public class ApiTareaController {
 
     @GetMapping(value = "/api/tarea/quick-view/{id}")
     public Tarea quickView(@PathVariable(value = "id") Long id) {
-
-        return tareaServiceImp.buscarPorIdTarea(id);
+    		Tarea tarea= new Tarea();
+			//Respueesta Tarea con el proyecto asociado
+    		tarea=tareaServiceImp.buscarPorIdTarea(id);
+;        return tarea;
     }
 }
