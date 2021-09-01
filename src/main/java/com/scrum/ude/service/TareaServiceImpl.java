@@ -42,7 +42,7 @@ public class TareaServiceImpl implements ITarea {
 
 	@Override
 	public Tarea buscarPorIdTarea(Long id) {
-		Query query = em.createQuery("select t from Tarea t where t.id=:id");
+		Query query = em.createQuery("select t from  Tarea t JOIN FETCH t.proyecto p where t.id=:id");
 		query.setParameter("id", id);
 
 		Tarea tarea = null;
