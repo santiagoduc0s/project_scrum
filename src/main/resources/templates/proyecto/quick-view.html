@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Editar Tarea</h5>
+    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close" onclick="$('#modalEditTask').modal('toggle');">
+        <span aria-hidden="true"></span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form-edit-task" th:action="@{/actualizar-tarea(id=${tarea.id}, status=${tarea.status})}" method="POST" th:object="${tarea}">
+        <div class="form-group">
+            <fieldset>
+                <label class="form-label" for="name">Titulo</label>
+                <input
+                    class="form-control"
+                    id="name"
+                    type="text"
+                    placeholder="Nombre del proyecto"
+                    th:field="${tarea.nombre}"
+                >
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label mt-4">Descripcion</label>
+            <textarea
+                    class="form-control"
+                    id="description"
+                    rows="3"
+                    placeholder="Descripcion del proyecto"
+                    th:field="${tarea.descripcion}"
+            ></textarea>
+        </div>
+        <input type="hidden" th:id="${tarea.status}">
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" form="form-edit-task" class="btn btn-dark mx-auto" style="">Guardar</button>
+</div>

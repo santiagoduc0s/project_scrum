@@ -8,4 +8,6 @@ public interface ITarea {
 
 	Tarea buscarPorIdTarea(Long id);
 
+	Tarea actualizarTarea(Tarea tarea);
+
 }

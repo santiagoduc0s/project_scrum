@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
- <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head th:replace="layout/app :: head"></head>
 </head>
 <body>
@@ -8,31 +8,32 @@
 
 </div>
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
-				  <form class="col-12" th:action="@{/guardarModificacionProyecto}"  th:object="${proyecto}"
-						method="post">
-						<label>Titulo</label>
-                   <div class="form-group" id="user-group">
-                   <div class="col-md-4">
-                        <input type="text" class="form-control" th:field="*{titulo}"  />
-                        <input type="text" name="id" hidden class="form-control" th:value="${id}"  />
-                    </div>
-                    </div><label>Descripcion</label>
-                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" th:field="*{Descripcion}"  />
-                    </div>
-                    <label>Codigo</label>
-                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" th:field="*{codigoProyecto}"  />
-                          <input type="text" name="id" hidden class="form-control" th:value="${creador}"  />
-                    </div>
-                       <div class="form-group" id="user-group">
-                        <input  id="pass" name="pass" hidden type="text" class="form-control" th:value="${ide}"/>
-                    </div>
-                   
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Guardar </button>
-                    
-                </form>
-                
-                
+<form class="col-12" th:action="@{/guardarModificacionProyecto}" th:object="${proyecto}"
+      method="post">
+    <label>Titulo</label>
+    <div class="form-group" id="user-group">
+        <div class="col-md-4">
+            <input type="text" class="form-control" th:field="*{titulo}"/>
+            <input type="text" name="id" hidden class="form-control" th:value="${id}"/>
+        </div>
+    </div>
+    <label>Descripcion</label>
+    <div class="form-group" id="user-group">
+        <input type="text" class="form-control" th:field="*{Descripcion}"/>
+    </div>
+    <label>Codigo</label>
+    <div class="form-group" id="user-group">
+        <input type="text" class="form-control" th:field="*{codigoProyecto}"/>
+        <input type="text" name="id" hidden class="form-control" th:value="${creador}"/>
+    </div>
+    <div class="form-group" id="user-group">
+        <input id="pass" name="pass" hidden type="text" class="form-control" th:value="${ide}"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Guardar</button>
+
+</form>
+
+
 </body>
 </html>

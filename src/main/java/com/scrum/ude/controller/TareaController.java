@@ -10,6 +10,8 @@ import com.scrum.ude.entity.Tarea;
 import com.scrum.ude.service.ProyectoServiceImpl;
 import com.scrum.ude.service.TareaServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class TareaController {
 
@@ -34,6 +36,12 @@ public class TareaController {
 		}
 
 		return "redirect:/verProyectoTarea/" + idProyecto + "";
+	}
+
+	@PostMapping("/actualizar-tarea")
+	public String update(@ModelAttribute Tarea tarea) {
+		// actualizar usuario
+		return "";
 	}
 
 	@GetMapping(value = "/eliminarTarea/{id}")

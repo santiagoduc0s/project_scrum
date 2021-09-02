@@ -20,7 +20,7 @@ public class Tarea implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column
@@ -32,7 +32,7 @@ public class Tarea implements Serializable {
 	@Column
 	private String status;
 	
-	@ManyToOne(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="proyecto")
 	private Proyecto proyecto;
 
