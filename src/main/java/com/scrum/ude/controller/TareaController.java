@@ -41,7 +41,13 @@ public class TareaController {
 	@PostMapping("/actualizar-tarea")
 	public String update(@ModelAttribute Tarea tarea) {
 		// actualizar usuario
-		return "";
+		Tarea tareaBase =tareaServiceImp.buscarPorIdTarea(tarea.getId());
+		tareaBase.setNombre(tarea.getNombre());
+		tareaBase.setDescripcion(tarea.getDescripcion());
+		
+		tareaDAO.save(tareaBase);
+		
+		return "redirect:/verProyectoTarea/" + tareaBase.getProyecto().getId() + "";
 	}
 
 	@GetMapping(value = "/eliminarTarea/{id}")
