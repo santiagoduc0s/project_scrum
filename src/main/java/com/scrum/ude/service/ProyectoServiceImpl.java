@@ -63,6 +63,26 @@ public class ProyectoServiceImpl implements IProyecto  {
    		return proyecto;
 
    	}
+	
+	@Override
+   	public Proyecto buscarPorCodigoProyecto( String codigo) {
+
+   		
+   		Query query = em.createQuery("select p from Proyecto p  where p.codigoProyecto=:codigo ");
+   		query.setParameter("codigo",codigo);
+
+   		Proyecto proyecto = null;
+   		try {
+   			log.info("Chequear ");
+   			proyecto = (Proyecto) query.getSingleResult();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  Proyecto");
+
+   		}
+   		return proyecto;
+
+   	}
+	
     
     @Override
    	public Proyecto buscarPorIdProyecto(Long id) {
