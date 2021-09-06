@@ -105,6 +105,51 @@ public class ProyectoController {
 			model.addAttribute("proyectos", proyectos);
     	 return "redirect:/vistaProyecto";
 	}
+	
+	
+	
+	@PostMapping("/unirseProyecto")
+	public String unirseProyecto(Model model, Proyecto proyecto, RedirectAttributes flash) {
+
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+//		
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+//
+		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+		List<Usuario> usuarios= new ArrayList();
+		
+		
+		//proyecto.setCreador(true);
+		//proyecto.setUsuario(usuarios);
+		
+		Proyecto proyect = (Proyecto) proyectoImpl.buscarPorCodigoProyecto(proyecto.getCodigoProyecto());
+		
+//			
+			if(proyect==null) {
+//				
+				String mensajeFlash = "No existe Proyecto";
+//				 
+				flash.addFlashAttribute("success",mensajeFlash);
+			 } else {
+				 
+				 usuarios.addAll(proyect.getUsuario());
+				 usuarios.add(user);
+				  
+				    proyect.setUsuario(usuarios);
+				    
+				    proyectoDAO.save(proyect);
+				     
+//			    	
+			    }
+		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+			model.addAttribute("proyectos", proyectos);
+    	 return "redirect:/vistaProyecto";
+	}
+	
+	
+	
+	
+	
 
 	// vista de cada Proyecto son sus respectivas tareas
 	@GetMapping("/verProyectoTarea/{id}")

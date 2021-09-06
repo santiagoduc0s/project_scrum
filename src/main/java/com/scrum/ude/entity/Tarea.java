@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 public class Tarea implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -32,14 +32,11 @@ public class Tarea implements Serializable {
 	@Column
 	private String status;
 	
-	@ManyToOne(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="proyecto")
 	private Proyecto proyecto;
 
-	public Tarea() {
-		
-		
-	}
+	public Tarea() {}
 
 	public Long getId() {
 		return id;

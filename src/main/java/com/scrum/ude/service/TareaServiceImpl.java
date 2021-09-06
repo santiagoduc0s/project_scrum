@@ -49,10 +49,16 @@ public class TareaServiceImpl implements ITarea {
 		try {
 			log.info("Chequear ");
 			tarea = (Tarea) query.getSingleResult();
+			log.info(tarea);
 		} catch (Exception nre) {
 			log.info("No se ha encontrado  nombre con dicha tarea");
 
 		}
 		return tarea;
+	}
+
+	@Override
+	public Tarea actualizarTarea(Tarea tarea) {
+		return em.merge(tarea);
 	}
 }
