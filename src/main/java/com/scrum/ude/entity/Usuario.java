@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -28,8 +30,8 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "usuario_Paginas")
 	@JoinColumn(name="Usuario_id")
 	private List<Pagina> pagina;	
-	@ManyToMany
-	private List<Proyecto> proyecto;
+	@ManyToOne
+	private Proyecto proyecto;
 
 	@Column
 	private String nombre;
@@ -139,11 +141,13 @@ public class Usuario implements Serializable {
 		this.pagina = pagina;
 	}
 
-	public List<Proyecto> getProyecto() {
+	
+
+	public Proyecto getProyecto() {
 		return proyecto;
 	}
 
-	public void setProyecto(List<Proyecto> proyecto) {
+	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
 

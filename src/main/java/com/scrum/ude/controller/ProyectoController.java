@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.scrum.ude.dao.IProyectoDAO;
 import com.scrum.ude.dao.ITareaDAO;
 import com.scrum.ude.dao.IUsuarioDAO;
@@ -53,10 +56,13 @@ public class ProyectoController {
 //
 		auth.getName();
 		Usuario user = usuarioImpl.findOne(auth.getName());
+		
+		
 //
 		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 //
 		model.addAttribute("proyectos", proyectos);
+		model.addAttribute("usuario",user.getUserName());
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
 //		for(Proyecto pro:proyectos) {
 //          if(pro.isCreador()) {
@@ -84,8 +90,12 @@ public class ProyectoController {
 		List<Usuario> usuarios= new ArrayList();
 		
 		usuarios.add(user);
-		proyecto.setCreador(true);
+		proyecto.setCreador(user.getUserName());
 		proyecto.setUsuario(usuarios);
+		int numero = (int)(Math. random()*100+1);
+		HashCode sha256hex = Hashing.sipHash24().hashInt(numero);
+		
+		proyecto.setCodigoProyecto(""+sha256hex);
 		
 		Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
 		
@@ -132,6 +142,12 @@ public class ProyectoController {
 				flash.addFlashAttribute("success",mensajeFlash);
 			 } else {
 				 
+			 if(proyect.getUsuario().contains(user)) {
+				 
+				 String mensajeFlash = "Usted Ya esta unido a dicho Proyecto";
+				 flash.addFlashAttribute("success",mensajeFlash);
+			 } else {
+				 
 				 usuarios.addAll(proyect.getUsuario());
 				 usuarios.add(user);
 				  
@@ -141,6 +157,40 @@ public class ProyectoController {
 				     
 //			    	
 			    }
+			 }
+		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+			model.addAttribute("proyectos", proyectos);
+    	 return "redirect:/vistaProyecto";
+	}
+	
+	@GetMapping("/salirProyecto/{id}")
+	public String salirProyecto(Model model,@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+//		
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+//
+		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+		List<Usuario> usuarios= new ArrayList();
+		
+		Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
+		
+//			
+				String mensajeFlash = "No existe Proyecto";
+//				 
+				flash.addFlashAttribute("success",mensajeFlash);
+			
+				if(proyect.getUsuario().contains(user)) {
+					
+				  proyect.getUsuario().remove(user);
+				  
+				  usuarios.addAll(proyect.getUsuario());
+				 
+				    proyect.setUsuario(usuarios);
+				    
+				    proyectoDAO.save(proyect);
+			    }
+			 
 		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 			model.addAttribute("proyectos", proyectos);
     	 return "redirect:/vistaProyecto";
@@ -215,9 +265,9 @@ public class ProyectoController {
 					List<Usuario> usuarios= new ArrayList();
 					usuarios.add(user);
 					
-					if(!proyecto.isCreador()) {
+					if(proyecto.getCreador()!= user.getUserName()) {
 						
-						proyecto.setCreador(true);
+						return "redirect:/vistaProyecto";
 					}
 					proyecto.setUsuario(usuarios);
 					proyecto.setId(id);
