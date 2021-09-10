@@ -62,5 +62,16 @@ public class TareaController {
 
 		return "redirect:/verProyectoTarea/" + idProyecto + "";
 	}
+	
+	@PostMapping(value = "/actualizarEstadoTarea")
+	public String actualizarEstadoTarea(@ModelAttribute Tarea tarea) {
+		
+		Tarea tareaBase =tareaServiceImp.buscarPorIdTarea(tarea.getId());
+		tareaBase.setStatus(tarea.getStatus());
+		tareaDAO.save(tareaBase);
+		return "redirect:/verProyectoTarea/" + tareaBase.getProyecto().getId() + "";
+		
+		
+	}
 
 }

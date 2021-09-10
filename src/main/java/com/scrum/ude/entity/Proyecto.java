@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -40,7 +41,7 @@ public class Proyecto implements Serializable {
 	private String  codigoProyecto;
 	
 	@Column
-	private boolean creador;
+	private String creador;
 	
 
 
@@ -82,11 +83,11 @@ public class Proyecto implements Serializable {
 	}
 	
 
-	public boolean isCreador() {
+	public String getCreador() {
 		return creador;
 	}
 
-	public void setCreador(boolean creador) {
+	public void setCreador(String creador) {
 		this.creador = creador;
 	}
 
