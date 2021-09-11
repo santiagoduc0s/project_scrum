@@ -61,15 +61,13 @@ boardGrid = new Muuri('.board', {
 });
 
 function changeTaskColumn(taskId, column) {
-    console.log(window.location.origin + '/cambiar-tarea-de-columna');
 
+    let url = window.location.origin + '/api/tareas/actualizar-estado-tarea/' + taskId + '/' + column.toUpperCase();
+    console.log(url);
 
     $.ajax({
         type: "GET",
-        url: window.location.origin + '/cambiar-tarea-de-columna?taskId='+taskId,
-        // data: {
-        //     taskId: JSON.stringify(parseInt(taskId))
-        // },
+        url: url,
         success: function (response) {
             console.log('gud');
             console.log(response);

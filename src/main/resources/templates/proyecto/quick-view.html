@@ -32,5 +32,8 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="submit" form="form-edit-task" class="btn btn-dark mx-auto" style="">Guardar</button>
+    <div class="ml-auto">
+        <button class="btn btn-danger" th:tareaid="${tarea.id}" onclick="eliminarTarea(this.getAttribute('tareaid'))">Eliminar</button>
+        <button type="submit" form="form-edit-task" class="btn btn-dark" style="">Guardar</button>
+    </div>
 </div>
