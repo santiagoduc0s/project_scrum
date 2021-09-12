@@ -69,14 +69,15 @@ public class LoginController {
 		
 		}
 		else {
-			flash.addFlashAttribute("danger","error password o usuario");
+			flash.addFlashAttribute("success","error password o usuario");
 		
 			return "/login/index";
 			
 		}
         
 		
-		return "redirect:/menu";
+//		return "redirect:/menu";
+		return "";
     }
 	
 	@PostMapping("/")
@@ -102,6 +103,7 @@ public class LoginController {
       Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
         model.addAttribute("autoridad",userDetail.getAuthorities().toString());
         model.addAttribute("usuario",user);
+        
 
         return "/menu/menu";
     }

@@ -38,6 +38,7 @@
                     <th>Codigo Proyecto</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,6 +49,11 @@
                     </td>
                     <td th:text="${proyecto.descripcion}"></td>
                     <td th:text="${proyecto.codigoProyecto}"></td>
+                    
+                     <td>
+                        <a class="btn btn-primary btn-sm" th:if="${proyecto.creador == usuario.userName}"
+                           th:href="@{/} + ${proyecto.id}">Participantes</a>
+                    </td>
 
                     <td>
                         <a class="btn btn-primary btn-sm" th:if="${proyecto.creador == usuario.userName}"

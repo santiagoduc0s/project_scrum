@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +90,9 @@ public class ProyectoController {
 		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
 		List<Usuario> usuarios= new ArrayList();
 		
+		List<Proyecto> proyectosos= new ArrayList();
+		
+		
 		usuarios.add(user);
 		proyecto.setCreador(user.getUserName());
 		proyecto.setUsuario(usuarios);
@@ -103,6 +107,10 @@ public class ProyectoController {
 			if(proyect==null) {
 //				
 				String mensajeFlash = "Proyecto Creado Con exito!";
+				
+				proyectosos.add(proyect);
+			    user.setProyecto(proyectosos);
+			    usuarioDAO.save(user);
 //				 
 				proyectoDAO.save(proyecto);
 //				 
@@ -133,6 +141,7 @@ public class ProyectoController {
 		//proyecto.setUsuario(usuarios);
 		
 		Proyecto proyect = (Proyecto) proyectoImpl.buscarPorCodigoProyecto(proyecto.getCodigoProyecto());
+	    
 		
 //			
 			if(proyect==null) {
@@ -153,9 +162,12 @@ public class ProyectoController {
 				  
 				    proyect.setUsuario(usuarios);
 				    
+					List<Proyecto> proyectos= new ArrayList();
+					proyectos.add(proyect);
+				    user.setProyecto(proyectos);
+				    usuarioDAO.save(user);
+				    
 				    proyectoDAO.save(proyect);
-				     
-//			    	
 			    }
 			 }
 		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
@@ -297,6 +309,39 @@ public class ProyectoController {
 			}
 			return "redirect:/vistaProyecto";
 		}
+		
+		// aca elimino al participante de la lista  del   proyecto
+				@GetMapping(value = "/eliminarPartipante")
+				public String eliminarPartipante(@ModelAttribute  Long idUsuario,@ModelAttribute  Long idProyecto, RedirectAttributes flash) {
+
+					Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
+					List<Usuario> usuarios =new ArrayList<>();
+				  
+					Usuario user=usuarioImpl.buscarPorId(idUsuario);
+					usuarios.remove(user);
+					proyecto.setUsuario(usuarios);
+					
+					if(!proyecto.getCreador().equals(user.getUserName())) {
+						
+						proyectoDAO.save(proyecto);	
+					}
+					
+					else {
+						flash.addFlashAttribute("success", "No se puede eliminar a si mismo!");
+						
+						 }
+					
+					List<Proyecto> proyectos =new ArrayList<>();
+					   	
+					proyectos.remove(proyecto);
+					 user.setProyecto(proyectos);
+					 usuarioDAO.save(user);
+					 
+						flash.addFlashAttribute("success", "Participante Eliminado!");
+					
+					return "";
+				}
+		
 
 		@GetMapping(value = "/test2")
 		public String test() {
