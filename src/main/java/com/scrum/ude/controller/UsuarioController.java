@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List; 
 import java.util.Optional;
+
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,7 +58,7 @@ public class UsuarioController {
 	
 	//aca proceso los datos  del registro usuario
 	@PostMapping("/registroUsuario")
-	public String procesar(Usuario usuarioDTO, Model model, BindingResult result,@RequestParam String repeatPassword, RedirectAttributes flash) {
+	public String procesar(Usuario usuarioDTO, Model model, @NotNull BindingResult result, @RequestParam String repeatPassword, RedirectAttributes flash) {
 
 		if (result.hasErrors()||!usuarioDTO.getPassword().equals(repeatPassword)) {
 			
