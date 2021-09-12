@@ -30,8 +30,8 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "usuario_Paginas")
 	@JoinColumn(name="Usuario_id")
 	private List<Pagina> pagina;	
-	@ManyToOne
-	private Proyecto proyecto;
+	@ManyToMany
+	private List<Proyecto> proyecto;
 
 	@Column
 	private String nombre;
@@ -141,13 +141,11 @@ public class Usuario implements Serializable {
 		this.pagina = pagina;
 	}
 
-	
-
-	public Proyecto getProyecto() {
+	public List<Proyecto> getProyecto() {
 		return proyecto;
 	}
 
-	public void setProyecto(Proyecto proyecto) {
+	public void setProyecto(List<Proyecto> proyecto) {
 		this.proyecto = proyecto;
 	}
 

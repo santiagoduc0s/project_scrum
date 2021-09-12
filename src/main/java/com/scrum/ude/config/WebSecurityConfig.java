@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
    	 http
          .authorizeRequests()
 	        .antMatchers(resources).permitAll()  
-	        .antMatchers("/","/login","/registroUsuario").permitAll()
+	        .antMatchers("/login","/registroUsuario").permitAll()
 ////	        .antMatchers("/").access("hasRole('ADMIN')")
 ////	        .antMatchers("/default*").access("hasRole('USER')")
              .anyRequest()
@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
          .formLogin()
              .loginPage("/login")
             .permitAll()
-             .defaultSuccessUrl("/menu")
+             //.defaultSuccessUrl("/menu")
              .and()
          .logout()
              .permitAll()

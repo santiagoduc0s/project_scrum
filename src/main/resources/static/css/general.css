@@ -28,3 +28,7 @@ body {
     background-color: #ffffff;
     border-color: #b7c2ce;
 }
+
+.dropdown-menu[data-bs-popper] {
+    left: -52px;
+}

@@ -21,6 +21,43 @@
     <div class="form-group" id="user-group">
         <input type="text" class="form-control" th:field="*{Descripcion}"/>
     </div>
+
+<!--     <div th:each="proyecto: ${proyecto}" class="form-group" id="user-group"> -->
+
+<!--    <p th:text="${proyecto.usuario}"> </p> -->
+
+<!-- </div> -->
+  <div class="list-group mt-3">
+        <div class="list-group-item list-group-item-action">
+ <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Participantes</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="proyecto: ${proyecto.usuario}">
+
+                    <td th:text="${proyecto.userName}"></td>
+                    <td>
+                        <a class="btn btn-danger btn-sm delete-project" th:href="@{/eliminarPartipante/} + ${proyecto.id}  + ${proyecto.id}">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            </div>
+            </div>
+
+
+<!--     <label>Codigo</label> -->
+<!--     <div class="form-group" id="user-group"> -->
+<!--         <input type="text" class="form-control" th:field="*{codigoProyecto}"/> -->
+<!--         <input type="text" name="id" hidden class="form-control" th:value="${creador}"/> -->
+<!--     </div> -->
     <div class="form-group" id="user-group">
         <input id="pass" name="pass" hidden type="text" class="form-control" th:value="${ide}"/>
     </div>
