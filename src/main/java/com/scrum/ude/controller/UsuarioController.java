@@ -40,7 +40,6 @@ public class UsuarioController {
 	
 	// retorna el usuario Logeado para todo el contexto
 	public  Authentication retornarUsuarioLogueado(){
-		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth;
 	}
