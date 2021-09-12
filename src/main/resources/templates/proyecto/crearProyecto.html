@@ -11,7 +11,7 @@
 
     <div class="row mt-3">
         <div class="col text-center">
-            <button class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+            <button class="btn btn-dark" data-toggle="modal" data-target="#crearProyecto">
                 <span>&#10010;</span> Crear proyecto
             </button>
             <button class="btn btn-dark ms-3" data-toggle="modal" data-target="#unirseProyecto">
@@ -44,17 +44,23 @@
                     <td th:text="${proyecto.codigoProyecto}"></td>
 
                     <td>
-                        <a class="btn btn-primary btn-sm" th:if="${proyecto.creador == usuario.userName}"
-                           th:href="@{/verProyecto/} + ${proyecto.id}">Editar</a>
+                        <button
+                            class="btn btn-primary btn-sm"
+                            th:if="${proyecto.creador == usuario.userName}"
+                            th:proyectoId="${proyecto.id}"
+                            onclick="editarProyecto(this)"
+                        >Editar</button>
                     </td>
                     <td>
-                        <a class="btn btn-danger btn-sm delete-project" th:if="${proyecto.creador == usuario.userName}" th:href="@{/eliminarProyecto/} + ${proyecto.id}">
+                        <a class="btn btn-danger btn-sm delete-project" th:if="${proyecto.creador == usuario.userName}"
+                           th:href="@{/eliminarProyecto/} + ${proyecto.id}">
                             Eliminar
                         </a>
-                        <a class="btn btn-danger btn-sm delete-project" th:if="${proyecto.creador != usuario.userName}" th:href="@{/salirProyecto/} + ${proyecto.id}">
+                        <a class="btn btn-danger btn-sm delete-project" th:if="${proyecto.creador != usuario.userName}"
+                           th:href="@{/salirProyecto/} + ${proyecto.id}">
                             Salir
                         </a>
-                        
+
                     </td>
                 </tr>
                 </tbody>
@@ -65,8 +71,8 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Modal crear proyecto -->
+<div class="modal fade" id="crearProyecto" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -99,6 +105,16 @@
     </div>
 </div>
 
+<!-- Modal editar proyecto -->
+<div class="modal fade" id="editarProyecto" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="contenidoModalEditarProyecto">
+            <!-- -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal unirse a proyecto -->
 <div class="modal fade" id="unirseProyecto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -111,15 +127,15 @@
             </div>
             <div class="modal-body">
                 <form id="form-join-project" th:action="@{/unirseProyecto}" th:object="${proyecto}" method="post">
-                   
+
                     <div class="form-group">
                         <fieldset>
-                            
+
                             <input class="form-control" id="name" type="text" placeholder="Codigo Proyecto"
                                    th:field="*{codigoProyecto}">
                         </fieldset>
                     </div>
-                  
+
                     <div class="modal-footer">
                         <button type="submit" form="form-join-project" class="btn btn-dark mx-auto" style="">Unirse
                         </button>
@@ -133,6 +149,31 @@
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
+
+<script>
+    $(".delete-project").on("click", function (event) {
+        event.preventDefault();
+        let url = $(this).attr('href');
+        swal('¿Estas seguro?', {
+            dangerMode: true,
+            buttons: true,
+        }).then(function (response) {
+            if (response != null) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>
+
+<script>
+    async function editarProyecto(proyecto) {
+        let proyectoId  = proyecto.getAttribute('proyectoid');
+        const response = await fetch(window.location.origin + '/api/proyectos/quick-view/' + proyectoId);
+        const modalContent = document.querySelector('#contenidoModalEditarProyecto');
+        modalContent.innerHTML = await response.text();
+        $("#editarProyecto").modal("show");
+    }
+</script>
 
 </body>
 </html>

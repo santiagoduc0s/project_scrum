@@ -24,7 +24,7 @@ public class ApiTareaController
 
     @GetMapping(value = "/quick-view/{id}")
     public ModelAndView quickView(@PathVariable(value = "id") Long id) {
-        ModelAndView mav = new ModelAndView("proyecto/quick-view");
+        ModelAndView mav = new ModelAndView("tarea/quick-view");
         Tarea tarea = tareaServiceImp.buscarPorIdTarea(id);
         mav.addObject("tarea", tarea);
         return mav;

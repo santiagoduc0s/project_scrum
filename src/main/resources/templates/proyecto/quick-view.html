@@ -1,39 +1,48 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLongTitle">Editar Tarea</h5>
-    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close" onclick="$('#modalEditTask').modal('toggle');">
+    <h5 class="modal-title">Proyecto</h5>
+    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close" onclick="$('#editarProyecto').modal('toggle');">
         <span aria-hidden="true"></span>
     </button>
 </div>
 <div class="modal-body">
-    <form id="form-edit-task" th:action="@{/actualizar-tarea(id=${tarea.id}, status=${tarea.status})}" method="POST" th:object="${tarea}">
+
+    <form id="form-create-project" th:action="@{/guardarModificacionProyecto}" th:object="${proyecto}" method="POST">
+        <input type="text" name="id" hidden class="form-control" th:value="${id}"/>
         <div class="form-group">
             <fieldset>
-                <label class="form-label" for="name">Titulo</label>
+                <label class="form-label" for="name">Nombre</label>
                 <input
                     class="form-control"
                     id="name"
                     type="text"
                     placeholder="Nombre del proyecto"
-                    th:field="${tarea.nombre}"
+                    th:field="*{titulo}"
                 >
             </fieldset>
         </div>
         <div class="form-group">
             <label for="description" class="form-label mt-4">Descripcion</label>
             <textarea
-                    class="form-control"
-                    id="description"
-                    rows="3"
-                    placeholder="Descripcion del proyecto"
-                    th:field="${tarea.descripcion}"
+                class="form-control"
+                id="description"
+                rows="3"
+                placeholder="Descripcion del proyecto"
+                th:field="*{Descripcion}"
             ></textarea>
         </div>
-        <input type="hidden" th:id="${tarea.status}">
+
+        <div class="form-group" th:if="${proyecto.usuario.size() > 1}">
+            <label class="form-label mt-4">Particioantes</label>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="usu : ${proyecto.usuario}" th:if="${usuario.userName != usu.userName}">
+                    <span th:text="${usu.userName}"></span>
+                    <button class="btn btn-danger btn-sm float-end">Quitar</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" form="form-create-project" class="btn btn-dark mx-auto">Guardar</button>
+        </div>
     </form>
-</div>
-<div class="modal-footer">
-    <div class="ml-auto">
-        <button class="btn btn-danger" th:tareaid="${tarea.id}" onclick="eliminarTarea(this.getAttribute('tareaid'))">Eliminar</button>
-        <button type="submit" form="form-edit-task" class="btn btn-dark" style="">Guardar</button>
-    </div>
 </div>

@@ -97,7 +97,7 @@
                             class="board-item"
                             th:each=" tarea: ${tareas}"
                             th:if="${tarea.status == 'DONE'}"
-                            ondblclick="editar(this.this.children[0].id)"
+                            ondblclick="editar(this.children[0].id)"
                         >
                             <div class="board-item-content" th:id="${tarea.id}">
                                 <span th:text="${tarea.nombre}"></span>
@@ -179,7 +179,9 @@
 </div>
 
 <div th:replace="layout/app :: scripts"></div>
-</body>
+<script src="https://cdn.jsdelivr.net/gh/haltu/muuri@0.9.3/dist/muuri.min.js"></script>
+<script th:src="@{/js/columnas.js}"></script>
+
 <script>
     async function editar(tareaId) {
         const response = await fetch(window.location.origin + '/api/tareas/quick-view/' + tareaId);
@@ -202,4 +204,5 @@
     }
 </script>
 
+</body>
 </html>
