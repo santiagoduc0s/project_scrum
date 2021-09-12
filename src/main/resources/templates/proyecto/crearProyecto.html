@@ -14,13 +14,7 @@
             <button class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
                 <span>&#10010;</span> Crear proyecto
             </button>
-        </div>
-
-    </div>
-    
-      <div class="row mt-3">
-        <div class="col text-center">
-            <button class="btn btn-dark" data-toggle="modal" data-target="#unirseProyecto">
+            <button class="btn btn-dark ms-3" data-toggle="modal" data-target="#unirseProyecto">
                 <span>&#10010;</span> Unirse Proyecto
             </button>
         </div>
@@ -72,12 +66,11 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Proyecto</h5>
+                <h5 class="modal-title">Proyecto</h5>
                 <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"></span>
                 </button>
@@ -91,13 +84,6 @@
                                    th:field="*{titulo}">
                         </fieldset>
                     </div>
-<!--                     <div class="form-group"> -->
-<!--                         <fieldset> -->
-<!--                             <label class="form-label" for="name">Codigo Proyecto</label> -->
-<!--                             <input class="form-control" id="name" type="text" placeholder="Nombre del proyecto" -->
-<!--                                    th:field="*{codigoProyecto}"> -->
-<!--                         </fieldset> -->
-<!--                     </div> -->
                     <div class="form-group">
                         <label for="description" class="form-label mt-4">Descripcion</label>
                         <textarea class="form-control" id="description" rows="3"
