@@ -99,11 +99,11 @@ public class ProyectoController {
 //				
 				String mensajeFlash = "Proyecto Creado Con exito!";
 
-				proyectosos.add(proyect);
+				proyectosos.add(proyecto);
 			    user.setProyecto(proyectosos);
 			    usuarioDAO.save(user);
 //				 
-            proyectoDAO.save(proyecto);
+           // proyectoDAO.save(proyecto);
 //				 
             flash.addFlashAttribute("success", mensajeFlash);
         } else {
@@ -174,6 +174,8 @@ public class ProyectoController {
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
         List<Usuario> usuarios = new ArrayList();
+        
+        List<Proyecto> proyectos = new ArrayList();
 
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
 
@@ -184,17 +186,13 @@ public class ProyectoController {
 
         if (proyect.getUsuario().contains(user)) {
 
-            proyect.getUsuario().remove(user);
-
-            usuarios.addAll(proyect.getUsuario());
-
-            proyect.setUsuario(usuarios);
-
-            proyectoDAO.save(proyect);
+            user.setProyecto(null);
+          
+            usuarioDAO.save(user);
         }
 
-        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
-        model.addAttribute("proyectos", proyectos);
+        List<Proyecto> proyectoso = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        model.addAttribute("proyectos", proyectoso);
         return "redirect:/vistaProyecto";
     }
 

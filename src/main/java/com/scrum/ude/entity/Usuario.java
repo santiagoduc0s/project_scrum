@@ -16,8 +16,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="Usuario")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,7 +32,15 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "usuario_Paginas")
 	@JoinColumn(name="Usuario_id")
 	private List<Pagina> pagina;	
-	@ManyToMany
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(
+		name="Proyectos_Users",
+		joinColumns = {@JoinColumn(name="usuario_id")},
+		inverseJoinColumns ={ @JoinColumn(name="proyecto_id")}
+		
+	    )
+			
 	private List<Proyecto> proyecto;
 
 	@Column
