@@ -32,21 +32,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
          .authorizeRequests()
 	        .antMatchers(resources).permitAll()  
 	        .antMatchers("/login","/registroUsuario").permitAll()
-////	        .antMatchers("/").access("hasRole('ADMIN')")
-////	        .antMatchers("/default*").access("hasRole('USER')")
+//////	        .antMatchers("/").access("hasRole('ADMIN')")
+//////	        .antMatchers("/default*").access("hasRole('USER')")
              .anyRequest()
              .authenticated()
              .and()
-         .formLogin()
+        .formLogin()
              .loginPage("/login")
             .permitAll()
-             //.defaultSuccessUrl("/menu")
+             .defaultSuccessUrl("/menu")
              .and()
          .logout()
              .permitAll()
              .logoutSuccessUrl("/login");
-//    	
-//       
+////    	
+////       
     }
     BCryptPasswordEncoder bCryptPasswordEncoder;
     //Crea el encriptador de contraseñas	
