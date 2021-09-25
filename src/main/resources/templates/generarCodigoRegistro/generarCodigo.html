@@ -8,20 +8,42 @@
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
 <div class="container">
-    <div class="card m-5">
-     <form class="col-12" th:action="@{/generarCodigoRegistro}" 
-						method="post">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  GenerarCodigo </button>
-                    
-                </form>
-                
-                <h1  th:text="${codigo}">></h1>
+    <div class="m-5 text-center">
+        <form class="col-12" th:action="@{/generarCodigoRegistro}"
+              method="post">
+            <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>GenerarCodigo</button>
+
+        </form>
+
+        <div class="row mt-3" th:if="${codigo != null}">
+            <div class="col-3"></div>
+            <div class="form-group col">
+                <div class="input-group ">
+                    <input id="codigoRegistro" type="text" class="form-control" th:value="${codigo}" >
+                    <button onclick="copiarCodigo()" class="btn btn-dark" type="button" id="button-addon2">Copiar</button>
+                </div>
+            </div>
+            <div class="col-3"></div>
+        </div>
     </div>
 </div>
 
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
+
+<script>
+    function copiarCodigo() {
+
+        var content = document.getElementById('codigoRegistro');
+
+        content.select();
+        document.execCommand('copy');
+
+        swal("Copiado", "El código de registro fue copiado con éxito", "success");
+    }
+</script>
+
 
 </body>
 

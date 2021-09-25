@@ -10,14 +10,16 @@
 <div class="container">
     <div class="card m-5">
         <div class="card-body">
-            <h1 class="text-center">Bienvenido</h1>
+            <h1 class="text-center">Bienvenido a PES</h1>
             <p class="text-center">
-                Dentro de nuestra plataforma puedes aprender Scrum y a gestionar tu
-                proyectos con tableros Kanban, comienza viendo el siguiente video para conocer un que es Scrum
+                Dentro de nuestra plataforma puedes aprender Scrum y a gestionar tus
+                proyectos con tableros Kanban. Comienza viendo el siguiente video para conocer que es Scrum.
             </p>
             <div class="row">
                 <div class="col text-center">
-                    <button class="btn btn-default">Ver video</button>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVideo">
+                        Ver video
+                    </button>
                 </div>
             </div>
         </div>
@@ -28,6 +30,17 @@
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="modalVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border: none;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/imOCYM4TIbk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
 </body>
+
 
 </html>
