@@ -4,6 +4,6 @@ import com.scrum.ude.entity.Pagina;
 
 public interface IPagina {
 
-	Pagina obtenerContenido(Long id);
+	//Pagina obtenerContenido(Long id);
 
 }

@@ -23,8 +23,6 @@ public class Curso implements Serializable {
 @GeneratedValue(strategy =GenerationType.AUTO)
 private Long id;
 
-@OneToMany
-private List<Capitulo> capitulos;
 
 @Column
 private String titulo;
@@ -45,13 +43,6 @@ public void setId(Long id) {
 	this.id = id;
 }
 
-public List<Capitulo> getCapitulos() {
-	return capitulos;
-}
-
-public void setCapitulos(List<Capitulo> capitulos) {
-	this.capitulos = capitulos;
-}
 
 public String getTitulo() {
 	return titulo;

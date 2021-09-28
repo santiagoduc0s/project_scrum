@@ -28,10 +28,16 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "usuario_Paginas")
-	@JoinColumn(name="Usuario_id")
-	private List<Pagina> pagina;	
+	@JoinTable(
+		name="Paginas_Users",
+		joinColumns = {@JoinColumn(name="usuario_id")},
+		inverseJoinColumns ={ @JoinColumn(name="pagina_id")}
+		
+	    )
+	private List<Pagina> paginas;
+
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(
@@ -140,15 +146,13 @@ public class Usuario implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	
 
-	public List<Pagina> getPagina() {
-		return pagina;
+	public List<Pagina> getPaginas() {
+		return paginas;
 	}
 
-	public void setPagina(List<Pagina> pagina) {
-		this.pagina = pagina;
+	public void setPaginas(List<Pagina> paginas) {
+		this.paginas = paginas;
 	}
 
 	public List<Proyecto> getProyecto() {

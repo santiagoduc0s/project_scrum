@@ -13,8 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name="pagina")
 public class Pagina implements Serializable {
 	
 private static final long serialVersionUID = 1L;
@@ -23,14 +27,13 @@ private static final long serialVersionUID = 1L;
 @GeneratedValue(strategy = GenerationType.AUTO)
 private Long id;
 
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name="capitulo")
-private Capitulo capitulo;
 
-@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-@JoinTable(name = "usuario_Paginas")
-@JoinColumn(name="Pagina_id")
+
+@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "paginas")
 private List<Usuario> usuario;
+//@JsonIgnore
+
+
 @Column
 private String titulo;
 
@@ -61,14 +64,6 @@ public String getContenido() {
 	return contenido;
 }
 
-
-public Capitulo getCapitulo() {
-	return capitulo;
-}
-
-public void setCapitulo(Capitulo capitulo) {
-	this.capitulo = capitulo;
-}
 
 public List<Usuario> getUsuario() {
 	return usuario;

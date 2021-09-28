@@ -189,7 +189,7 @@ public class UsuarioController {
 	@GetMapping(value = "/modificar/{id}")
 	public String modificarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash, Model model) {
 		Optional<Usuario> usuario = Optional.ofNullable(new Usuario());
-		//ModelAndView mv= new ModelAndView();
+		
 		if (id > 0) {
 			 Authentication auth = retornarUsuarioLogueado();
 			  usuario= usuarioDAO.findById(id);
@@ -264,8 +264,8 @@ public class UsuarioController {
 			user.setApellido(usuario.getApellido());
 			user.setCedula(usuario.getCedula());
 			user.setMail(usuario.getMail());
-			user.setUserName(usuario.getUserName());
-			//user.setPassword(user.getPassword());
+			//user.setUserName(usuario.getUserName());
+			user.setPassword(user.getPassword());
 			
 			if(!nuevaContrasena.isEmpty()) {
 			

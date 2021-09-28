@@ -24,7 +24,7 @@ public class CursoServiceImpl implements ICurso {
 
    		
    		//Query query = em.createQuery("select c from Curso  c where c.id=:id");
-   		Query query = em.createQuery("select c from Curso c JOIN FETCH c.capitulos   where c.id=:id");
+   		Query query = em.createQuery("select c from Curso c where c.id=:id");
    		query.setParameter("id",id);
 
    		Curso curso = null;
