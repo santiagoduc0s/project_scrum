@@ -94,16 +94,21 @@ public class ProyectoController {
 		
 		Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
 		
+		List<Proyecto> ver= (List<Proyecto>)proyectoImpl.buscarProyectoPorUsuario(user.getId());
 //			
         if (proyect == null) {
 //				
 				String mensajeFlash = "Proyecto Creado Con exito!";
 
+				if(ver!=null) {
+					
+					proyectosos.addAll(ver);
+				}
 				proyectosos.add(proyecto);
 			    user.setProyecto(proyectosos);
 			    usuarioDAO.save(user);
 //				 
-           // proyectoDAO.save(proyecto);
+            //proyectoDAO.save(proyecto);
 //				 
             flash.addFlashAttribute("success", mensajeFlash);
         } else {

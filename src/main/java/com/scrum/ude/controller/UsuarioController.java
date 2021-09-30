@@ -249,7 +249,9 @@ public class UsuarioController {
 	// Se procesan datos de la modificacion del  propio Usuario
 	
 	@PostMapping("/modificarDatosPersonales")
-	public String modificarDatosPersonalesUsuario(Model model,Usuario usuario ,@RequestParam(value = "id") Long id,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
+	public String modificarDatosPersonalesUsuario(Model model,Usuario usuario ,@RequestParam(value = "id")
+		Long id,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena") 
+		String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena,RedirectAttributes flash) {
 	
 		Usuario user=usuarioService.buscarPorId(id);
 		if(ws.passwordEncoder().matches(contrasena, user.getPassword())){
@@ -263,7 +265,7 @@ public class UsuarioController {
 			user.setNombre(usuario.getNombre());
 			user.setApellido(usuario.getApellido());
 			user.setCedula(usuario.getCedula());
-			user.setMail(usuario.getMail());
+			//user.setMail(usuario.getMail());
 			//user.setUserName(usuario.getUserName());
 			user.setPassword(user.getPassword());
 			
