@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,19 @@ import com.scrum.ude.entity.CodigoRegistro;
 public class CodigoController {
 
 	@Autowired
+	private UsuarioController usuarioController;
+
+	@Autowired
 	private ICodigoRegistro codigoRegistro;
 	//navegar Vista  Generar Codigo Registro
 	@GetMapping("/vistaCodigoRegistro")
 	public String verVistaCodigoRegistro(Model model) {
+
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+		model.addAttribute("autoridad", auth.getAuthorities().toString());
 
 		return "/generarCodigoRegistro/generarCodigo";
 
@@ -28,6 +39,12 @@ public class CodigoController {
 	//genera codigo registro
 	@PostMapping("/generarCodigoRegistro")
 	public String generarCodigo(Model model) {
+
+		Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+		model.addAttribute("autoridad", auth.getAuthorities().toString());
 
 		Calendar fecha = Calendar.getInstance();
 
