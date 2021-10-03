@@ -81,7 +81,55 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
+    
+	@Override
+    public Boolean ExisteUsuario(String userName) {
 
+
+        Query query = em.createQuery("select u from Usuario u where u.userName=:user");
+        query.setParameter("user", userName);
+
+        boolean existe = false;
+        try {
+            log.info("Chequear ");
+            
+            if(query.getSingleResult()!=null) {
+            	existe =true;
+            }
+            	
+           
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
+
+        }
+        return existe;
+
+    }
+	
+	@Override
+    public Boolean ExisteMail(String email) {
+
+
+        Query query = em.createQuery("select u from Usuario u where u.mail=:email");
+        query.setParameter("email", email);
+
+        boolean existe = false;
+        try {
+            log.info("Chequear ");
+            
+            if(query.getSingleResult()!=null) {
+            	existe =true;
+            }
+            	
+           
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
+
+        }
+        return existe;
+
+    }
+	
 
     @Override
     public Usuario buscarPorId(Long id) {

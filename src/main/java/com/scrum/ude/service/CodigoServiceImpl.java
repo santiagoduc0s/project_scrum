@@ -34,6 +34,32 @@ public class CodigoServiceImpl implements ICodigo {
 	  		}
 	  		return codigoRegistro;
 
-	  	}	
+	  	}
+	 
+	 
+	 @Override
+	    public Boolean ExisteCodigoRegistro(String codigo) {
+
+
+		 Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
+	        query.setParameter("codigo", codigo);
+
+	        boolean existe = false;
+	        try {
+	            log.info("Chequear ");
+	            
+	            if(query.getSingleResult()!=null) {
+	            	existe =true;
+	            }
+	            	
+	           
+	        } catch (Exception nre) {
+	            log.info("No se ha encontrado  usuarios");
+
+	        }
+	        return existe;
+
+	    }
+
 	
 }

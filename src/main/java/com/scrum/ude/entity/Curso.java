@@ -30,6 +30,9 @@ private String titulo;
 @Column
 private String descripcion;
 
+@OneToMany
+private List<Capitulo> capitulo;
+
 
 public Curso() {
 	
@@ -60,10 +63,13 @@ public void setDescripcion(String descripcion) {
 	this.descripcion = descripcion;
 }
 
+public List<Capitulo> getCapitulo() {
+	return capitulo;
+}
 
-
-
-
+public void setCapitulo(List<Capitulo> capitulo) {
+	this.capitulo = capitulo;
+}
 
 
 }
