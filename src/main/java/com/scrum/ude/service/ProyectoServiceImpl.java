@@ -125,4 +125,24 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    	}
     
+//    @Override
+//   	public void elimnarProyectobyUsuario(Long id) {
+//
+//   		
+//   		em.createNativeQuery("select p from Proyecto p where p.id=:id");
+//   		//query.setParameter("id", id);
+//
+//   		Proyecto proyecto = null;
+//   		try {
+//   			log.info("Chequear ");
+//   			proyecto = (Proyecto) query.getSingleResult();
+//   		} catch (Exception nre) {
+//   			 log.info("No se ha encontrado  proyecto");
+//
+//   		}
+//   
+//
+//   	}
+//    
+    
 }

@@ -8,6 +8,7 @@ import com.scrum.ude.service.ProyectoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +29,9 @@ public class ApiProyectoController {
     private IUsuarioDAO usuarioDAO;
 
     @GetMapping(value = "/quick-view/{id}")
-    public ModelAndView quickView(@PathVariable(value = "id") Long id) {
+    public ModelAndView quickView(@PathVariable(value = "id") Long id, Model model) {
         ModelAndView mav = new ModelAndView("proyecto/quick-view");
+       
         Proyecto proyecto = proyectoService.buscarPorIdProyecto(id);
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
@@ -37,6 +39,8 @@ public class ApiProyectoController {
         Usuario usuario = usuarioDAO.findByUserName(userDetail.getUsername());
 
         mav.addObject("proyecto", proyecto);
+        model.addAttribute("usuario",usuario);
+        model.addAttribute("proyecto",proyecto);
         mav.addObject("usuario", usuario);
         mav.addObject("id", id);
 
