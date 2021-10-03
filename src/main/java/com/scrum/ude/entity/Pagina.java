@@ -33,6 +33,9 @@ private Long id;
 private List<Usuario> usuario;
 //@JsonIgnore
 
+@ManyToOne
+private Capitulo capitulo;
+
 
 @Column
 private String titulo;
@@ -76,5 +79,14 @@ public void setUsuario(List<Usuario> usuario) {
 public void setContenido(String contenido) {
 	this.contenido = contenido;
 }
+
+public Capitulo getCapitulo() {
+	return capitulo;
+}
+
+public void setCapitulo(Capitulo capitulo) {
+	this.capitulo = capitulo;
+}
+
 
 }

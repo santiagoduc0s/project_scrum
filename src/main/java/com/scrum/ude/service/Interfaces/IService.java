@@ -24,6 +24,10 @@ public interface IService {
 
 	Usuario buscarPorCedula(Long cedula);
 
+	Boolean ExisteUsuario(String userName);
+
+	Boolean ExisteMail(String email);
+
 
 	//Curso codigoCurso(int codigo);
 

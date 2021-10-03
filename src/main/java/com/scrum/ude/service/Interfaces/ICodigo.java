@@ -6,4 +6,6 @@ public interface ICodigo {
 
 	CodigoRegistro findCodigo(String codigo);
 
+	Boolean ExisteCodigoRegistro(String codigo);
+
 }
