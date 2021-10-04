@@ -141,14 +141,14 @@ public class ProyectoController {
 //			
         if (proyect == null) {
 //				
-            String mensajeFlash = "No existe Proyecto";
+            String mensajeFlash = "No existe proyecto";
 //				 
 				flash.addFlashAttribute("success",mensajeFlash);
 			 } else {
 				 
 			 if(proyect.getUsuario().contains(user)) {
 				 
-				 String mensajeFlash = "Usted Ya esta unido a dicho Proyecto";
+				 String mensajeFlash = "Usted ya se encuentra en éste proyecto";
 				 flash.addFlashAttribute("success",mensajeFlash);
 			 } else {
 				 
@@ -185,7 +185,7 @@ public class ProyectoController {
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
 
 //			
-        String mensajeFlash = "No existe Proyecto";
+        String mensajeFlash = "No existe proyecto";
 //				 
         flash.addFlashAttribute("success", mensajeFlash);
 

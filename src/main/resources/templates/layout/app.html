@@ -42,12 +42,12 @@
                             Listado Usuarios
                         </a>
                         <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">
-                            Generar Codigo Curso
+                            Generar Código Curso
                         </a>
                         <div class="dropdown-divider"></div>
                         <form th:action="@{/}" method="post" id="form-logout" class="d-none"></form>
                         <a href="#" class="dropdown-item" onclick="document.getElementById('form-logout').submit()">
-                            Cerrar Sesion
+                            Cerrar Sesión
                         </a>
                     </div>
                 </li>

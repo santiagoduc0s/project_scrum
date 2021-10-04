@@ -3,6 +3,8 @@ package com.scrum.ude.controller;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.scrum.ude.dao.IUsuarioDAO;
+import com.scrum.ude.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,9 @@ public class CodigoController {
 	private UsuarioController usuarioController;
 
 	@Autowired
+	private IUsuarioDAO usuarioDAO;
+
+	@Autowired
 	private ICodigoRegistro codigoRegistro;
 	//navegar Vista  Generar Codigo Registro
 	@GetMapping("/vistaCodigoRegistro")
@@ -30,6 +35,10 @@ public class CodigoController {
 		Authentication auth = usuarioController.retornarUsuarioLogueado();
 
 		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+		Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+
+		model.addAttribute("usuario",us);
 
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
 
@@ -43,6 +52,10 @@ public class CodigoController {
 		Authentication auth = usuarioController.retornarUsuarioLogueado();
 
 		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+		Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+
+		model.addAttribute("usuario",us);
 
 		model.addAttribute("autoridad", auth.getAuthorities().toString());
 
