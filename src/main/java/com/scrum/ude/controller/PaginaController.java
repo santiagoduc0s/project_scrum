@@ -21,7 +21,7 @@ public class PaginaController {
 public String verPagina(Model model,@PathVariable(value = "id") Long id) {
 
 	Pagina pagina=null;
-//Pagina pagina= paginaImpl.obtenerContenido(id);
+	pagina= paginaImpl.obtenerContenido(id);
 
 	model.addAttribute("pagina",pagina);
 	
