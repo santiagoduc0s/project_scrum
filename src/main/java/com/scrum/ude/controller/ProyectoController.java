@@ -254,27 +254,33 @@ public class ProyectoController {
 
         auth.getName();
         Usuario user = usuarioImpl.findOne(auth.getName());
-        //Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+        Proyecto proyectoso = proyectoImpl.buscarPorIdProyecto(id);
 
         //model.addAttribute("proyecto", proyecto);
 
         List<Usuario> usuarios = new ArrayList();
         usuarios.add(user);
 
-        if (proyecto.getCreador() != user.getUserName()) {
+        if (!proyectoso.getCreador().equals(user.getUserName())) {
 
             return "redirect:/vistaProyecto";
         }
         proyecto.setUsuario(usuarios);
-        proyecto.setId(id);
-        proyectoDAO.save(proyecto);
+        proyecto.setId(proyectoso.getId());
+        proyecto.setCreador(proyectoso.getCreador());
+        proyecto.setCodigoProyecto(proyectoso.getCodigoProyecto());
+        
+        List<Proyecto> proyectos=new ArrayList();
+        proyectos.add(proyecto);
+         user.setProyecto(proyectos);
+        usuarioDAO.save(user);
 
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
 
-        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        List<Proyecto> proyectosos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 
-        model.addAttribute("proyectos", proyectos);
+        model.addAttribute("proyectos", proyectosos);
         //buscar tareas con el proyecto asociado
         //Tarea tarea=tareaDAO.
 

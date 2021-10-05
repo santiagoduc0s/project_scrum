@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <div class="modal-header">
     <h5 class="modal-title">Proyecto</h5>
     <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close" onclick="$('#editarProyecto').modal('toggle');">
@@ -6,7 +8,7 @@
 </div>
 <div class="modal-body">
 
-    <form id="form-create-project" th:action="@{/guardarModificacionProyecto}" th:object="${proyecto}" method="POST">
+    <form id="forti" th:action="@{/guardarModificacionProyecto}" th:object="${proyecto}" method="post">
         <input type="text" name="id" hidden class="form-control" th:value="${id}"/>
         <div class="form-group">
             <fieldset>
@@ -42,7 +44,9 @@
         </div>
 
         <div class="modal-footer">
-            <button type="submit" form="form-create-project" class="btn btn-dark mx-auto">Guardar</button>
+            <button type="submit" form="forti" class="btn btn-dark mx-auto">Probar</button>
         </div>
     </form>
 </div>
+
+</html>
