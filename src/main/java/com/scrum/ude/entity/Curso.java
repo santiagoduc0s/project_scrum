@@ -3,73 +3,67 @@ package com.scrum.ude.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column ;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 
 @Entity
 public class Curso implements Serializable {
-	
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-@Id
-@GeneratedValue(strategy =GenerationType.AUTO)
-private Long id;
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
 
-@Column
-private String titulo;
+    @Column
+    private String titulo;
 
-@Column
-private String descripcion;
+    @Column
+    private String descripcion;
 
-@OneToMany
-private List<Capitulo> capitulo;
-
-
-public Curso() {
-	
-}
-
-public Long getId() {
-	return id;
-}
-
-public void setId(Long id) {
-	this.id = id;
-}
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "curso"
+    )
+    public List<Capitulo> capitulo;
 
 
-public String getTitulo() {
-	return titulo;
-}
+    public Curso() {}
 
-public void setTitulo(String titulo) {
-	this.titulo = titulo;
-}
+    public Long getId() {
+        return id;
+    }
 
-public String getDescripcion() {
-	return descripcion;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public void setDescripcion(String descripcion) {
-	this.descripcion = descripcion;
-}
 
-public List<Capitulo> getCapitulo() {
-	return capitulo;
-}
+    public String getTitulo() {
+        return titulo;
+    }
 
-public void setCapitulo(List<Capitulo> capitulo) {
-	this.capitulo = capitulo;
-}
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public List<Capitulo> getCapitulo() {
+        return capitulo;
+    }
+
+    public void setCapitulo(List<Capitulo> capitulo) {
+        this.capitulo = capitulo;
+    }
 
 
 }

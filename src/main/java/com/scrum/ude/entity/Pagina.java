@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="pagina")
@@ -31,11 +32,11 @@ private Long id;
 
 @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "paginas")
 private List<Usuario> usuario;
-//@JsonIgnore
 
-@ManyToOne
-private Capitulo capitulo;
 
+@ManyToOne(optional = false, fetch = FetchType.LAZY)
+@JoinColumn(name = "capitulo_id")
+public Capitulo capitulo;
 
 @Column
 private String titulo;
