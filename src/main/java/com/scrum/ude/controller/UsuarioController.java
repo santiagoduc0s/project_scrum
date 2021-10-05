@@ -70,63 +70,62 @@ public class UsuarioController {
 			return "/registroUsuario/registroUsuario";
 		}
 
-		//Usuario usuario = (Usuario) usuarioService.findOne(usuarioDTO.getUserName());
+		Usuario usuario = (Usuario) usuarioService.findOne(usuarioDTO.getUserName());
 
-		//if (usuario == null) {
+		if (usuario == null) {
 
 			usuarioDTO.setRol("ROLE_USER");
 
 			CodigoRegistro  codigoRegistro = codigoImpl.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
-//			
-//			Date fechaHoy=new Date();
-//			
-//			Calendar calendar1 = Calendar.getInstance();
-//			
-//			calendar1.setTime(fechaHoy);
-//			 
-//			 Calendar calendar2 = Calendar.getInstance();
-//			 calendar2.setTime(codigoRegistro.getFecha());
-//			
-//			
-//			System.out.println("dddd");
-//			int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
-//			
-//			calendar2.set(Calendar.DAY_OF_MONTH,dias);
-//			
-//			System.out.println(calendar2.get(Calendar.DAY_OF_MONTH));
-//			
-//		if(calendar2.after(calendar1)|| calendar2.get(Calendar.DAY_OF_MONTH)==calendar1.get(Calendar.DAY_OF_MONTH)) {
-//				
-//			if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
-//			
-//				codigoRegistro.setUsado(true);
+			
+			Date fechaHoy=new Date();
+			
+			Calendar calendar1 = Calendar.getInstance();
+			
+			calendar1.setTime(fechaHoy);
+			 
+			 Calendar calendar2 = Calendar.getInstance();
+			 calendar2.setTime(codigoRegistro.getFecha());
+			
+			
+			System.out.println("dddd");
+			int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
+			
+			calendar2.set(Calendar.DAY_OF_MONTH,dias);
+			
+			System.out.println(calendar2.get(Calendar.DAY_OF_MONTH));
+			
+		if(calendar2.after(calendar1)|| calendar2.get(Calendar.DAY_OF_MONTH)==calendar1.get(Calendar.DAY_OF_MONTH)) {
+				
+			if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
+			
+				codigoRegistro.setUsado(true);
 				usuarioDTO.setCodigoRegistro(codigoRegistro);
 
-			//}
+			}
 
 
-//			else {
-//				
-//				return "/registroUsuario/registroUsuario";	
-//			}
+		else {
+				
+				return "/registroUsuario/registroUsuario";	
+			}
 
-        //s }
+        }
 
-//			else {
-//				System.out.println("tiempo excedido para el codigo registro");
-//				return "/registroUsuario/registroUsuario";	
-//			}
+		else {
+				System.out.println("tiempo excedido para el codigo registro");
+				return "/registroUsuario/registroUsuario";	
+			}
 			usuarioService.agregarUsuario(usuarioDTO);
 
 			flash.addFlashAttribute("success","Usuario Registrado con Exito");
 
 			return "/login/index";
-		//} else {
-			//model.addAttribute("respuesta", "Este Usuario ya esta Registrado" + usuario.getUserName());
+		} else {
+			model.addAttribute("respuesta", "Este Usuario ya esta Registrado" + usuario.getUserName());
+		}
 
-	//	}
-
-		//return "/registroUsuario/registroUsuario";
+		return "/registroUsuario/registroUsuario";
 		}
 
 	//Metodo de username peticion de javascript
