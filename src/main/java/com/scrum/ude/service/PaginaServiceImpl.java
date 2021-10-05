@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.scrum.ude.entity.Capitulo;
 import com.scrum.ude.entity.Pagina;
 import com.scrum.ude.service.Interfaces.IPagina;
 @Service
@@ -23,7 +22,6 @@ public class PaginaServiceImpl implements IPagina {
 	  		
 	  		Query query = em.createQuery("select p from Pagina p  where p.id=:id");
 	  		query.setParameter("id", id);
-
 	  		Pagina pagina = null;
 	  		try {
 	  			log.info("Chequear ");
