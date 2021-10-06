@@ -282,8 +282,13 @@ public class UsuarioController {
 		 model.addAttribute("usuario",user);
 		//Usuario user=
 		 model.addAttribute("autoridad",auth.getAuthorities().toString());
+		 
+		 if(auth.getAuthorities().toString()=="[ROLE_USER]"){
+			 
+			 return"/user/modificarUser";
+		 }
 
-		return"/user/modificarUser";
+		return"/admin/modificarUser";
 	}
 
 	//Se procesan los cambios del Usuario, Perfil Administrador
@@ -328,15 +333,18 @@ public class UsuarioController {
 
 					return "/user/modificarUser";
 
+			}else {
+				user.setNombre(usuario.getNombre());
+				user.setApellido(usuario.getApellido());
+				user.setCedula(usuario.getCedula());
+				//user.setMail(usuario.getMail());
+				//user.setUserName(usuario.getUserName());
+				user.setPassword(user.getPassword());
+
+				
 			}
 
-			user.setNombre(usuario.getNombre());
-			user.setApellido(usuario.getApellido());
-			user.setCedula(usuario.getCedula());
-			//user.setMail(usuario.getMail());
-			//user.setUserName(usuario.getUserName());
-			user.setPassword(user.getPassword());
-
+			
 			if(!nuevaContrasena.isEmpty()) {
 
 			String contra =ws.passwordEncoder().encode(nuevaContrasena);
