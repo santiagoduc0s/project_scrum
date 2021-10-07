@@ -260,12 +260,16 @@ public class UsuarioController {
 		if (id > 0) {
 
             Authentication auth = retornarUsuarioLogueado();
+            Usuario user=usuarioService.buscarPorId(id);
             usuario= usuarioDAO.findById(id);
 
 			  flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
 			  model.addAttribute("id", id);
 			  model.addAttribute("usuario", usuario);
-			  model.addAttribute("autoridad",auth.getAuthorities().toString());
+			  model.addAttribute("username", user.getUserName().toString());
+			 // model.addAttribute("autoridad",auth.getAuthorities().toString());
+			   model.addAttribute("autoridad",auth.getName());
+			  
 
 		}
 		return "/admin/ModificarUsuariosPerfilAdmin";
@@ -293,17 +297,38 @@ public class UsuarioController {
 
 	//Se procesan los cambios del Usuario, Perfil Administrador
 	@PostMapping("/usuarioModificado")
-	public String guardarUsuarioModificadoAdmin(Usuario usuario,@RequestParam(value = "id") Long id, Model model) {
+	public String guardarUsuarioModificadoAdmin(Usuario usuario,@RequestParam(value = "id") Long id, Model model,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena")
+	String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
 
 		System.out.println("USUARIO ID  ES    "+usuario.getId());
 
 		Usuario user=usuarioService.buscarPorId(id);
+		
+		
 		user.setNombre(usuario.getNombre());
 		user.setApellido(usuario.getApellido());
 		user.setCedula(usuario.getCedula());
 		user.setMail(usuario.getMail());
 		user.setRol(usuario.getRol());
-		user.setUserName(usuario.getUserName());
+		//user.setUserName(usuario.getUserName());
+		
+		if(ws.passwordEncoder().matches(contrasena, user.getPassword())){
+
+			if(!confirmacionContrasena.equals(nuevaContrasena)) {
+
+				return "/admin/modificarUsuariosPerfilAdmin";
+				
+			}
+		
+		
+		
+		if(!nuevaContrasena.isEmpty()) {
+
+			String contra =ws.passwordEncoder().encode(nuevaContrasena);
+			user.setPassword(contra);
+			}
+		}
+
 
 		usuarioDAO.save(user);
 
@@ -314,8 +339,11 @@ public class UsuarioController {
 
 		model.addAttribute("usuario", usuariose);
 
-
+			
+		
 		return "/admin/listadoUsuarios";
+			
+		
 
 	}
 
@@ -332,6 +360,7 @@ public class UsuarioController {
 				if(!confirmacionContrasena.equals(nuevaContrasena)) {
 
 					return "/user/modificarUser";
+				}
 
 			}else {
 				user.setNombre(usuario.getNombre());
@@ -355,7 +384,7 @@ public class UsuarioController {
 
 			model.addAttribute("usuario",user);
 
-		}
+		
 
 		 return "redirect:/menuCambiado/"+user.getUserName()+"";
 
