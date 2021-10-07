@@ -36,10 +36,10 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">[[${#httpServletRequest.remoteUser}]]</a>
                     <div class="dropdown-menu">
-<!--                         <a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" -->
-<!--                            th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a> -->
-  						<a  class="dropdown-item" 
-                           th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a> 
+                        <a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item"
+                           th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a>
+<!--   						<a  class="dropdown-item"  -->
+<!--                            th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a>  -->
                         <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">
                             Listado Usuarios
                         </a>
