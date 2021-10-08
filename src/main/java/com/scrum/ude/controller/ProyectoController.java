@@ -78,35 +78,35 @@ public class ProyectoController {
 //		
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
-		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-		List<Usuario> usuarios= new ArrayList();
-		
-		List<Proyecto> proyectosos= new ArrayList();
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        List<Usuario> usuarios = new ArrayList();
+
+        List<Proyecto> proyectosos = new ArrayList();
 
 
-		usuarios.add(user);
-		proyecto.setCreador(user.getUserName());
-		proyecto.setUsuario(usuarios);
-		int numero = (int)(Math. random()*100+1);
-		HashCode sha256hex = Hashing.sipHash24().hashInt(numero);
-		
-		proyecto.setCodigoProyecto(""+sha256hex);
-		
-		Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(),proyecto.getTitulo());
-		
-		List<Proyecto> ver= (List<Proyecto>)proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        usuarios.add(user);
+        proyecto.setCreador(user.getUserName());
+        proyecto.setUsuario(usuarios);
+        int numero = (int) (Math.random() * 100 + 1);
+        HashCode sha256hex = Hashing.sipHash24().hashInt(numero);
+
+        proyecto.setCodigoProyecto("" + sha256hex);
+
+        Proyecto proyect = (Proyecto) proyectoImpl.buscarProyectoPorUsuarioWithTitulo(user.getId(), proyecto.getTitulo());
+
+        List<Proyecto> ver = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 //			
         if (proyect == null) {
 //				
-				String mensajeFlash = "Proyecto Creado Con exito!";
+            String mensajeFlash = "Proyecto creado con éxito!";
 
-				if(ver!=null) {
-					
-					proyectosos.addAll(ver);
-				}
-				proyectosos.add(proyecto);
-			    user.setProyecto(proyectosos);
-			    usuarioDAO.save(user);
+            if (ver != null) {
+
+                proyectosos.addAll(ver);
+            }
+            proyectosos.add(proyecto);
+            user.setProyecto(proyectosos);
+            usuarioDAO.save(user);
 //				 
             //proyectoDAO.save(proyecto);
 //				 
@@ -128,50 +128,49 @@ public class ProyectoController {
 //		
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
-		Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-		List<Usuario> usuarios= new ArrayList();
-		
-		
-		//proyecto.setCreador(true);
-		//proyecto.setUsuario(usuarios);
-		
-		Proyecto proyect = (Proyecto) proyectoImpl.buscarPorCodigoProyecto(proyecto.getCodigoProyecto());
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        List<Usuario> usuarios = new ArrayList();
+
+
+        //proyecto.setCreador(true);
+        //proyecto.setUsuario(usuarios);
+
+        Proyecto proyect = (Proyecto) proyectoImpl.buscarPorCodigoProyecto(proyecto.getCodigoProyecto());
 
 
 //			
         if (proyect == null) {
 //				
             String mensajeFlash = "No existe proyecto";
-//				 
-				flash.addFlashAttribute("success",mensajeFlash);
-			 } else {
-				 
-			 if(proyect.getUsuario().contains(user)) {
-				 
-				 String mensajeFlash = "Usted ya se encuentra en éste proyecto";
-				 flash.addFlashAttribute("success",mensajeFlash);
-			 } else {
-				 
-				 usuarios.addAll(proyect.getUsuario());
-				 usuarios.add(user);
-				  
-				    proyect.setUsuario(usuarios);
-				    
-					List<Proyecto> proyectos= new ArrayList();
-					proyectos.add(proyect);
-				    user.setProyecto(proyectos);
-				    usuarioDAO.save(user);
+            flash.addFlashAttribute("warning", mensajeFlash);
+        } else {
 
-				    proyectoDAO.save(proyect);
-			    }
-			 }
-		List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
-			model.addAttribute("proyectos", proyectos);
-    	 return "redirect:/vistaProyecto";
-	}
-	
-	@GetMapping("/salirProyecto/{id}")
-	public String salirProyecto(Model model,@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+            if (proyect.getUsuario().contains(user)) {
+
+                String mensajeFlash = "Usted ya se encuentra en éste proyecto";
+                flash.addFlashAttribute("warning", mensajeFlash);
+            } else {
+
+                usuarios.addAll(proyect.getUsuario());
+                usuarios.add(user);
+
+                proyect.setUsuario(usuarios);
+
+                List<Proyecto> proyectos = new ArrayList();
+                proyectos.add(proyect);
+                user.setProyecto(proyectos);
+                usuarioDAO.save(user);
+
+                proyectoDAO.save(proyect);
+            }
+        }
+        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        model.addAttribute("proyectos", proyectos);
+        return "redirect:/vistaProyecto";
+    }
+
+    @GetMapping("/salirProyecto/{id}")
+    public String salirProyecto(Model model, @PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
 //		
@@ -179,7 +178,7 @@ public class ProyectoController {
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
         List<Usuario> usuarios = new ArrayList();
-        
+
         List<Proyecto> proyectos = new ArrayList();
 
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
@@ -187,12 +186,12 @@ public class ProyectoController {
 //			
         String mensajeFlash = "No existe proyecto";
 //				 
-        flash.addFlashAttribute("success", mensajeFlash);
+        flash.addFlashAttribute("warning", mensajeFlash);
 
         if (proyect.getUsuario().contains(user)) {
 
             user.setProyecto(null);
-          
+
             usuarioDAO.save(user);
         }
 
@@ -293,61 +292,59 @@ public class ProyectoController {
     // aca elimino un  proyecto
     @GetMapping(value = "/eliminarProyecto/{id}")
     public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
-    	
-    	if (id > 0) {
-			
-    	Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-         auth.getName();
-         Usuario user = usuarioImpl.findOne(auth.getName());
-         Proyecto proyecto= proyectoImpl.buscarPorIdProyecto(id);
-        if(user.getProyecto().contains(proyecto)) {
-        	
-        	List<Proyecto> proyectos= user.getProyecto();
-        	proyectos.remove(proyecto);
-        	user.setProyecto(proyectos);
-        	usuarioDAO.save(user);
+        if (id > 0) {
+
+            Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+            auth.getName();
+            Usuario user = usuarioImpl.findOne(auth.getName());
+            Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+            if (user.getProyecto().contains(proyecto)) {
+
+                List<Proyecto> proyectos = user.getProyecto();
+                proyectos.remove(proyecto);
+                user.setProyecto(proyectos);
+                usuarioDAO.save(user);
+            }
+
+            proyectoDAO.delete(proyecto);
+
+
+            flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
         }
-         
-         proyectoDAO.delete(proyecto);
-         
-				
-				flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
-			}
-			return "redirect:/vistaProyecto";
-		}
+        return "redirect:/vistaProyecto";
+    }
 
-		// aca elimino al participante de la lista  del   proyecto
-				@GetMapping(value = "/eliminarPartipante")
-				public String eliminarPartipante(@ModelAttribute  Long idUsuario,@ModelAttribute  Long idProyecto, RedirectAttributes flash) {
+    // aca elimino al participante de la lista  del   proyecto
+    @GetMapping(value = "/eliminarPartipante")
+    public String eliminarPartipante(@ModelAttribute Long idUsuario, @ModelAttribute Long idProyecto, RedirectAttributes flash) {
 
-					Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
-					List<Usuario> usuarios =new ArrayList<>();
+        Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
+        List<Usuario> usuarios = new ArrayList<>();
 
-					Usuario user=usuarioImpl.buscarPorId(idUsuario);
-					usuarios.remove(user);
-					proyecto.setUsuario(usuarios);
+        Usuario user = usuarioImpl.buscarPorId(idUsuario);
+        usuarios.remove(user);
+        proyecto.setUsuario(usuarios);
 
-					if(!proyecto.getCreador().equals(user.getUserName())) {
+        if (!proyecto.getCreador().equals(user.getUserName())) {
 
-						proyectoDAO.save(proyecto);
-					}
+            proyectoDAO.save(proyecto);
+        } else {
+            flash.addFlashAttribute("warning", "No se puede eliminar a si mismo!");
 
-					else {
-						flash.addFlashAttribute("success", "No se puede eliminar a si mismo!");
+        }
 
-						 }
+        List<Proyecto> proyectos = new ArrayList<>();
 
-					List<Proyecto> proyectos =new ArrayList<>();
+        proyectos.remove(proyecto);
+        user.setProyecto(proyectos);
+        usuarioDAO.save(user);
 
-					proyectos.remove(proyecto);
-					 user.setProyecto(proyectos);
-					 usuarioDAO.save(user);
+        flash.addFlashAttribute("success", "Participante Eliminado!");
 
-						flash.addFlashAttribute("success", "Participante Eliminado!");
-
-					return "";
-				}
+        return "";
+    }
 
 
     @GetMapping(value = "/test2")

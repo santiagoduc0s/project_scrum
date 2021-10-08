@@ -65,6 +65,8 @@
 
     <!-- messages -->
     <p class="d-none" id="success-alert" th:if="${success != null}" th:text="${success}"></p>
+    <p class="d-none" id="warning-alert" th:if="${warning != null}" th:text="${warning}"></p>
+    <p class="d-none" id="danger-alert" th:if="${danger != null}" th:text="${danger}"></p>
 
     <script th:src="@{/js/jquery-3.3.1.slim.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>

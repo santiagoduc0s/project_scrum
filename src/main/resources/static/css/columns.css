@@ -75,19 +75,24 @@ body {
 }
 
 .board-column.backlog .board-column-header {
-    background: rgb(33 37 41 / 50%);
+    /*background: rgb(33 37 41 / 50%);*/
+    background-color: black;
 }
 
 .board-column.todo .board-column-header {
-    background: rgb(33 37 41 / 50%);;
+    /*background: rgb(33 37 41 / 50%);*/
+    background-color: black;
+
 }
 
 .board-column.working .board-column-header {
-    background: rgb(33 37 41 / 50%);;
+    /*background: rgb(33 37 41 / 50%);*/
+    background-color: black;
 }
 
 .board-column.done .board-column-header {
-    background: rgb(33 37 41 / 50%);;
+    /*background: rgb(33 37 41 / 50%);*/
+    background-color: black;
 }
 
 .board-column-content-wrapper {

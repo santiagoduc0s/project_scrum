@@ -66,7 +66,7 @@ public class UsuarioController {
 
 		if (result.hasErrors()||!usuarioDTO.getPassword().equals(repeatPassword)) {
 
-			flash.addFlashAttribute("danger","Se encontrado un error Choto");
+			flash.addFlashAttribute("danger","Se produjo un error");
 			return "/registroUsuario/registroUsuario";
 		}
 

@@ -9,40 +9,31 @@
 
 <div class="container">
     <div class="card m-5">
-    
- 
-     <h1>SCRUM</h1>
-         <table class="table table-striped">
-<!-- 					<thead> -->
-<!-- 						<tr> -->
-						     
-<!-- 							<th>Proyecto</th> -->
-<!-- 							<th>Descripcion</th> -->
-<!-- 							<th>Codigo Proyecto</th> -->
-<!-- 							<th>VER</th> -->
-<!-- 							<th>Creador</th> -->
-<!-- 							<th>eliminar</th> -->
-<!-- 							 <h1 th:text="${success}"></h1> -->
-<!-- 						</tr> -->
-<!-- 					</thead> -->
-					<tbody>
- 						<tr th:each="curso: ${curso}"> 
- 							<td>
-							<p>
-  <a class="btn btn-primary" role="button"  data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample" th:text="${curso.titulo}">
-  </a>
-</p>
 
-</td> 
-<td><a class="btn btn-primary btn-sm"  th:href="@{/verCapitulo/} + ${curso.id}"  
-								th:text="'Iniciar'"></a>
-								</td>
-							</tr>
- 					</tbody> 
-				</table> 
-   
-   
-   
+
+        <h3>Curso Scrum</h3>
+        <table class="table table-striped">
+
+            <tbody>
+            <tr th:each="capitulo: ${curso.capitulo}">
+                <td>
+                    <p>
+                        <a class="btn btn-success" role="button" data-toggle="collapse" aria-expanded="false"
+                           aria-controls="collapseExample" href="#collapseExample" th:text="${capitulo.titulo}">
+                        </a>
+                    </p>
+
+                </td>
+                <td><a class="btn btn-primary btn-sm" th:href="@{/verCapitulo/} + ${capitulo.id}"
+                       th:text="'Comenzar Capítulo'"></a>
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+
     </div>
 </div>
 

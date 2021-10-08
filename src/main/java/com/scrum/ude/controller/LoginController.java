@@ -90,7 +90,7 @@ public class LoginController {
 	
 	//toma Usuario y autoridad  lo manda a la seccion del usuario en el  menu
     @RequestMapping("/menu")
-    public String defaultAfterLogin( Authentication auth, HttpServletRequest request  ,Model model) {
+    public String defaultAfterLogin( Authentication auth, HttpServletRequest request  ,Model model, RedirectAttributes flash) {
 
     	request.getCookies();
     	//System.out.println(us);
