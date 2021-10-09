@@ -8,37 +8,16 @@
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
 <div class="container">
-    <div class="card m-5">
-        <h1 th:text="${pagina.titulo}"></h1>
-        <table class="table table-striped">
-            <!-- 					<thead> -->
-            <!-- 						<tr> -->
-
-            <!-- 							<th>Proyecto</th> -->
-            <!-- 							<th>Descripcion</th> -->
-            <!-- 							<th>Codigo Proyecto</th> -->
-            <!-- 							<th>VER</th> -->
-            <!-- 							<th>Creador</th> -->
-            <!-- 							<th>eliminar</th> -->
-            <!-- 							 <h1 th:text="${success}"></h1> -->
-            <!-- 						</tr> -->
-            <!-- 					</thead> -->
-            <tbody>
-            <tr th:each="paginas: ${pagina.pagina}">
-                <td th:text="${paginas.titulo}"></td>
-                <td><a class="btn btn-primary btn-sm" th:href="@{/verPag/} + ${paginas.id}"
-                       th:text="'Iniciar'"></a>
-                </td>
-
-				<td><a class="btn btn-success btn-sm" href="#collapseExample"
-					   th:text="'Comenzar Cuestionario'"></a>
-				</td>
-
-            </tr>
-            </tbody>
-        </table>
-
-
+    <div class="card mt-5 w-75 mx-auto">
+        <h5 th:text="${pagina.titulo}" class="card-header text-center">Scrum</h5>
+        <div class="card-body">
+            <ul class="list-group">
+                <a class="list-group-item list-group-item-action"
+                   th:each="paginas: ${pagina.pagina}" th:href="@{/verPag/} + ${paginas.id}"
+                   th:text="${paginas.titulo}">
+                </a>
+            </ul>
+        </div>
     </div>
 </div>
 
