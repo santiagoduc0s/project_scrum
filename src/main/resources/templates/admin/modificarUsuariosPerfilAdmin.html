@@ -9,70 +9,71 @@
 
 <div class="container">
     <div class="card w-50 mx-auto" style="margin-top: 50px">
-        <div th:if="${rol != '[ROLE_ADMIN]'}"  class="card-header">
+        <div th:if="${rol != '[ROLE_ADMIN]'}" class="card-header">
             Modificar rol de <span th:text="${usuario.get().nombre}"></span>
         </div>
+
         <div class="card-body">
 
             <form id="formularioRol" role="form" th:action="@{/usuarioModificado}" th:object="${usuario}" method="post">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="row mb-3">
+                    <div class="form-group col-6">
                         <div class="form-group" id="user-group">
                             <input id="pass" name="id" hidden type="text" class="form-control"
                                    th:value="${id}"/>
                         </div>
-                        
-<!--                         <h1 th:text="${rol}"> </h1> -->
+
+                        <!--                         <h1 th:text="${rol}"> </h1> -->
 
                         <div th:if="${username eq autoridad}" class="form-group">
                             <input type="text" name="nombre" id="nombre1"
-                                   class="form-control input-sm floatlabel"  placeholder="Nombre"
+                                   class="form-control input-sm floatlabel" placeholder="Nombre"
                                    th:field="*{nombre}">
                         </div>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6">
+                    <div class="form-group col-6">
                         <div th:if="${username eq autoridad}" class="form-group">
                             <input type="text" name="apellido" id="apellido1"
-                                   class="form-control input-sm floatlabel"  placeholder="Apellido"
+                                   class="form-control input-sm floatlabel" placeholder="Apellido"
                                    th:field="*{apellido}">
                         </div>
                     </div>
-                   
-                    <div th:if="${username eq autoridad}" class="form-group col-xs-12">
+
+                    <div th:if="${username eq autoridad}" class="form-group mb-3">
                         <input type="text" name="documento" id="documento"
-                               class="form-control input-sm floatlabel" 
+                               class="form-control input-sm floatlabel"
                                placeholder="Documento de Identidad" th:field="*{cedula}">
                     </div>
-                    <div th:if="${username eq autoridad}" class="form-group col-xs-12">
+                    <div th:if="${username eq autoridad}" class="form-group mb-3">
                         <input type="text" name="email" id="email"
-                               class="form-control input-sm floatlabel"  placeholder="Correo Electrónico"
+                               class="form-control input-sm floatlabel" placeholder="Correo Electrónico"
                                th:field="*{mail}">
                     </div>
-                    <div class="form-group col-xs-12">
+                    <div class="form-group col-6">
                         <input type="text" name="usuario" id="usuario"
                                class="form-control input-sm floatlabel" hidden placeholder="Nombre de Usuario"
                                th:field="*{userName}">
                     </div>
-                    
-                      <div th:if="${username eq autoridad}" class="form-group mb-3">
-                    <input type="password"
-                           class="form-control" placeholder="Ingrese su contraseña"
-                           name="contrasena" th:value="${contrasena}">
-                </div>
 
-                <div class="row mb-3">
-                    <div th:if="${username eq autoridad}" class="form-group col-6">
+                    <div th:if="${username eq autoridad}" class="form-group mb-3">
                         <input type="password"
-                               class="form-control" placeholder="Ingrese su nueva contraseña"
-                               name="nuevaContrasena" th:value="${nuevaContrasena}">
+                               class="form-control" placeholder="Ingrese su contraseña"
+                               name="contrasena" th:value="${contrasena}">
                     </div>
 
-                    <div th:if="${username eq autoridad}" class="form-group col-6">
-                        <input type="password"
-                               class="form-control" placeholder="Confirme su contraseña"
-                               name="confirmacionContrasena" th:value="${confirmacionContrasena}">
+                    <div class="row mb-3">
+                        <div th:if="${username eq autoridad}" class="form-group mb-3">
+                            <input type="password"
+                                   class="form-control" placeholder="Ingrese su nueva contraseña"
+                                   name="nuevaContrasena" th:value="${nuevaContrasena}">
+                        </div>
+
+                        <div th:if="${username eq autoridad}" class="form-group mb-3">
+                            <input type="password"
+                                   class="form-control" placeholder="Confirme su contraseña"
+                                   name="confirmacionContrasena" th:value="${confirmacionContrasena}">
+                        </div>
                     </div>
-                </div>
 
 
                     <div class="form-group">

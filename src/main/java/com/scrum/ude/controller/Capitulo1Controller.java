@@ -3,6 +3,8 @@ package com.scrum.ude.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,23 +18,32 @@ import com.scrum.ude.service.CapituloServiceImpl;
 
 @Controller
 public class Capitulo1Controller {
-	
+
 	@Autowired
-	public CapituloServiceImpl capituloImpl;
+	private UsuarioController usuarioController;
 
-@GetMapping("/verCapitulo/{id}")
+    @Autowired
+    public CapituloServiceImpl capituloImpl;
 
-	public String verPaginas(Model model,@PathVariable(value = "id") Long id) {
+    @GetMapping("/verCapitulo/{id}")
 
-	Capitulo capitulo= capituloImpl.buscarPaginas(id);
-	
-	model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
-		model.addAttribute("pagina",capitulo);
-		
-		
-		return "/curso/paginaUno"; 
+    public String verPaginas(Model model, @PathVariable(value = "id") Long id) {
 
-	}
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+        Capitulo capitulo = capituloImpl.buscarPaginas(id);
+
+        model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
+        model.addAttribute("pagina", capitulo);
+
+
+        return "/curso/paginaUno";
+
+    }
 
 
 }

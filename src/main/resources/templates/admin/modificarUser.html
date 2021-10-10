@@ -14,12 +14,13 @@
             Modificar datos personales
         </div>
         <div class="card-body">
-            <form role="form" id="formularioCambiarDatos" th:action="@{/modificarDatosPersonales}" th:object="${usuario}" method="post">
+            <form role="form" id="formularioCambiarDatos" th:action="@{/modificarDatosPersonales}"
+                  th:object="${usuario}" method="post">
                 <input type="hidden" name="usuario"
                        class="form-control"
                        th:field="*{userName}">
 
-                <input  name="id" type="hidden" class="form-control" th:value="${id}"/>
+                <input name="id" type="hidden" class="form-control" th:value="${id}"/>
 
                 <div class="row mb-3">
                     <div class="form-group col-6">
@@ -37,21 +38,21 @@
 
                 <div class="form-group mb-3">
                     <input type="text" name="documento" id="documento"
-                           class="form-control" placeholder="Ingrese su cédula" required
+                           class="form-control " placeholder="Ingrese su cédula" required
                            th:field="*{cedula}">
                 </div>
 
-<!--                 <div class="form-group mb-3"> -->
-<!--                     <input type="text" name="email" id="email" -->
-<!--                            class="form-control" placeholder="Ingrese su email" required -->
-<!--                            th:field="*{mail}"> -->
-<!--                 </div> -->
+                <!--                 <div class="form-group mb-3"> -->
+                <!--                     <input type="text" name="email" id="email" -->
+                <!--                            class="form-control" placeholder="Ingrese su email" required -->
+                <!--                            th:field="*{mail}"> -->
+                <!--                 </div> -->
 
-<!--                 <div class="form-group mb-3"> -->
-<!--                     <input type="text" name="usuario" -->
-<!--                            class="form-control" -->
-<!--                            th:field="*{userName}" disabled> -->
-<!--                 </div> -->
+                <!--                 <div class="form-group mb-3"> -->
+                <!--                     <input type="text" name="usuario" -->
+                <!--                            class="form-control" -->
+                <!--                            th:field="*{userName}" disabled> -->
+                <!--                 </div> -->
 
                 <div class="form-group mb-3">
                     <input type="password"

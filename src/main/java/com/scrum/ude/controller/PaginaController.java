@@ -1,6 +1,8 @@
 package com.scrum.ude.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,27 +10,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.scrum.ude.entity.Pagina;
 import com.scrum.ude.service.PaginaServiceImpl;
+
 @Controller
 public class PaginaController {
-	
-	@Autowired
-	public PaginaServiceImpl paginaImpl;
+
+    @Autowired
+    private UsuarioController usuarioController;
+
+    @Autowired
+    public PaginaServiceImpl paginaImpl;
 
 
+    @GetMapping("/verPag/{id}")
 
-@GetMapping("/verPag/{id}")
+    public String verPagina(Model model, @PathVariable(value = "id") Long id) {
 
-public String verPagina(Model model,@PathVariable(value = "id") Long id) {
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-	Pagina pagina=null;
-	pagina= paginaImpl.obtenerContenido(id);
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
 
-	model.addAttribute("pagina",pagina);
-	
-	
-	return "/curso/pagina"; 
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-}
+        Pagina pagina = null;
+        pagina = paginaImpl.obtenerContenido(id);
+
+        model.addAttribute("pagina", pagina);
+
+
+        return "/curso/pagina";
+
+    }
 
 
 }

@@ -8,16 +8,18 @@
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
 <div class="container">
-    <div class="card mt-5 w-75 mx-auto">
-        <h5 class="card-header text-center">Scrum
-        </h5>
-        <div class="card-body">
-            <ul class="list-group">
-                <a class="list-group-item list-group-item-action"
-                   th:each="capitulo: ${curso.capitulo}" th:href="@{/verCapitulo/} + ${capitulo.id}"
-                   th:text="${capitulo.titulo}">
-                </a>
-            </ul>
+    <div class="card border-dark mt-5 w-75 mx-auto">
+        <h5 class="card-header text-center">Scrum</h5>
+        <div class="card-body row row-cols-3 g-4">
+            <div class="col" th:each="capitulo: ${curso.capitulo}">
+                <div class="card text-center" >
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${capitulo.titulo}"></h5>
+                        <p class="card-text" th:text="${capitulo.descripcion}"></p>
+                        <a th:href="@{/verCapitulo/} + ${capitulo.id}" class="btn btn-success">Iniciar</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
