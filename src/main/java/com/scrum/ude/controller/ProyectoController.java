@@ -147,7 +147,7 @@ public class ProyectoController {
 
             if (proyect.getUsuario().contains(user)) {
 
-                String mensajeFlash = "Usted ya se encuentra en éste proyecto";
+                String mensajeFlash = "Usted ya se encuentra inscripto en este proyecto";
                 flash.addFlashAttribute("warning", mensajeFlash);
             } else {
 

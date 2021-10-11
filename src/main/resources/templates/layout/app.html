@@ -9,6 +9,12 @@
     <link th:href="@{/css/bootstrap-zephyr.min.css}" rel="stylesheet">
     <link th:href="@{/css/columns.css}" rel="stylesheet">
     <link th:href="@{/css/general.css}" rel="stylesheet">
+    <link th:href="@{/css/cuestionario.css}" rel="stylesheet">
+    <style>
+        .container {
+            min-height : calc(100vh - 10.5rem) !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -58,7 +64,9 @@
     </div>
 </nav>
 
-
+<footer class="page-footer font-small teal py-3 bg-dark" th:fragment="footer">
+    <div class="footer-copyright text-center" style="color: white;">© 2021 Copyright: PES - UDE</div>
+</footer>
 
 <!-- script -->
 <div th:fragment="scripts">
