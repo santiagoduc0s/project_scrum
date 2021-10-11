@@ -269,6 +269,10 @@ public class UsuarioController {
 			  model.addAttribute("username", user.getUserName().toString());
 			 // model.addAttribute("autoridad",auth.getAuthorities().toString());
 			   model.addAttribute("autoridad",auth.getName());
+			   if(!auth.getName().equals(user.getUserName())) {
+				   
+				   return "/admin/ModificarUsuariosNoAdministrador";
+			   }
 			  
 
 		}
@@ -345,6 +349,26 @@ public class UsuarioController {
 			
 		
 
+	}
+	//Menu Administrador modifica no perfil Administrador
+	
+	@PostMapping("/usuarioModificadoUser")
+	public String pepe(Usuario usuario,@RequestParam(value = "id") Long id, Model model) {
+		
+			System.out.println("USUARIO ID  ES    "+usuario.getId());
+
+			Usuario user=usuarioService.buscarPorId(id);
+			user.setRol(usuario.getRol());
+			usuarioDAO.save(user);
+			
+			List<Usuario> usuarios= (List<Usuario>) usuarioDAO.findAll();
+
+			model.addAttribute("usuarios", usuarios);
+			Usuario usuariose= new Usuario();
+
+			model.addAttribute("usuario", usuariose);
+			
+			return "/admin/listadoUsuarios";
 	}
 
 	// Se procesan datos de la modificacion del  propio Usuario
