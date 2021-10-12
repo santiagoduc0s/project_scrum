@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="card m-5">
-     <h1 th:text="${pagina.titulo}"></h1>
+<!--      <h1 th:text="${pagina.titulo}"></h1> -->
          <table class="table table-striped">
 <!-- 					<thead> -->
 <!-- 						<tr> -->
@@ -24,7 +24,8 @@
 <!-- 						</tr> -->
 <!-- 					</thead> -->
 					<tbody>
- 						<tr th:each="paginas: ${pagina.pagina}"> 
+<!--  						<tr th:each="paginas: ${pagina.pagina}">  -->
+  						<tr th:each="paginas: ${pagina}">  
  							<td th:text="${paginas.titulo}" ></td> 
 							<td><a class="btn btn-primary btn-sm"  th:href="@{/verPag/} + ${paginas.id}"  
 								th:text="'Iniciar'"></a>

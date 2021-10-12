@@ -20,19 +20,34 @@ public class Capitulo1Controller {
 	@Autowired
 	public CapituloServiceImpl capituloImpl;
 
-@GetMapping("/verCapitulo/{id}")
+//@GetMapping("/verCapitulo/{id}")
+//
+//	public String verPaginas(Model model,@PathVariable(value = "id") Long id) {
+//
+//	Capitulo capitulo= capituloImpl.buscarPaginas(id);
+//	
+//	model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
+//		model.addAttribute("pagina",capitulo);
+//		
+//		
+//		return "/curso/paginaUno"; 
+//
+//	}
 
-	public String verPaginas(Model model,@PathVariable(value = "id") Long id) {
 
-	Capitulo capitulo= capituloImpl.buscarPaginas(id);
+@GetMapping("/verCapitulo")
+
+public String verPaginas(Model model) {
+
+List<Capitulo> capitulo= capituloImpl.buscarPaginas();
+
+model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
+	model.addAttribute("pagina",capitulo);
 	
-	model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
-		model.addAttribute("pagina",capitulo);
-		
-		
-		return "/curso/paginaUno"; 
+	
+	return "/curso/paginaUno"; 
 
-	}
+}
 
 
 }

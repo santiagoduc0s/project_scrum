@@ -41,4 +41,22 @@ public class CapituloServiceImpl implements ICapitulo {
 
 	  	}		
 	
+	@Override
+  	public List<Capitulo> buscarPaginas() {
+  		
+  		Query query = em.createQuery("select c from Capitulo c ");
+  		
+
+  		List<Capitulo> capitulo = null;
+  		try {
+  			log.info("Chequear ");
+  			capitulo = (List<Capitulo>) query.getResultList();
+  		} catch (Exception nre) {
+  			 log.info("No se ha encontrado  Paginas con dado Capitulo");
+
+  		}
+  		return capitulo;
+
+  	}		
+	
 }
