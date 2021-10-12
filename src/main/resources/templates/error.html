@@ -11,10 +11,10 @@
 <div class="container">
     <div class="jumbotron alert-danger">
 
-        <div th:if="${status != 405}">
-            <h1>Oops... RECURSO NO EXISTE.</h1>
-            <h2 th:text="${status + ' ' + error}"></h2>
-        </div>
+<!--        <div th:if="${status != 405}">-->
+<!--            <h1>Oops... RECURSO NO EXISTE.</h1>-->
+<!--            <h2 th:text="${status + ' ' + error}"></h2>-->
+<!--        </div>-->
         <script th:inline="javascript">
             var code = /*[[${status}]]*/;
             console.log(code);

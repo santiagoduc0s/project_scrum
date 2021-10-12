@@ -27,8 +27,10 @@ import com.scrum.ude.service.Interfaces.IService;
 public class UsuarioServiceImpl implements UserDetailsService, IService {
 
     private static final Logger log = LogManager.getLogger(UsuarioServiceImpl.class);
+
     @Autowired
     private IUsuarioDAO iUsuarioDAO;
+
     @Autowired
     private WebSecurityConfig ws;
 
@@ -39,8 +41,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
         //Buscar el usuario con el repositorio y si no existe lanzar una exepcion
-        com.scrum.ude.entity.Usuario appUser =
-                iUsuarioDAO.findByUserName(userName);
+        com.scrum.ude.entity.Usuario appUser = iUsuarioDAO.findByUserName(userName);
 //     RedirectAttributes flash = null;
 //     flash.addAttribute("danger","Incorrecto el logueo");
         UserDetails user = null;
@@ -81,8 +82,8 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
-    
-	@Override
+
+    @Override
     public Boolean ExisteUsuario(String userName) {
 
 
@@ -92,12 +93,12 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         boolean existe = false;
         try {
             log.info("Chequear ");
-            
-            if(query.getSingleResult()!=null) {
-            	existe =true;
+
+            if (query.getSingleResult() != null) {
+                existe = true;
             }
-            	
-           
+
+
         } catch (Exception nre) {
             log.info("No se ha encontrado  usuarios");
 
@@ -105,8 +106,8 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return existe;
 
     }
-	
-	@Override
+
+    @Override
     public Boolean ExisteMail(String email) {
 
 
@@ -116,12 +117,12 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         boolean existe = false;
         try {
             log.info("Chequear ");
-            
-            if(query.getSingleResult()!=null) {
-            	existe =true;
+
+            if (query.getSingleResult() != null) {
+                existe = true;
             }
-            	
-           
+
+
         } catch (Exception nre) {
             log.info("No se ha encontrado  usuarios");
 
@@ -129,7 +130,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return existe;
 
     }
-	
 
     @Override
     public Usuario buscarPorId(Long id) {
@@ -150,31 +150,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
     }
 
-
-//	@Override
-//   	public Inscripto buscarUsuarioIncripto(Long id) {
-//
-//   		
-//   		Query query = em.createQuery("select i from Inscripto i where i.usuario.id=:id");
-//   		query.setParameter("id",id);
-//
-//   		Inscripto inscripto = null;
-//   		try {
-//   			log.info("Chequear ");
-//   			inscripto = (Inscripto) query.getSingleResult();
-//   			
-//   			
-//   			
-//   		} catch (Exception nre) {
-//   			 log.info("No se ha encontrado   usuario inscripto");
-//
-//   		}
-//   		return inscripto;
-//
-//   	}
-//    
-
-
     @Override
     public Usuario buscarPorCedula(Long cedula) {
 
@@ -194,7 +169,6 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
     }
 
-
     @Override
     public void agregarUsuario(Usuario usuario) {
         String password = ws.passwordEncoder().encode(usuario.getPassword());
@@ -203,6 +177,4 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         iUsuarioDAO.save(usuario);
 
     }
-
-
 }

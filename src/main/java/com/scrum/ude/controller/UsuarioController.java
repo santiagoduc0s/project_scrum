@@ -30,380 +30,310 @@ import com.scrum.ude.service.UsuarioServiceImpl;
 @Controller
 public class UsuarioController {
 
-	@Autowired
-	private IUsuarioDAO usuarioDAO;
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
 
-	@Autowired
-	private ICodigoRegistro codigoDAO;
-	@Autowired
-	 private WebSecurityConfig ws;
+    @Autowired
+    private ICodigoRegistro codigoDAO;
+    @Autowired
+    private WebSecurityConfig ws;
 
-	@Autowired
-	private CodigoServiceImpl codigoImpl;
+    @Autowired
+    private CodigoServiceImpl codigoImpl;
 
-	@Autowired
-	 private UsuarioServiceImpl usuarioService;
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
 
-	// retorna el usuario Logeado para todo el contexto
-	public  Authentication retornarUsuarioLogueado(){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return auth;
-	}
+    // retorna el usuario Logeado para todo el contexto
+    public Authentication retornarUsuarioLogueado() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth;
+    }
 
-	//navego a la vista de registro usuario
-	@GetMapping("/registroUsuario")
-	public String redirigir(Model model) {
-		Usuario usuario = new Usuario();
+    //navego a la vista de registro usuario
+    @GetMapping("/registroUsuario")
+    public String redirigir(Model model) {
+        Usuario usuario = new Usuario();
 
-		model.addAttribute("usuario", usuario);
+        model.addAttribute("usuario", usuario);
 
-		return "/registroUsuario/registroUsuario";
-	}
+        return "/registroUsuario/registroUsuario";
+    }
 
-	//aca proceso los datos  del registro usuario
-	@PostMapping("/registroUsuario")
-	public String procesar(Usuario usuarioDTO, Model model, @NotNull BindingResult result, @RequestParam String repeatPassword, RedirectAttributes flash) {
+    //aca proceso los datos  del registro usuario
+    @PostMapping("/registroUsuario")
+    public String procesar(Usuario usuarioDTO, Model model, @NotNull BindingResult result, @RequestParam String repeatPassword, RedirectAttributes flash) {
 
-		if (result.hasErrors()||!usuarioDTO.getPassword().equals(repeatPassword)) {
+        if (result.hasErrors() || !usuarioDTO.getPassword().equals(repeatPassword)) {
 
-			flash.addFlashAttribute("danger","Se produjo un error");
-			return "/registroUsuario/registroUsuario";
-		}
+            flash.addFlashAttribute("danger", "Se produjo un error");
+            return "/registroUsuario/registroUsuario";
+        }
 
-		Usuario usuario = (Usuario) usuarioService.findOne(usuarioDTO.getUserName());
+        Usuario usuario = (Usuario) usuarioService.findOne(usuarioDTO.getUserName());
 
-		if (usuario == null) {
+        if (usuario == null) {
 
-			usuarioDTO.setRol("ROLE_USER");
+            usuarioDTO.setRol("ROLE_USER");
 
-			CodigoRegistro  codigoRegistro = codigoImpl.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
-			
-			Date fechaHoy=new Date();
-			
-			Calendar calendar1 = Calendar.getInstance();
-			
-			calendar1.setTime(fechaHoy);
-			 
-			 Calendar calendar2 = Calendar.getInstance();
-			 calendar2.setTime(codigoRegistro.getFecha());
-			
-			
-			System.out.println("dddd");
-			int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
-			
-			calendar2.set(Calendar.DAY_OF_MONTH,dias);
-			
-			System.out.println(calendar2.get(Calendar.DAY_OF_MONTH));
-			
-		if(calendar2.after(calendar1)|| calendar2.get(Calendar.DAY_OF_MONTH)==calendar1.get(Calendar.DAY_OF_MONTH)) {
-				
-			if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
-			
-				codigoRegistro.setUsado(true);
-				usuarioDTO.setCodigoRegistro(codigoRegistro);
+            CodigoRegistro codigoRegistro = codigoImpl.findCodigo(usuarioDTO.getCodigoRegistro().getCodigo());
 
-			}
+            Date fechaHoy = new Date();
+
+            Calendar calendar1 = Calendar.getInstance();
+
+            calendar1.setTime(fechaHoy);
+
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(codigoRegistro.getFecha());
 
 
-		else {
-				
-				return "/registroUsuario/registroUsuario";	
-			}
+            System.out.println("dddd");
+            int dias = calendar2.get(Calendar.DAY_OF_MONTH) + 5;
+
+            calendar2.set(Calendar.DAY_OF_MONTH, dias);
+
+            System.out.println(calendar2.get(Calendar.DAY_OF_MONTH));
+
+            if (calendar2.after(calendar1) || calendar2.get(Calendar.DAY_OF_MONTH) == calendar1.get(Calendar.DAY_OF_MONTH)) {
+
+                if (codigoRegistro != null && !codigoRegistro.isUsado()) {
+
+                    codigoRegistro.setUsado(true);
+                    usuarioDTO.setCodigoRegistro(codigoRegistro);
+
+                } else {
+
+                    return "/registroUsuario/registroUsuario";
+                }
+
+            } else {
+                System.out.println("tiempo excedido para el codigo registro");
+                return "/registroUsuario/registroUsuario";
+            }
+            usuarioService.agregarUsuario(usuarioDTO);
+
+            flash.addFlashAttribute("success", "Usuario Registrado con Exito");
+
+            return "/login/index";
+        } else {
+            model.addAttribute("respuesta", "Este Usuario ya esta Registrado" + usuario.getUserName());
+        }
+
+        return "/registroUsuario/registroUsuario";
+    }
+
+    //navego a la vista de ver usuarios que estan registrados
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/listadoUsuarios")
+    public String verUsuarios(Model model) {
+
+        Authentication auth = retornarUsuarioLogueado();
+
+        if (auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
+
+
+            List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+
+            model.addAttribute("usuarios", usuarios);
+            Usuario usuario = new Usuario();
+
+            model.addAttribute("usuario", usuario);
+
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
+            return "/admin/listadoUsuarios";
+
+        }
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+        return "/menu/menu";
+    }
+
+    // aca elimino un usuario
+
+    @GetMapping(value = "/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+
+        if (id > 0) {
+
+            usuarioDAO.deleteById(id);
+            flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
+        }
+        return "redirect:/listadoUsuarios";
+    }
+
+    //busco por cedula de usuario
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/listadoUsuarios")
+    public String buscarUsuario(Model model, Usuario usuario, BindingResult result) {
+
+        if (usuario.getCedula() != null) {
+
+            Usuario usu = usuarioService.buscarPorCedula(usuario.getCedula());
+
+            model.addAttribute("usuarios", usu);
+
+        } else {
+
+            List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+
+            model.addAttribute("usuarios", usuarios);
 
         }
 
-		else {
-				System.out.println("tiempo excedido para el codigo registro");
-				return "/registroUsuario/registroUsuario";	
-			}
-			usuarioService.agregarUsuario(usuarioDTO);
+        return "/admin/listadoUsuarios";
+    }
 
-			flash.addFlashAttribute("success","Usuario Registrado con Exito");
+    //modifico los datos del usuario
+    @GetMapping(value = "/modificar/{id}")
+    public String modificarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash, Model model) {
+        Optional<Usuario> usuario = Optional.ofNullable(new Usuario());
 
-			return "/login/index";
-		} else {
-			model.addAttribute("respuesta", "Este Usuario ya esta Registrado" + usuario.getUserName());
-		}
-
-		return "/registroUsuario/registroUsuario";
-		}
-
-	//Metodo de username peticion de javascript
-	 @GetMapping("buscarUsername/{user}")
-	 public Boolean ExisteUsuario(@PathVariable(value = "user") String user, RedirectAttributes flash) {
-
-		 boolean existe=false;
-		 existe=  usuarioService.ExisteUsuario(user);
-
-		 return existe;
-	 }
-
-
-	//Metodo de email peticion de javascript
-		 @GetMapping("buscarEmail/{email}")
-		 public Boolean ExisteEmail(@PathVariable(value = "email") String email) {
-
-			 boolean existe=false;
-			 existe=  usuarioService.ExisteMail(email);
-
-			 return existe;
-		 }
-
-		//Metodo de  codigo si existe peticion de javascript
-		 @GetMapping("buscarCodigo/{codigo}")
-		 public Boolean Existecodigo(@PathVariable(value = "codigo") String codigo) {
-
-			 boolean existe=false;
-			 //existe=  codigoImpl.ExisteCodigoRegistro(codigo);
-		 CodigoRegistro  codigoRegistro = codigoImpl.findCodigo(codigo);
-
-			 Date fechaHoy=new Date();
-
-				Calendar calendar1 = Calendar.getInstance();
-
-				calendar1.setTime(fechaHoy);
-
-				 Calendar calendar2 = Calendar.getInstance();
-				 calendar2.setTime(codigoRegistro.getFecha());
-
-
-				System.out.println("dddd");
-				int dias=calendar2.get(Calendar.DAY_OF_MONTH)+5;
-
-				calendar2.set(Calendar.DAY_OF_MONTH,dias);
-
-				System.out.println(calendar2.get(Calendar.DAY_OF_MONTH));
-
-			if(calendar2.after(calendar1)|| calendar2.get(Calendar.DAY_OF_MONTH)==calendar1.get(Calendar.DAY_OF_MONTH)) {
-
-				if(codigoRegistro!=null && !codigoRegistro.isUsado()) {
-
-					codigoRegistro.setUsado(true);
-
-					codigoDAO.save(codigoRegistro);
-					existe=true;
-				}
-
-			}
-
-			 return existe;
-		 }
-
-
-
-	//navego a la vista de ver usuarios que estan registrados
-
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/listadoUsuarios")
-	public String verUsuarios(Model model) {
-
-		Authentication auth = retornarUsuarioLogueado();
-
-		if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
-
-
-			List<Usuario> usuarios= (List<Usuario>) usuarioDAO.findAll();
-
-			model.addAttribute("usuarios", usuarios);
-			Usuario usuario= new Usuario();
-
-			model.addAttribute("usuario", usuario);
-
-			model.addAttribute("autoridad",auth.getAuthorities().toString());
-			return "/admin/listadoUsuarios";
-
-		}
-		model.addAttribute("autoridad",auth.getAuthorities().toString());
-
-		return "/menu/menu";
-	}
-
-	// aca elimino un usuario
-
-	@GetMapping(value = "/eliminar/{id}")
-	public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
-
-		if (id > 0) {
-
-			usuarioDAO.deleteById(id);
-			flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
-		}
-		return "redirect:/listadoUsuarios";
-	}
-
-	//busco por cedula de usuario
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/listadoUsuarios")
-	public String buscarUsuario(Model model,Usuario usuario,BindingResult result) {
-
-		if(usuario.getCedula()!=null) {
-
-		Usuario usu= usuarioService.buscarPorCedula(usuario.getCedula());
-
-		model.addAttribute("usuarios", usu);
-
-		} else {
-
-		List<Usuario> usuarios= (List<Usuario>) usuarioDAO.findAll();
-
-		model.addAttribute("usuarios", usuarios);
-
-		 }
-
-		return "/admin/listadoUsuarios";
-	}
-	//modifico los datos del usuario
-	@GetMapping(value = "/modificar/{id}")
-	public String modificarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash, Model model) {
-		Optional<Usuario> usuario = Optional.ofNullable(new Usuario());
-
-		if (id > 0) {
+        if (id > 0) {
 
             Authentication auth = retornarUsuarioLogueado();
-            Usuario user=usuarioService.buscarPorId(id);
-            usuario= usuarioDAO.findById(id);
+            Usuario user = usuarioService.buscarPorId(id);
+            usuario = usuarioDAO.findById(id);
 
-			  flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
-			  model.addAttribute("id", id);
-			  model.addAttribute("usuario", usuario);
-			  model.addAttribute("username", user.getUserName().toString());
-			 // model.addAttribute("autoridad",auth.getAuthorities().toString());
-			   model.addAttribute("autoridad",auth.getName());
-			  
-
-		}
-		return "/admin/ModificarUsuariosPerfilAdmin";
-	}
-	// Perfil Usuario ver datos personales
-	@GetMapping("/verDatosPersonales/{id}")
-	public String verDatosPersonales(@PathVariable(value = "id") Long id,Model model) {
-
-		 Authentication auth = retornarUsuarioLogueado();
-		 Usuario user=usuarioService.buscarPorId(id);
-
-		 //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-		 model.addAttribute("id",user.getId());
-		 model.addAttribute("usuario",user);
-		//Usuario user=
-		 model.addAttribute("autoridad",auth.getAuthorities().toString());
-		 
-		 if(auth.getAuthorities().toString()=="[ROLE_USER]"){
-			 
-			 return"/user/modificarUser";
-		 }
-
-		return"/admin/modificarUser";
-	}
-
-	//Se procesan los cambios del Usuario, Perfil Administrador
-	@PostMapping("/usuarioModificado")
-	public String guardarUsuarioModificadoAdmin(Usuario usuario,@RequestParam(value = "id") Long id, Model model,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena")
-	String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena) {
-
-		System.out.println("USUARIO ID  ES    "+usuario.getId());
-
-		Usuario user=usuarioService.buscarPorId(id);
-		
-		
-		user.setNombre(usuario.getNombre());
-		user.setApellido(usuario.getApellido());
-		user.setCedula(usuario.getCedula());
-		user.setMail(usuario.getMail());
-		user.setRol(usuario.getRol());
-		//user.setUserName(usuario.getUserName());
-		
-		if(ws.passwordEncoder().matches(contrasena, user.getPassword())){
-
-			if(!confirmacionContrasena.equals(nuevaContrasena)) {
-
-				return "/admin/modificarUsuariosPerfilAdmin";
-				
-			}
-		
-		
-		
-		if(!nuevaContrasena.isEmpty()) {
-
-			String contra =ws.passwordEncoder().encode(nuevaContrasena);
-			user.setPassword(contra);
-			}
-		}
+            flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
+            model.addAttribute("id", id);
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("username", user.getUserName().toString());
+            // model.addAttribute("autoridad",auth.getAuthorities().toString());
+            model.addAttribute("autoridad", auth.getName());
 
 
-		usuarioDAO.save(user);
+        }
+        return "/admin/ModificarUsuariosPerfilAdmin";
+    }
 
-		List<Usuario> usuarios= (List<Usuario>) usuarioDAO.findAll();
+    // Perfil Usuario ver datos personales
+    @GetMapping("/verDatosPersonales/{id}")
+    public String verDatosPersonales(@PathVariable(value = "id") Long id, Model model) {
 
-		model.addAttribute("usuarios", usuarios);
-		Usuario usuariose= new Usuario();
+        Authentication auth = retornarUsuarioLogueado();
+        Usuario user = usuarioService.buscarPorId(id);
 
-		model.addAttribute("usuario", usuariose);
+        //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("id", user.getId());
+        model.addAttribute("usuario", user);
+        //Usuario user=
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-			
-		
-		return "/admin/listadoUsuarios";
-			
-		
+        if (auth.getAuthorities().toString() == "[ROLE_USER]") {
 
-	}
+            return "/user/modificarUser";
+        }
 
-	// Se procesan datos de la modificacion del  propio Usuario
+        return "/admin/modificarUser";
+    }
 
-	@PostMapping("/modificarDatosPersonales")
-	public String modificarDatosPersonalesUsuario(Model model,Usuario usuario ,@RequestParam(value = "id")
-		Long id,@RequestParam(value="contrasena") String contrasena,@RequestParam(value="nuevaContrasena")
-		String nuevaContrasena, @RequestParam (value="confirmacionContrasena")String confirmacionContrasena,RedirectAttributes flash) {
+    //Se procesan los cambios del Usuario, Perfil Administrador
+    @PostMapping("/usuarioModificado")
+    public String guardarUsuarioModificadoAdmin(Usuario usuario, @RequestParam(value = "id") Long id, Model model, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
+            String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena) {
 
-		Usuario user=usuarioService.buscarPorId(id);
-		if(ws.passwordEncoder().matches(contrasena, user.getPassword())){
+        System.out.println("USUARIO ID  ES    " + usuario.getId());
 
-				if(!confirmacionContrasena.equals(nuevaContrasena)) {
-
-					return "/user/modificarUser";
-				}
-
-			}else {
-				user.setNombre(usuario.getNombre());
-				user.setApellido(usuario.getApellido());
-				user.setCedula(usuario.getCedula());
-				//user.setMail(usuario.getMail());
-				//user.setUserName(usuario.getUserName());
-				user.setPassword(user.getPassword());
-
-				
-			}
-
-			
-			if(!nuevaContrasena.isEmpty()) {
-
-			String contra =ws.passwordEncoder().encode(nuevaContrasena);
-			user.setPassword(contra);
-			}
-
-			usuarioDAO.save(user);
-
-			model.addAttribute("usuario",user);
-
-		
-
-		 return "redirect:/menuCambiado/"+user.getUserName()+"";
-
-	}
+        Usuario user = usuarioService.buscarPorId(id);
 
 
-	// Aun no decido errores para la pantalla
-	public String error(ModelAndView model) {
+        user.setNombre(usuario.getNombre());
+        user.setApellido(usuario.getApellido());
+        user.setCedula(usuario.getCedula());
+        user.setMail(usuario.getMail());
+        user.setRol(usuario.getRol());
+        //user.setUserName(usuario.getUserName());
 
-		Authentication auth = retornarUsuarioLogueado();
-	     UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
 
-		 Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-		 model.addObject("usuario",user);
-		 model.addObject("error", "Error No se logro guardar los cambios");
-		//Usuario user=
+            if (!confirmacionContrasena.equals(nuevaContrasena)) {
+
+                return "/admin/modificarUsuariosPerfilAdmin";
+
+            }
 
 
-		return"/user/modificarUser";
-	}
+            if (!nuevaContrasena.isEmpty()) {
+
+                String contra = ws.passwordEncoder().encode(nuevaContrasena);
+                user.setPassword(contra);
+            }
+        }
+
+
+        usuarioDAO.save(user);
+
+        List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+
+        model.addAttribute("usuarios", usuarios);
+        Usuario usuariose = new Usuario();
+
+        model.addAttribute("usuario", usuariose);
+
+
+        return "/admin/listadoUsuarios";
+
+
+    }
+
+    // Se procesan datos de la modificacion del  propio Usuario
+
+    @PostMapping("/modificarDatosPersonales")
+    public String modificarDatosPersonalesUsuario(Model model, Usuario usuario, @RequestParam(value = "id")
+            Long id, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
+                                                          String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena, RedirectAttributes flash) {
+
+        Usuario user = usuarioService.buscarPorId(id);
+        if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
+
+            if (!confirmacionContrasena.equals(nuevaContrasena)) {
+
+                return "/user/modificarUser";
+            }
+
+        } else {
+            user.setNombre(usuario.getNombre());
+            user.setApellido(usuario.getApellido());
+            user.setCedula(usuario.getCedula());
+            //user.setMail(usuario.getMail());
+            //user.setUserName(usuario.getUserName());
+            user.setPassword(user.getPassword());
+
+
+        }
+
+
+        if (!nuevaContrasena.isEmpty()) {
+
+            String contra = ws.passwordEncoder().encode(nuevaContrasena);
+            user.setPassword(contra);
+        }
+
+        usuarioDAO.save(user);
+
+        model.addAttribute("usuario", user);
+
+
+        return "redirect:/menuCambiado/" + user.getUserName() + "";
+
+    }
+
+
+    // Aun no decido errores para la pantalla
+    public String error(ModelAndView model) {
+
+        Authentication auth = retornarUsuarioLogueado();
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addObject("usuario", user);
+        model.addObject("error", "Error No se logro guardar los cambios");
+        //Usuario user=
+
+
+        return "/user/modificarUser";
+    }
 
 }

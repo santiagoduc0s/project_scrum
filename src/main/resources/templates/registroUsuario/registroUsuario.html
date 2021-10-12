@@ -5,13 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-
-
-<!--    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
-<!--    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
-<!--    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
+    <title>Registro | PES</title>
 
     <style>
         body {
@@ -115,61 +109,60 @@
 
 <body>
 
-<div class="container">
-
+<div class="container" id="app">
     <div class="card mx-auto" style="width: 50%; margin-top: 7%">
         <div class="card-header">
             Registro
         </div>
         <div class="card-body">
-            <form th:action="@{/registroUsuario}" method="post" th:object="${usuario}">
+            <form id="form-register" th:action="@{/registroUsuario}" method="POST" th:object="${usuario}">
                 <div class="row mb-3">
                     <div class="form-group col-6">
                         <input type="text" class="form-control" placeholder="Ingrese su nombre"
-                               th:field="*{nombre}" name="nombre" required>
+                               th:field="*{nombre}" name="nombre" required v-model="usuario.nombre">
                     </div>
 
                     <div class="form-group col-6">
                         <input type="text" class="form-control" placeholder="Ingrese su apellido"
-                               th:field="*{apellido}" name="apellido" required>
+                               th:field="*{apellido}" name="apellido" required v-model="usuario.apellido">
                     </div>
                 </div>
 
                 <div class="form-group mb-3">
-                    <input type="text" class="form-control" placeholder="Ingrese su cedula"
-                           th:field="*{cedula}" name="cedula" required>
+                    <input type="number" class="form-control" placeholder="Ingrese su cedula"
+                           th:field="*{cedula}" name="cedula" required v-model="usuario.cedula">
                 </div>
 
                 <div class="form-group mb-3">
                     <input type="email" class="form-control" placeholder="Ingrese su email"
-                           th:field="*{mail}" name="mail" required>
+                           th:field="*{mail}" name="mail" required v-model="usuario.email">
                 </div>
 
                 <div class="form-group mb-3">
                     <input type="text" class="form-control" placeholder="Ingrese su nombre de usuario"
-                           th:field="*{userName}" name="username" required>
+                           th:field="*{userName}" name="username" required v-model="usuario.username">
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="text" class="form-control" placeholder="Ingrese su codigo de registro"
+                           th:field="*{codigoRegistro.codigo}" name="codigoRegistro" required v-model="usuario.codigoRegistro">
                 </div>
 
                 <div class="row mb-3">
                     <div class="form-group col-6">
                         <input type="password" class="form-control" placeholder="Ingrese su contraseña"
-                               th:field="*{password}" name="password" required>
+                               th:field="*{password}" name="password" required v-model="usuario.password">
                     </div>
 
                     <div class="form-group col-6">
                         <input type="password" class="form-control" placeholder="Repita su contraseña"
-                               th:value="${repeatPassword}" name="repeatPassword" required>
+                               th:value="${repeatPassword}" name="repeatPassword" required v-model="usuario.passwordConfirmation">
                     </div>
-                </div>
-
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" placeholder="Ingrese su codigo de registro"
-                           th:field="*{codigoRegistro.codigo}" name="codigoRegistro" required>
                 </div>
 
                 <div class="row">
                     <div class="col text-center">
-                        <button type="submit" class="btn btn-dark">
+                        <button @click="validarDatos" class="btn btn-dark" :disabled="inputEmpty">
                             Registrar
                         </button>
                     </div>
@@ -180,6 +173,7 @@
         <div class="card-footer p-2">
             <div class="row">
                 <div class="col text-center">
+                    {{ usuario }}
                     <small><span>¿Ya estás registrado? <br> <a th:href="@{/templates/login}">Ingresa aquí</a></span></small>
                 </div>
             </div>
@@ -188,6 +182,100 @@
 
 
 </div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+
+var app = new Vue({
+    el: '#app',
+    data: {
+        usuario: {
+            nombre: '',
+            apellido: '',
+            cedula: '',
+            email: '',
+            username: '',
+            password: '',
+            passwordConfirmation: '',
+            codigoRegistro: '',
+        },
+        axiosInstance: axios.create({
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }),
+    },
+    methods: {
+        async validarDatos(event) {
+            event.preventDefault()
+
+            try {
+                const response = await this.axiosInstance.get(`/api/register/cedula-disponible/${this.usuario.cedula}`)
+            } catch (error) {
+                return this.showError('La cédula ingresado ya se encuentra en uso')
+            }
+
+            try {
+                const response = await this.axiosInstance.get(`/api/register/email-disponible/${this.usuario.email}`)
+            } catch (error) {
+                return this.showError('El email ingresado ya se encuentra en uso')
+            }
+
+            try {
+                const response = await this.axiosInstance.get(`/api/register/username-disponible/${this.usuario.username}`)
+            } catch (error) {
+                return this.showError('El nombre de usuario ingresado ya se encuentra en uso')
+            }
+
+            try {
+                const response = await this.axiosInstance.get(`/api/register/codigo-registro-disponible/${this.usuario.codigoRegistro}`)
+            } catch (error) {
+                return this.showError('El código de registro ingresado es inválido o ha expirado')
+            }
+
+            if (this.usuario.password.length < 8) {
+                return this.showError('La contraseña debe contener un mínimo de 8 caracteres')
+            }
+
+            if (this.usuario.password !== this.usuario.passwordConfirmation) {
+                return this.showError('Las contraseñas no coinciden')
+            }
+
+            document.getElementById('form-register').submit()
+        },
+        showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            })
+        }
+    },
+    computed: {
+        inputEmpty() {
+            const {
+                nombre,
+                apellido,
+                cedula,
+                email,
+                username,
+                password,
+                passwordConfirmation,
+                codigoRegistro
+            } = this.usuario;
+
+            return !(nombre && apellido && cedula && email && username && password && passwordConfirmation && codigoRegistro);
+        }
+    }
+})
+
+</script>
+
+
+<!-- -------------------------------------------------------------------------------- -->
 
 <div id="particles"></div>
 

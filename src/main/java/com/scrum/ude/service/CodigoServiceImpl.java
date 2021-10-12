@@ -13,53 +13,42 @@ import com.scrum.ude.service.Interfaces.ICodigo;
 
 @Service
 public class CodigoServiceImpl implements ICodigo {
-	
-	private static final Logger log = LogManager.getLogger(CodigoServiceImpl.class);
-	@PersistenceContext
-	private EntityManager em;
 
-	 @Override
-	  	public CodigoRegistro findCodigo(String codigo) {
-	  		
-	  		Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
-	  		query.setParameter("codigo", codigo);
+    private static final Logger log = LogManager.getLogger(CodigoServiceImpl.class);
+    @PersistenceContext
+    private EntityManager em;
 
-	  		CodigoRegistro codigoRegistro = null;
-	  		try {
-	  			log.info("Chequear ");
-	  			codigoRegistro = (CodigoRegistro) query.getSingleResult();
-	  		} catch (Exception nre) {
-	  			 log.info("No se ha encontrado  codigoRegistro");
+    @Override
+    public CodigoRegistro findCodigo(String codigo) {
+        Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
+        query.setParameter("codigo", codigo);
 
-	  		}
-	  		return codigoRegistro;
+        CodigoRegistro codigoRegistro = null;
+        try {
+            log.info("Chequear ");
+            codigoRegistro = (CodigoRegistro) query.getSingleResult();
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  codigoRegistro");
+        }
+        return codigoRegistro;
+    }
 
-	  	}
-	 
-	 
-	 @Override
-	    public Boolean ExisteCodigoRegistro(String codigo) {
+    @Override
+    public Boolean ExisteCodigoRegistro(String codigo) {
+        Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
+        query.setParameter("codigo", codigo);
 
+        boolean existe = false;
+        try {
+            log.info("Chequear ");
 
-		 Query query = em.createQuery("select c from CodigoRegistro c where c.codigo=:codigo");
-	        query.setParameter("codigo", codigo);
+            if (query.getSingleResult() != null) {
+                existe = true;
+            }
 
-	        boolean existe = false;
-	        try {
-	            log.info("Chequear ");
-	            
-	            if(query.getSingleResult()!=null) {
-	            	existe =true;
-	            }
-	            	
-	           
-	        } catch (Exception nre) {
-	            log.info("No se ha encontrado  usuarios");
-
-	        }
-	        return existe;
-
-	    }
-
-	
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
+        }
+        return existe;
+    }
 }
