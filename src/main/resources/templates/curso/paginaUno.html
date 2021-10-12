@@ -24,8 +24,8 @@
 <!-- 						</tr> -->
 <!-- 					</thead> -->
 					<tbody>
-<!--  						<tr th:each="paginas: ${pagina.pagina}">  -->
-  						<tr th:each="paginas: ${pagina}">  
+					<tr th:each="paginas: ${pagina.pagina}"> 
+<!--   						<tr th:each="paginas: ${pagina}">   -->
  							<td th:text="${paginas.titulo}" ></td> 
 							<td><a class="btn btn-primary btn-sm"  th:href="@{/verPag/} + ${paginas.id}"  
 								th:text="'Iniciar'"></a>
