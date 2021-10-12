@@ -38,8 +38,6 @@ public class PaginaController {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-        UserDetails userDetail = (UserDetails) auth.getPrincipal();
-
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         Pagina pagina = null;
@@ -73,6 +71,34 @@ public class PaginaController {
 
         return "/curso/pagina";
 
+    }
+    
+    
+    @GetMapping("/PaginasByUser")
+    public int cantidadPorUsuarioPaginas(){
+    	Authentication auth = usuarioController.retornarUsuarioLogueado();
+    	
+    	Usuario user = usuarioService.findOne(auth.getName());
+    	
+    	List<Pagina>paginas= new ArrayList<>();
+    	
+    	paginas.addAll(user.getPaginas());
+    	
+    	int cantPaginasByUsuario= paginas.size();
+    			
+    	
+    	return cantPaginasByUsuario;
+    }
+    
+    @GetMapping("/PaginasTotales")
+    public int paginasTotales(){
+    	
+    	List<Pagina>paginas= paginaImpl.obtenerPaginas();
+    	
+    	int paginasTotales= paginas.size();
+    			
+    	
+    	return paginasTotales;
     }
 
 

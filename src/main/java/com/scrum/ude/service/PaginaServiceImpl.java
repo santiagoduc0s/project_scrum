@@ -1,5 +1,7 @@
 package com.scrum.ude.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager; 
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -33,5 +35,23 @@ public class PaginaServiceImpl implements IPagina {
 	  		return pagina;
 
 	  	}		
+	
+	
+	@Override
+  	public List<Pagina> obtenerPaginas() {
+  		
+  		Query query = em.createQuery("select p from Pagina p  ");
+  		
+  		List<Pagina> pagina = null;
+  		try {
+  			log.info("Chequear ");
+  			pagina = (List<Pagina>) query.getResultList();
+  		} catch (Exception nre) {
+  			 log.info("No se ha encontrado  Paginas con dado Capitulo");
+
+  		}
+  		return pagina;
+
+  	}		
 
 }
