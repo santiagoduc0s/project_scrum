@@ -44,10 +44,11 @@ public class PaginaController {
 
         Pagina pagina = null;
         pagina = paginaImpl.obtenerContenido(id);
+        Usuario user= null;
         if(pagina!=null) {
         	
-        	 //usuarioDAO.sa
-        Usuario user=usuarioService.findOne(auth.getName());
+        	 
+        user=usuarioService.findOne(auth.getName());
         
         List<Pagina> paginas= new ArrayList<>();
         paginas.addAll(user.getPaginas());
@@ -66,6 +67,8 @@ public class PaginaController {
         }
 
         model.addAttribute("pagina", pagina);
+        
+        model.addAttribute("usuario",user);
 
 
         return "/curso/pagina";

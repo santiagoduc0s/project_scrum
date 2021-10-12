@@ -14,13 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.scrum.ude.entity.Capitulo;
 import com.scrum.ude.entity.Pagina;
+import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.CapituloServiceImpl;
+import com.scrum.ude.service.UsuarioServiceImpl;
 
 @Controller
 public class Capitulo1Controller {
 
 	@Autowired
 	private UsuarioController usuarioController;
+	
+	@Autowired
+    private UsuarioServiceImpl usuarioService;
 
     @Autowired
     public CapituloServiceImpl capituloImpl;
@@ -32,6 +37,7 @@ public class Capitulo1Controller {
         Authentication auth = usuarioController.retornarUsuarioLogueado();
 
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        Usuario user= usuarioService.findOne(auth.getName());
 
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
@@ -39,6 +45,7 @@ public class Capitulo1Controller {
 
         model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
         model.addAttribute("pagina", capitulo);
+        model.addAttribute("usuario",user );
 
 
         return "/curso/paginaUno";
