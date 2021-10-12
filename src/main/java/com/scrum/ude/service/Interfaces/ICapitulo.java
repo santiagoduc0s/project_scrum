@@ -11,5 +11,7 @@ public interface ICapitulo {
 	
 	Capitulo buscarPaginas(Long id);
 
+	List<Capitulo> buscarPaginas();
+
 
 }

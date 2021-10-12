@@ -46,6 +46,21 @@ public class Capitulo1Controller {
     }
 
 
+//@GetMapping("/verCapitulo")
+//
+//public String verPaginas(Model model) {
+//
+//List<Capitulo> capitulo= capituloImpl.buscarPaginas();
+//
+//model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
+//	model.addAttribute("pagina",capitulo);
+//	
+//	
+//	return "/curso/paginaUno"; 
+//
+//}
+
+
 }
 
 
