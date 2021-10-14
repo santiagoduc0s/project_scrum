@@ -48,10 +48,8 @@ public class PaginaServiceImpl implements IPagina {
   			pagina = (List<Pagina>) query.getResultList();
   		} catch (Exception nre) {
   			 log.info("No se ha encontrado  Paginas con dado Capitulo");
-
   		}
   		return pagina;
-
   	}		
 
 }

@@ -7,12 +7,22 @@
 
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container">
+<div id="app" class="container">
+    <div class="card mt-5 w-75 mx-auto">
+        <div class="card-header">Progreso del curso</div>
+        <div class="progress m-4">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" :aria-valuenow="percentage"
+                 aria-valuemin="0" aria-valuemax="100" :style="{ width: percentage + '%' }">
+                {{ percentage }}%
+            </div>
+        </div>
+    </div>
+
     <div class="card border-dark mt-5 w-75 mx-auto">
         <h5 class="card-header text-center">Scrum</h5>
         <div class="card-body row row-cols-3 g-4">
             <div class="col" th:each="capitulo: ${curso.capitulo}">
-                <div class="card text-center" >
+                <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${capitulo.titulo}"></h5>
                         <p class="card-text" th:text="${capitulo.descripcion}"></p>
@@ -27,6 +37,38 @@
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
 
-</body>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
 
+    var app = new Vue({
+        el: '#app',
+        data: {
+            axiosInstance: axios.create({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }),
+            percentage: 0
+        },
+        methods: {
+            async pagesProgress() {
+                try {
+                    const response = await this.axiosInstance.get(`/PaginasByUser`)
+                    this.percentage = Math.trunc((response.data.pagesViewed * 100) / response.data.totalPages)
+                } catch (error) {
+                    console.log(error)
+                }
+            },
+        },
+        created() {
+            this.pagesProgress()
+        }
+    })
+
+</script>
+
+</body>
 </html>
