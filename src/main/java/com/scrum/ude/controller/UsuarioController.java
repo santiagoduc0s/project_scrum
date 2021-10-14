@@ -336,4 +336,30 @@ public class UsuarioController {
         return "/user/modificarUser";
     }
 
+    
+    
+    
+    @GetMapping("/ObtenerPassword")
+    public String  solicitarContrasena(@RequestParam(value = "email")String email) {
+    	Usuario user=usuarioService.buscarPorMail(email);
+    	
+    	String contra="";
+
+    	if(user!=null) {
+    		
+    		Calendar fecha = Calendar.getInstance();
+
+    		int minuto = fecha.get(Calendar.MINUTE);
+    		int numero= (int) (minuto * Math.random());
+    		 contra=""+numero;
+    		    		
+    	String 	password = ws.passwordEncoder().encode(contra);
+    		
+    		user.setPassword(password);
+    		
+    		usuarioDAO.save(user);
+    	}
+    	
+    	return contra;
+    }
 }

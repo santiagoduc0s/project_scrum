@@ -28,6 +28,8 @@ public interface IService {
 
 	Boolean ExisteMail(String email);
 
+	Usuario buscarPorMail(String email);
+
 
 	//Curso codigoCurso(int codigo);
 
