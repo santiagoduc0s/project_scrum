@@ -27,113 +27,92 @@ import com.scrum.ude.service.UsuarioServiceImpl;
 @Controller
 @Scope("session")
 public class LoginController {
-	
-	@Autowired
-	private IUsuarioDAO usuarioDAO;
-	
-	@Autowired
-	private UsuarioController usuarioController;
-	@Autowired
-	 private UsuarioServiceImpl usuarioService;
-	@Autowired
-	 private WebSecurityConfig ws;
 
-   //primer acceso a la aplicacion login
-	@GetMapping("/login")
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
+
+    @Autowired
+    private UsuarioController usuarioController;
+
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
+
+    @Autowired
+    private WebSecurityConfig ws;
+
+    //primer acceso a la aplicacion login
+    @GetMapping("/login")
     public String index() {
-		//Usuario usuario = new Usuario();
-
-		//model.addAttribute("usuario", usuario);
-		return "/login/index";
+        return "/login/index";
     }
-	
-	@PostMapping("/login")
-    public String buscar(@RequestParam(value="username") String user,@RequestParam(value="password") String password,RedirectAttributes flash) {
-		
-		//Usuario us= usuarioService.findOne(user);
-		
-		UserDetails us= usuarioService.loadUserByUsername(user);
-		
-		if(us==null) {
-			
-			return "/login/index";
-		}
-		
-		if(ws.passwordEncoder().matches(password,us.getPassword())) {
-		 
-			System.out.println("CONTRASEÑAS IGUALES");
-			
-			Authentication authentication = new UsernamePasswordAuthenticationToken(us, null,us.getAuthorities());
-			
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		}
-		else {
-			flash.addFlashAttribute("success","error password o usuario");
-		
-			return "/login/index";
-			
-		}
-        
-		
-//		return "redirect:/menu";
-		return "";
-    }
-	
-	@PostMapping("/")
-	public String logout() {
-		SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false); 
-		return"redirect:/menu";
-		
-	}
 
-	
-	//toma Usuario y autoridad  lo manda a la seccion del usuario en el  menu
+    @PostMapping("/login")
+    public String buscar(@RequestParam(value = "username") String user, @RequestParam(value = "password") String password, RedirectAttributes flash) {
+
+        UserDetails us = usuarioService.loadUserByUsername(user);
+
+        if (us == null) {
+            return "/login/index";
+        }
+
+        if (ws.passwordEncoder().matches(password, us.getPassword())) {
+
+            System.out.println("CONTRASEÑAS IGUALES");
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(us, null, us.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } else {
+            flash.addFlashAttribute("success", "error password o usuario");
+            return "/login/index";
+        }
+
+        return "";
+    }
+
+    @PostMapping("/")
+    public String logout() {
+        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+        return "redirect:/menu";
+
+    }
+
+
+    //toma Usuario y autoridad  lo manda a la seccion del usuario en el  menu
     @RequestMapping("/menu")
-    public String defaultAfterLogin( Authentication auth, HttpServletRequest request  ,Model model, RedirectAttributes flash) {
+    public String defaultAfterLogin(Authentication auth, HttpServletRequest request, Model model, RedirectAttributes flash) {
 
-    	request.getCookies();
-    	//System.out.println(us);
-//    	Authentication auth = SecurityContextHolder
-//                .getContext()
-//                .getAuthentication();
-    	
+        request.getCookies();
 
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
-      Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-        model.addAttribute("autoridad",userDetail.getAuthorities().toString());
-        model.addAttribute("usuario",user);
-        
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("autoridad", userDetail.getAuthorities().toString());
+        model.addAttribute("usuario", user);
 
         return "/menu/menu";
     }
 
-   
 
-//toma Usuario y autoridad  lo manda a la seccion del usuario en el  menu
-@RequestMapping("/menuCambiado/{user}")
-public String defaultpassword(HttpServletRequest request,@PathVariable(value = "user") String us,Model model) {
+    //toma Usuario y autoridad  lo manda a la seccion del usuario en el  menu
+    @RequestMapping("/menuCambiado/{user}")
+    public String defaultpassword(HttpServletRequest request, @PathVariable(value = "user") String us, Model model) {
 
-	//request.getCookies();
-	//System.out.println(us);
-	UserDetails userDetail = usuarioService.loadUserByUsername(us);
-	 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null,userDetail.getAuthorities());
-	  SecurityContextHolder.getContext().setAuthentication(authentication);
-	
-	
-//	Authentication auth = SecurityContextHolder
-//            .getContext()
-//            .getAuthentication();
-//	
+        UserDetails userDetail = usuarioService.loadUserByUsername(us);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-   // UserDetails userDetail = (UserDetails) auth.getPrincipal();
-  Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
-    model.addAttribute("autoridad",userDetail.getAuthorities().toString());
-    model.addAttribute("usuario",user);
+        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("autoridad", userDetail.getAuthorities().toString());
+        model.addAttribute("usuario", user);
 
-    return "/menu/menu";
-}
+        return "/menu/menu";
+    }
 
+	@GetMapping("/recuperar-contraseña")
+	public String recoverPassword() {
+		return "login/recover-password";
+	}
 
 
 }
