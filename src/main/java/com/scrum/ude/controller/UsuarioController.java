@@ -1,12 +1,14 @@
 package com.scrum.ude.controller;
 
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,7 @@ import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.CodigoServiceImpl;
+import com.scrum.ude.service.MailService;
 import com.scrum.ude.service.UsuarioServiceImpl;
 
 @Controller
@@ -32,7 +35,13 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioDAO usuarioDAO;
+    
+    @Autowired
+    private MailService mailService;
 
+   @Autowired
+    private JavaMailSender mailSender;
+    
     @Autowired
     private ICodigoRegistro codigoDAO;
     @Autowired
@@ -336,4 +345,36 @@ public class UsuarioController {
         return "/user/modificarUser";
     }
 
+    
+    
+    
+    @GetMapping("/ObtenerPassword")
+    public String  solicitarContrasena(@RequestParam(value="email")String email) {
+    	
+    	Usuario user=usuarioService.buscarPorMail(email);
+    	
+    	String contra="";
+
+    	if(user!=null) {
+    		
+    		Calendar fecha = Calendar.getInstance();
+
+    		int minuto = fecha.get(Calendar.MINUTE);
+    		int numero= (int) (minuto * Math.random());
+    		 contra=""+numero;
+    		    		
+    	String 	password = ws.passwordEncoder().encode(contra);
+    		
+    		user.setPassword(password);
+    		
+    		usuarioDAO.save(user);
+    		
+    		String message = "Contraseña:  1234 " ;
+    	    
+    		mailService.sendMail("romina134262@gmail.com","santiduco200@gmail.com","Este Plomo es pa vo",message);
+    	        
+    	}
+    	
+    	return contra;
+    }
 }

@@ -130,6 +130,29 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return existe;
 
     }
+    
+	@Override
+    public Usuario buscarPorMail(String email) {
+
+
+        Query query = em.createQuery("select u from Usuario u where u.mail=:email");
+        query.setParameter("email", email);
+
+        Usuario user= new Usuario();
+        try {
+            log.info("Chequear ");
+
+             user=(Usuario) query.getSingleResult();
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
+
+        }
+        return user;
+
+    }
+    
+    
+    
 
     @Override
     public Usuario buscarPorId(Long id) {
