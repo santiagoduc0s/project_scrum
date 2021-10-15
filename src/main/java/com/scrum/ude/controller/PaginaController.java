@@ -2,6 +2,7 @@ package com.scrum.ude.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,9 +69,13 @@ public class PaginaController {
 
         model.addAttribute("usuario", user);
 
+        String dis = pagina.getDiscriminante();
+
+        if (Objects.equals(dis, "PRACTICA")) {
+            return "cuestionarios/index";
+        }
 
         return "/curso/pagina";
-
     }
 
     @GetMapping("/PaginasByUser")
