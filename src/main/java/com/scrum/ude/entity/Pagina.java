@@ -1,93 +1,94 @@
 package com.scrum.ude.entity;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="pagina")
+@Table(name = "pagina")
 public class Pagina implements Serializable {
-	
-private static final long serialVersionUID = 1L;
 
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-private Long id;
+    private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "paginas")
+    private List<Usuario> usuario;
 
-@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "paginas")
-private List<Usuario> usuario;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "capitulo_id")
+    public Capitulo capitulo;
 
+	// preguntas
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "pagina"
+	)
+	public List<Pregunta> preguntas = new ArrayList<>();
 
-@ManyToOne(optional = false, fetch = FetchType.LAZY)
-@JoinColumn(name = "capitulo_id")
-public Capitulo capitulo;
+    private String titulo;
+    private String contenido;
+	public String discriminante; // TEORICA o PRACTICA
 
-@Column
-private String titulo;
+	// -------------------------
 
-@Column
-private String contenido;
+    public Pagina() {}
 
-public Pagina() {
-	
-}
+	// -------------------------
 
-public Long getId() {
-	return id;
-}
+	public Long getId() {
+		return id;
+	}
 
-public void setId(Long id) {
-	this.id = id;
-}
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-public String getTitulo() {
-	return titulo;
-}
+	public List<Usuario> getUsuario() {
+		return usuario;
+	}
 
-public void setTitulo(String titulo) {
-	this.titulo = titulo;
-}
+	public void setUsuario(List<Usuario> usuario) {
+		this.usuario = usuario;
+	}
 
-public String getContenido() {
-	return contenido;
-}
+	public Capitulo getCapitulo() {
+		return capitulo;
+	}
 
+	public void setCapitulo(Capitulo capitulo) {
+		this.capitulo = capitulo;
+	}
 
-public List<Usuario> getUsuario() {
-	return usuario;
-}
+	public String getTitulo() {
+		return titulo;
+	}
 
-public void setUsuario(List<Usuario> usuario) {
-	this.usuario = usuario;
-}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 
-public void setContenido(String contenido) {
-	this.contenido = contenido;
-}
+	public String getContenido() {
+		return contenido;
+	}
 
-public Capitulo getCapitulo() {
-	return capitulo;
-}
+	public void setContenido(String contenido) {
+		this.contenido = contenido;
+	}
 
-public void setCapitulo(Capitulo capitulo) {
-	this.capitulo = capitulo;
-}
+	public String getDiscriminante() {
+		return discriminante;
+	}
 
-
+	public void setDiscriminante(String discriminante) {
+		this.discriminante = discriminante;
+	}
 }
