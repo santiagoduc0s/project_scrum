@@ -1,8 +1,11 @@
 package com.scrum.ude.controller;
 
+import com.scrum.ude.config.WebSecurityConfig;
+import com.scrum.ude.dao.IUsuarioDAO;
 import com.scrum.ude.entity.CodigoRegistro;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.CodigoServiceImpl;
+import com.scrum.ude.service.MailService;
 import com.scrum.ude.service.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,15 @@ public class RegisterApiController {
 
     @Autowired
     private UsuarioServiceImpl usuarioService;
+
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
+
+    @Autowired
+    private WebSecurityConfig ws;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping("/codigo-registro-disponible/{codigo}")
     public ResponseEntity<?> existeCodigoRegistroDisponible(@PathVariable String codigo) {
@@ -93,6 +105,39 @@ public class RegisterApiController {
             return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"1\"}");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"code\": \"0\"}");
+    }
+
+    @GetMapping("/recuperar-password/{email}")
+    public ResponseEntity<?> solicitarContrasena(@PathVariable(value = "email") String email) {
+
+        Usuario user = usuarioService.buscarPorMail(email);
+
+        String contra = "";
+
+        if (user != null) {
+
+            Calendar fecha = Calendar.getInstance();
+
+            int minuto = fecha.get(Calendar.MINUTE);
+            int numero = (int) (minuto * Math.random());
+            contra = "" + numero;
+
+            String password = ws.passwordEncoder().encode(contra);
+
+            user.setPassword(password);
+
+            usuarioDAO.save(user);
+
+            String message = "Su nueva contraseña es: " + contra;
+
+            mailService.sendMail("romina134262@gmail.com", email, "Recuperar contraseña PES", message);
+
+        }
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"code\": \"1\"}");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"1\"}");
     }
 
 }
