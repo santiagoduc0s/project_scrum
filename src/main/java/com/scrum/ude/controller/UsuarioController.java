@@ -371,7 +371,7 @@ public class UsuarioController {
     		
     		String message = "Contraseña:  1234 " ;
     	    
-    		mailService.sendMail("romina134262@gmail.com","santiduco200@gmail.com","Este Plomo es pa vo",message);
+    		mailService.sendMail("romina134262@gmail.com","martin046052@gmail.com","Este Plomo es pa vo",message);
     	        
     	}
     	
