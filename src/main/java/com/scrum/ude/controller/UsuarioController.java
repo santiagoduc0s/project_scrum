@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
@@ -347,7 +349,38 @@ public class UsuarioController {
     }
 
 
-    
+    @GetMapping("/recuperar-password/{email}")
+    public ResponseEntity<?> solicitarContrasena(@PathVariable(value = "email") String email) {
+
+        Usuario user = usuarioService.buscarPorMail(email);
+
+        String contra = "";
+
+        if (user != null) {
+
+            Calendar fecha = Calendar.getInstance();
+
+            int minuto = fecha.get(Calendar.MINUTE);
+            int numero = (int) (minuto * Math.random());
+            contra = "" + numero;
+
+            String password = ws.passwordEncoder().encode(contra);
+
+            user.setPassword(password);
+
+            usuarioDAO.save(user);
+
+            String message = "Su nueva contraseña es: " + contra;
+
+            mailService.sendMail("romina134262@gmail.com", email, "Recuperar contraseña PES", message);
+
+        }
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"code\": \"1\"}");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"1\"}");
+    }
     
     
    

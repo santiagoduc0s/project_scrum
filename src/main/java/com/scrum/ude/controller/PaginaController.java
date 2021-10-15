@@ -3,6 +3,7 @@ package com.scrum.ude.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,8 +50,16 @@ public class PaginaController {
 
             user = usuarioService.findOne(auth.getName());
 
+            String dis = pagina.getDiscriminante();
+            
+            if (Objects.equals(dis, "PRACTICA")) {
+                return "cuestionarios/index";
+            }
+            
             List<Pagina> paginas = new ArrayList<>();
             paginas.addAll(user.getPaginas());
+
+            
             if (!paginas.contains(pagina)) {
 
                 paginas.add(pagina);
@@ -69,11 +78,7 @@ public class PaginaController {
 
         model.addAttribute("usuario", user);
 
-        String dis = pagina.getDiscriminante();
-
-        if (Objects.equals(dis, "PRACTICA")) {
-            return "cuestionarios/index";
-        }
+       
 
         return "/curso/pagina";
     }
@@ -91,6 +96,12 @@ public class PaginaController {
         // --------------
 
         List<Pagina> paginasTotales = paginaImpl.obtenerPaginas();
+
+        if(paginasTotales.contains("PRACTICA")){
+        	
+        	paginasTotales.removeIf(obj -> obj.discriminante.equals("PRACTICA"));
+        	
+        }
 
         // ----------------
 

@@ -1,28 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
- <head th:replace="layout/layout :: head"></head>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+</head>
 <body>
 <div>
 
 </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-<header th:replace="layout/layout :: header"></header>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link"
+						th:href="@{/menu}">Home <span class="sr-only">(current)</span></a>
+					</li>
+					
+				</ul>				
+				
+					</div>
+					<div class="dropdown" style="left:-6%;">
+  				<button   class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+     			<p class="btn float-right login_btn"> [[${#httpServletRequest.remoteUser}]]! </p>
+  			</button>
+  				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales}">Datos Personales</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Codigo Curso</a>
+    				<a class="dropdown-item" href="/curso/cursos">listar cursos</a>
+    			<a class="dropdown-item" th:href="@{/verCuestionario}">cuestionario</a>
+    				<a class="dropdown-item" href="/vistaProyecto">ver proyectos</a>
+     			<form th:action="@{/logout}" method="post">
+            		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
+           
+        	</form>
+  		</div>
+	</div>
+		</nav>
+		
+		<p>Qu� es SCRUM
+Scrum es un proceso en el que se aplican de manera regular un conjunto de buenas pr�cticas para trabajar colaborativamente, en equipo, y obtener el mejor resultado posible de un proyecto. Estas pr�cticas se apoyan unas a otras y su selecci�n tiene origen en un estudio de la manera de trabajar de equipos altamente productivos.
 
-		<p>Qué es SCRUM
-Scrum es un proceso en el que se aplican de manera regular un conjunto de buenas prácticas para trabajar colaborativamente, en equipo, y obtener el mejor resultado posible de un proyecto. Estas prácticas se apoyan unas a otras y su selección tiene origen en un estudio de la manera de trabajar de equipos altamente productivos.
+En Scrum se realizan entregas parciales y regulares del producto final, priorizadas por el beneficio que aportan al receptor del proyecto. Por ello, Scrum est� especialmente indicado para proyectos en entornos complejos, donde se necesita obtener resultados pronto, donde los requisitos son cambiantes o poco definidos, donde la innovaci�n, la competitividad, la flexibilidad y la productividad son fundamentales.
 
-En Scrum se realizan entregas parciales y regulares del producto final, priorizadas por el beneficio que aportan al receptor del proyecto. Por ello, Scrum está especialmente indicado para proyectos en entornos complejos, donde se necesita obtener resultados pronto, donde los requisitos son cambiantes o poco definidos, donde la innovación, la competitividad, la flexibilidad y la productividad son fundamentales.
-
-Scrum también se utiliza para resolver situaciones en que no se está entregando al cliente lo que necesita, cuando las entregas se alargan demasiado, los costes se disparan o la calidad no es aceptable, cuando se necesita capacidad de reacción ante la competencia, cuando la moral de los equipos es baja y la rotación alta, cuando es necesario identificar y solucionar ineficiencias sistemáticamente o cuando se quiere trabajar utilizando un proceso especializado en el desarrollo de producto.
+Scrum tambi�n se utiliza para resolver situaciones en que no se est� entregando al cliente lo que necesita, cuando las entregas se alargan demasiado, los costes se disparan o la calidad no es aceptable, cuando se necesita capacidad de reacci�n ante la competencia, cuando la moral de los equipos es baja y la rotaci�n alta, cuando es necesario identificar y solucionar ineficiencias sistem�ticamente o cuando se quiere trabajar utilizando un proceso especializado en el desarrollo de producto.
 
 Ver en detalle cuales son los beneficios de Scrum, sus fundamentos y sus requisitos.
 
 El proceso
-En Scrum un proyecto se ejecuta en ciclos temporales cortos y de duración fija (iteraciones que normalmente son de 2 semanas, aunque en algunos equipos son de 3 y hasta 4 semanas, límite máximo de feedback de producto real y reflexión). Cada iteración tiene que proporcionar un resultado completo, un incremento de producto final que sea susceptible de ser entregado con el mínimo esfuerzo al cliente cuando lo solicite.</p>
-
-
-		<a  class="btn btn-primary" th:href="@{/navegarCuestionario/}"> Comenzar Cuestionario</a>
-
+En Scrum un proyecto se ejecuta en ciclos temporales cortos y de duraci�n fija (iteraciones que normalmente son de 2 semanas, aunque en algunos equipos son de 3 y hasta 4 semanas, l�mite m�ximo de feedback de producto real y reflexi�n). Cada iteraci�n tiene que proporcionar un resultado completo, un incremento de producto final que sea susceptible de ser entregado con el m�nimo esfuerzo al cliente cuando lo solicite.</p>
+		
+			
+		
+	
+ 
 </body>
 </html>
