@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/register")
@@ -108,30 +109,25 @@ public class RegisterApiController {
     }
 
     @GetMapping("/recuperar-password/{email}")
-    public ResponseEntity<?> solicitarContrasena(@PathVariable(value = "email") String email) {
+    public ResponseEntity<?> solicitarContrasena(@PathVariable String email) {
 
         Usuario user = usuarioService.buscarPorMail(email);
 
-        String contra = "";
-
         if (user != null) {
 
-            Calendar fecha = Calendar.getInstance();
+//            Calendar fecha = Calendar.getInstance();
+//            int minuto = fecha.get(Calendar.MINUTE);
+//            int numero = (int) (minuto * Math.random());
 
-            int minuto = fecha.get(Calendar.MINUTE);
-            int numero = (int) (minuto * Math.random());
-            contra = "" + numero;
+            String contra = UUID.randomUUID().toString().split("-")[0];
 
             String password = ws.passwordEncoder().encode(contra);
-
             user.setPassword(password);
-
             usuarioDAO.save(user);
 
             String message = "Su nueva contraseña es: " + contra;
 
             mailService.sendMail("romina134262@gmail.com", email, "Recuperar contraseña PES", message);
-
         }
 
         if (user == null) {

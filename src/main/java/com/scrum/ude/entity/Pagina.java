@@ -24,7 +24,7 @@ public class Pagina implements Serializable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "capitulo_id")
-    public Capitulo capitulo;
+    private Capitulo capitulo;
 
 	// preguntas
 	@OneToMany(
@@ -32,11 +32,11 @@ public class Pagina implements Serializable {
 			cascade = CascadeType.ALL,
 			mappedBy = "pagina"
 	)
-	public List<Pregunta> preguntas = new ArrayList<>();
+	private List<Pregunta> preguntas = new ArrayList<>();
 
     private String titulo;
     private String contenido;
-	public String discriminante; // TEORICA o PRACTICA
+	private String discriminante; // TEORICA o PRACTICA
 
 	// -------------------------
 
@@ -66,6 +66,14 @@ public class Pagina implements Serializable {
 
 	public void setCapitulo(Capitulo capitulo) {
 		this.capitulo = capitulo;
+	}
+
+	public List<Pregunta> getPreguntas() {
+		return preguntas;
+	}
+
+	public void setPreguntas(List<Pregunta> preguntas) {
+		this.preguntas = preguntas;
 	}
 
 	public String getTitulo() {

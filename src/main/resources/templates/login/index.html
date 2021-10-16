@@ -131,9 +131,10 @@
         </div>
         <div class="card-footer p-2">
             <div class="row">
-                <div class="col text-center" style="height: 51px;">
-                    <small><span>¿No estás registrado? <br> <a th:href="@{/registroUsuario}">Regístrate aquí</a></span></small>
-                    <p th:text="${success}"></p>
+                <div class="col text-center">
+                    <small><span><a style="text-decoration: none;" th:href="@{/registroUsuario}">¿No estás registrado?</a></span></small>
+                    <br>
+                    <small><span><a style="text-decoration: none;" th:href="@{/recuperar-contraseña}">¿Olvidaste tu contraseña?</a></span></small>
                 </div>
             </div>
         </div>

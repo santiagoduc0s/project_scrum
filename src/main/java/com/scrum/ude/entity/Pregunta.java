@@ -10,12 +10,12 @@ public class Pregunta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     // pagina
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pagina_id")
-    public Pagina pagina;
+    private Pagina pagina;
 
     // opciones
     @OneToMany(
@@ -47,12 +47,28 @@ public class Pregunta {
         this.id = id;
     }
 
-    public List<Opcion> getChapters() {
+    public Pagina getPagina() {
+        return pagina;
+    }
+
+    public void setPagina(Pagina pagina) {
+        this.pagina = pagina;
+    }
+
+    public List<Opcion> getOpciones() {
         return opciones;
     }
 
-    public void setChapters(List<Opcion> chapters) {
-        this.opciones = chapters;
+    public void setOpciones(List<Opcion> opciones) {
+        this.opciones = opciones;
+    }
+
+    public Opcion getOpcionCorrecta() {
+        return opcionCorrecta;
+    }
+
+    public void setOpcionCorrecta(Opcion opcionCorrecta) {
+        this.opcionCorrecta = opcionCorrecta;
     }
 
     public String getPregunta() {

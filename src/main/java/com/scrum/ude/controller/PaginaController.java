@@ -3,8 +3,12 @@ package com.scrum.ude.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.scrum.ude.dao.IPaginaDAO;
+import com.scrum.ude.entity.Opcion;
+import com.scrum.ude.entity.Pregunta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +39,12 @@ public class PaginaController {
     @Autowired
     private UsuarioServiceImpl usuarioService;
 
+    @Autowired
+    private IPaginaDAO iPaginaDAO;
+
 
     @GetMapping("/verPag/{id}")
-    public String verPagina(Model model, @PathVariable(value = "id") Long id) {
+    public String verPagina(Model model, @PathVariable Long id) {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
 
@@ -46,40 +53,34 @@ public class PaginaController {
         Pagina pagina = null;
         pagina = paginaImpl.obtenerContenido(id);
         Usuario user = null;
-        if (pagina != null) {
-
-            user = usuarioService.findOne(auth.getName());
-
-            String dis = pagina.getDiscriminante();
-            
-            if (Objects.equals(dis, "PRACTICA")) {
-                return "cuestionarios/index";
-            }
-            
-            List<Pagina> paginas = new ArrayList<>();
-            paginas.addAll(user.getPaginas());
-
-            
-            if (!paginas.contains(pagina)) {
-
-                paginas.add(pagina);
-
-            }
-
-            System.out.println(user);
-
-            user.setPaginas(paginas);
-
-            usuarioDAO.save(user);
-
-        }
+        user = usuarioService.findOne(auth.getName());
 
         model.addAttribute("pagina", pagina);
-
         model.addAttribute("usuario", user);
 
-       
+        String dis = pagina.getDiscriminante();
 
+        if (Objects.equals(dis, "PRACTICA")) {
+
+            Optional<Pagina> paginaOptional = iPaginaDAO.findById(id);
+            Pagina paginaPractica = paginaOptional.get();
+
+            model.addAttribute("preguntas", paginaPractica.getPreguntas());
+
+            return "cuestionarios/index";
+        }
+
+        if (pagina != null) {
+            List<Pagina> paginas = new ArrayList<>();
+            paginas.addAll(user.getPaginas());
+            
+            if (!paginas.contains(pagina)) {
+                paginas.add(pagina);
+            }
+
+            user.setPaginas(paginas);
+            usuarioDAO.save(user);
+        }
         return "/curso/pagina";
     }
 
@@ -98,9 +99,7 @@ public class PaginaController {
         List<Pagina> paginasTotales = paginaImpl.obtenerPaginas();
 
         if(paginasTotales.contains("PRACTICA")){
-        	
-        	paginasTotales.removeIf(obj -> obj.discriminante.equals("PRACTICA"));
-        	
+        	paginasTotales.removeIf(obj -> obj.getDiscriminante().equals("PRACTICA"));
         }
 
         // ----------------
