@@ -309,7 +309,7 @@ public class UsuarioController {
             user.setNombre(usuario.getNombre());
             user.setApellido(usuario.getApellido());
             user.setCedula(usuario.getCedula());
-            //user.setMail(usuario.getMail());
+            user.setMail(usuario.getMail());
             //user.setUserName(usuario.getUserName());
             user.setPassword(user.getPassword());
 
