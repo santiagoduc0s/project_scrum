@@ -269,7 +269,9 @@ public class ProyectoController {
         proyecto.setCreador(proyectoso.getCreador());
         proyecto.setCodigoProyecto(proyectoso.getCodigoProyecto());
         
-        List<Proyecto> proyectos=new ArrayList();
+       
+        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        
         proyectos.add(proyecto);
          user.setProyecto(proyectos);
         usuarioDAO.save(user);
