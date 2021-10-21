@@ -257,33 +257,33 @@ public class ProyectoController {
 
         //model.addAttribute("proyecto", proyecto);
 
-        List<Usuario> usuarios = new ArrayList();
-        usuarios.add(user);
+        List<Usuario> usuarios= usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyecto.getId());
+        
+        List<Proyecto> proyectos;
 
         if (!proyectoso.getCreador().equals(user.getUserName())) {
 
             return "redirect:/vistaProyecto";
         }
-        proyecto.setUsuario(usuarios);
-        proyecto.setId(proyectoso.getId());
-        proyecto.setCreador(proyectoso.getCreador());
-        proyecto.setCodigoProyecto(proyectoso.getCodigoProyecto());
+        if((proyecto.getDescripcion()!=proyectoso.getDescripcion()) && proyecto.getTitulo()!=proyectoso.getTitulo()) {
+        	
+        usuarios.add(user);
         
-       
-        List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
-        
-        proyectos.add(proyecto);
-         user.setProyecto(proyectos);
-        usuarioDAO.save(user);
+        proyectoso.setTitulo(proyecto.getTitulo());
+        proyectoso.setDescripcion(proyecto.getDescripcion());
+        proyectoso.setUsuario(usuarios);
+        proyectoso.setUsuario(usuarios);
 
+        proyectoDAO.save(proyectoso);
+        
+        }
+    
         model.addAttribute("autoridad", auth.getAuthorities().toString());
-
 
         List<Proyecto> proyectosos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
 
         model.addAttribute("proyectos", proyectosos);
-        //buscar tareas con el proyecto asociado
-        //Tarea tarea=tareaDAO.
+        
 
         return "redirect:/vistaProyecto";
 //
