@@ -34,6 +34,8 @@ public interface IService {
 
 	List<Usuario> buscarProyectosoVinculadosPorUsuario(Long id);
 
+	Usuario buscarUsuarioPorUsername(String username);
+
 
 	//Curso codigoCurso(int codigo);
 

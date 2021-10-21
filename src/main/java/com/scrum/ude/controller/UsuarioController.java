@@ -147,6 +147,9 @@ public class UsuarioController {
 
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+              
+            if(usuarios.removeIf(t -> t.getUserName() == auth.getName()))
+            	  
 
             model.addAttribute("usuarios", usuarios);
             Usuario usuario = new Usuario();
@@ -189,7 +192,7 @@ public class UsuarioController {
         } else {
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-
+            
             model.addAttribute("usuarios", usuarios);
 
         }
@@ -240,6 +243,28 @@ public class UsuarioController {
 
         return "/admin/modificarUser";
     }
+    // Perfil Usuario ver datos personales
+    
+    @GetMapping("/verDatosPersonalesAdministrador")
+    public String verDatosPersonales( Model model) {
+
+        Authentication auth = retornarUsuarioLogueado();
+        Usuario user =usuarioService.buscarUsuarioPorUsername(auth.getName());
+
+        //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("id", user.getId());
+        model.addAttribute("usuario", user);
+        //Usuario user=
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+//        if (auth.getAuthorities().toString() == "[ROLE_USER]") {
+//
+//            return "/user/modificarUser";
+//        }
+
+        return "/admin/modificarUsuariosNoAdministrador";
+    }
+    
 
     //Se procesan los cambios del Usuario, Perfil Administrador
     @PostMapping("/usuarioModificado")
@@ -278,6 +303,7 @@ public class UsuarioController {
         usuarioDAO.save(user);
 
         List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+        if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
 
         model.addAttribute("usuarios", usuarios);
         Usuario usuariose = new Usuario();

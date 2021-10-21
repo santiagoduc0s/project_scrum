@@ -173,6 +173,27 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
+    
+    
+	@Override
+    public Usuario buscarUsuarioPorUsername(String  username) {
+
+
+        Query query = em.createQuery("select u from Usuario u where u.userName=:username");
+        query.setParameter("username", username);
+
+        Usuario usuario = null;
+        try {
+            log.info("Chequear ");
+            usuario = (Usuario) query.getSingleResult();
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
+
+        }
+        return usuario;
+
+    }
+    
 
     @Override
     public Usuario buscarPorCedula(Long cedula) {
