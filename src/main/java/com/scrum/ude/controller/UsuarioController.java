@@ -183,7 +183,11 @@ public class UsuarioController {
     @PostMapping("/listadoUsuarios")
     public String buscarUsuario(Model model, Usuario usuario, BindingResult result) {
 
-        if (usuario.getCedula() != null) {
+    	 Authentication auth = retornarUsuarioLogueado();
+         
+         Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
+    	
+    	if (usuario.getCedula() != null && !usuario.getCedula().equals(user.getCedula())) {
 
             Usuario usu = usuarioService.buscarPorCedula(usuario.getCedula());
 
@@ -192,6 +196,11 @@ public class UsuarioController {
         } else {
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+           ;
+            
+            Usuario usu = usuarioService.buscarUsuarioPorUsername(auth.getName());
+            
+            if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
             
             model.addAttribute("usuarios", usuarios);
 
@@ -272,6 +281,8 @@ public class UsuarioController {
             String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena) {
 
         System.out.println("USUARIO ID  ES    " + usuario.getId());
+        
+        Authentication auth = retornarUsuarioLogueado();
 
         Usuario user = usuarioService.buscarPorId(id);
 
@@ -281,6 +292,14 @@ public class UsuarioController {
         user.setCedula(usuario.getCedula());
         user.setMail(usuario.getMail());
         user.setRol(usuario.getRol());
+        
+        if(usuario.getRol()==null) {
+        	
+        	user.setRol( auth.getAuthorities().toString());
+        }
+        
+       
+       
         //user.setUserName(usuario.getUserName());
 
         if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
@@ -306,6 +325,7 @@ public class UsuarioController {
         if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
 
         model.addAttribute("usuarios", usuarios);
+        
         Usuario usuariose = new Usuario();
 
         model.addAttribute("usuario", usuariose);
