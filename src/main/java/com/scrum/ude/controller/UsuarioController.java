@@ -142,17 +142,25 @@ public class UsuarioController {
     public String verUsuarios(Model model) {
 
         Authentication auth = retornarUsuarioLogueado();
+        Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
+    	
 
         if (auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
 
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+            System.out.println(auth.getName());
               
-            if(usuarios.removeIf(t -> t.getUserName() == auth.getName()))
+            //if(usuarios.removeIf(t -> t.getUserName() == auth.getName())) 
+            
+            usuarios.remove(user);
             	  
-
-            model.addAttribute("usuarios", usuarios);
+           model.addAttribute("usuarios", usuarios);
+            
+           
+            
             Usuario usuario = new Usuario();
+            
 
             model.addAttribute("usuario", usuario);
 
@@ -192,17 +200,19 @@ public class UsuarioController {
             Usuario usu = usuarioService.buscarPorCedula(usuario.getCedula());
 
             model.addAttribute("usuarios", usu);
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         } else {
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-           ;
+           
             
-            Usuario usu = usuarioService.buscarUsuarioPorUsername(auth.getName());
             
             if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
             
             model.addAttribute("usuarios", usuarios);
+            
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         }
 
@@ -226,6 +236,7 @@ public class UsuarioController {
             model.addAttribute("username", user.getUserName().toString());
             // model.addAttribute("autoridad",auth.getAuthorities().toString());
             model.addAttribute("autoridad", auth.getName());
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
 
         }
