@@ -115,10 +115,6 @@ public class RegisterApiController {
 
         if (user != null) {
 
-//            Calendar fecha = Calendar.getInstance();
-//            int minuto = fecha.get(Calendar.MINUTE);
-//            int numero = (int) (minuto * Math.random());
-
             String contra = UUID.randomUUID().toString().split("-")[0];
 
             String password = ws.passwordEncoder().encode(contra);

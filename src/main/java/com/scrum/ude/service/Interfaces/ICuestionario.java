@@ -9,6 +9,6 @@ public interface ICuestionario {
 
 	Opcion buscarOpcion(Long id);
 
-	Opcion respuestaCorrecta(Long idPregunta, Long idOpcion);
+	boolean respuestaCorrecta(Long idPregunta, Long idOpcion);
 
 }

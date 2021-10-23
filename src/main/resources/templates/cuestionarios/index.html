@@ -11,10 +11,10 @@
     <div class="card mb-3" th:each="pregunta: ${preguntas}">
         <div class="card-header" th:text="${pregunta.pregunta}"></div>
         <div class="card-body">
-            <form>
+            <form th:preguntaId="${pregunta.id}">
                 <div class="form-check" th:each="opcion: ${pregunta.opciones}">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1" th:text="${opcion.contenido}"></label>
+                    <input class="form-check-input" type="radio" th:name="${pregunta.id}" th:id="${opcion.id}">
+                    <label class="form-check-label" th:for="${opcion.id}" th:text="${opcion.contenido}"></label>
                 </div>
             </form>
         </div>
@@ -30,5 +30,9 @@
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
+
+<script>
+    const forms = document.querySelectorAll('forms')
+</script>
 </body>
 </html>
