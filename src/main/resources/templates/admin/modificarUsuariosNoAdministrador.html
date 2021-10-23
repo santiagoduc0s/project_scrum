@@ -9,12 +9,12 @@
 
 <div class="container">
     <div class="card w-50 mx-auto" style="margin-top: 50px">
-        <div th:if="${rol != '[ROLE_ADMIN]'}"  class="card-header">
+        <div th:if="${rol == '[ROLE_ADMIN]'}"  class="card-header">
             Modificar rol de <span th:text="${usuario.get().nombre}"></span>
         </div>
         <div class="card-body">
 
-            <form id="formularioRol" role="form" th:action="@{/usuarioModificadoUser}" th:object="${usuario}" method="post">
+            <form id="formularioRol" role="form" th:action="@{/usuarioModificado}" th:object="${usuario}" method="post">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group" id="user-group">
@@ -24,24 +24,76 @@
                         
 <!--                         <h1 th:text="${rol}"> </h1> -->
 
-                </div>
-
-
-                    <div class="form-group">
-                        <select th:field="*{rol}">
-                            <option th:value="'ROLE_USER'" th:text="ROLE_USER"></option>
-                            <option th:value="'ROLE_ADMIN'" th:text="ROLE_ADMIN"></option>
-                        </select>
+               
+                        <input type="text" name="nombre" id="nombre1"
+                               class="form-control" placeholder="Nombre" th:field="*{nombre}">
 
                     </div>
+
+                    <div class="form-group col-6">
+                        <input type="text" name="apellido" id="apellido1"
+                               class="form-control" placeholder="Ingrese su apellido" required
+                               th:field="*{apellido}">
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="text" name="documento" id="documento"
+                           class="form-control" placeholder="Ingrese su cédula" required
+                           th:field="*{cedula}">
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="text" name="email" id="email"
+                           class="form-control" placeholder="Ingrese su email" required
+                           th:field="*{mail}">
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="password"
+                           class="form-control" placeholder="Ingrese su contraseña"
+                           name="contrasena" th:value="${contrasena}">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="form-group col-6">
+                        <input type="password"
+                               class="form-control" placeholder="Ingrese su nueva contraseña"
+                               name="nuevaContrasena" th:value="${nuevaContrasena}">
+                    </div>
+
+                    <div class="form-group col-6">
+                        <input type="password"
+                               class="form-control" placeholder="Confirme su contraseña"
+                               name="confirmacionContrasena" th:value="${confirmacionContrasena}">
+       
+       
+                    </div>
+       
+<!--                     <div class="form-group"> -->
+<!--                         <select th:field="*{rol}"> -->
+<!--                             <option th:value="'ROLE_USER'" th:text="ROLE_USER"></option> -->
+<!--                             <option th:value="'ROLE_ADMIN'" th:text="ROLE_ADMIN"></option> -->
+<!--                         </select> -->
+
+<!--                     </div> -->
+                    
+                     <div class="card-footer">
+            <input type="submit" value="Guardar" class="btn btn-success" form="formularioRol">
+        </div>
+       
+                </div>
+
+            </form>
+        </div>
+
+       
 
                 </div>
             </form>
 
         </div>
-        <div class="card-footer">
-            <input type="submit" value="Guardar" class="btn btn-success" form="formularioRol">
-        </div>
+       
     </div>
 </div>
 

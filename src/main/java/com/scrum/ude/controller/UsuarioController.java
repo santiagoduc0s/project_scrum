@@ -142,14 +142,25 @@ public class UsuarioController {
     public String verUsuarios(Model model) {
 
         Authentication auth = retornarUsuarioLogueado();
+        Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
+    	
 
         if (auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
 
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-
-            model.addAttribute("usuarios", usuarios);
+            System.out.println(auth.getName());
+              
+            //if(usuarios.removeIf(t -> t.getUserName() == auth.getName())) 
+            
+            usuarios.remove(user);
+            	  
+           model.addAttribute("usuarios", usuarios);
+            
+           
+            
             Usuario usuario = new Usuario();
+            
 
             model.addAttribute("usuario", usuario);
 
@@ -180,17 +191,28 @@ public class UsuarioController {
     @PostMapping("/listadoUsuarios")
     public String buscarUsuario(Model model, Usuario usuario, BindingResult result) {
 
-        if (usuario.getCedula() != null) {
+    	 Authentication auth = retornarUsuarioLogueado();
+         
+         Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
+    	
+    	if (usuario.getCedula() != null && !usuario.getCedula().equals(user.getCedula())) {
 
             Usuario usu = usuarioService.buscarPorCedula(usuario.getCedula());
 
             model.addAttribute("usuarios", usu);
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         } else {
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-
+           
+            
+            
+            if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
+            
             model.addAttribute("usuarios", usuarios);
+            
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         }
 
@@ -214,6 +236,7 @@ public class UsuarioController {
             model.addAttribute("username", user.getUserName().toString());
             // model.addAttribute("autoridad",auth.getAuthorities().toString());
             model.addAttribute("autoridad", auth.getName());
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
 
         }
@@ -240,6 +263,28 @@ public class UsuarioController {
 
         return "/admin/modificarUser";
     }
+    // Perfil Usuario ver datos personales
+    
+    @GetMapping("/verDatosPersonalesAdministrador")
+    public String verDatosPersonales( Model model) {
+
+        Authentication auth = retornarUsuarioLogueado();
+        Usuario user =usuarioService.buscarUsuarioPorUsername(auth.getName());
+
+        //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+        model.addAttribute("id", user.getId());
+        model.addAttribute("usuario", user);
+        //Usuario user=
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+//        if (auth.getAuthorities().toString() == "[ROLE_USER]") {
+//
+//            return "/user/modificarUser";
+//        }
+
+        return "/admin/modificarUsuariosNoAdministrador";
+    }
+    
 
     //Se procesan los cambios del Usuario, Perfil Administrador
     @PostMapping("/usuarioModificado")
@@ -247,6 +292,8 @@ public class UsuarioController {
             String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena) {
 
         System.out.println("USUARIO ID  ES    " + usuario.getId());
+        
+        Authentication auth = retornarUsuarioLogueado();
 
         Usuario user = usuarioService.buscarPorId(id);
 
@@ -256,6 +303,14 @@ public class UsuarioController {
         user.setCedula(usuario.getCedula());
         user.setMail(usuario.getMail());
         user.setRol(usuario.getRol());
+        
+        if(usuario.getRol()==null) {
+        	
+        	user.setRol( auth.getAuthorities().toString());
+        }
+        
+       
+       
         //user.setUserName(usuario.getUserName());
 
         if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
@@ -278,8 +333,10 @@ public class UsuarioController {
         usuarioDAO.save(user);
 
         List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+        if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
 
         model.addAttribute("usuarios", usuarios);
+        
         Usuario usuariose = new Usuario();
 
         model.addAttribute("usuario", usuariose);

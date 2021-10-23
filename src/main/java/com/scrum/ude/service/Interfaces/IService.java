@@ -1,5 +1,7 @@
 package com.scrum.ude.service.Interfaces;
 
+import java.util.List;
+
 import com.scrum.ude.entity.Usuario;
 
 public interface IService {
@@ -29,6 +31,10 @@ public interface IService {
 	Boolean ExisteMail(String email);
 
 	Usuario buscarPorMail(String email);
+
+	List<Usuario> buscarProyectosoVinculadosPorUsuario(Long id);
+
+	Usuario buscarUsuarioPorUsername(String username);
 
 
 	//Curso codigoCurso(int codigo);

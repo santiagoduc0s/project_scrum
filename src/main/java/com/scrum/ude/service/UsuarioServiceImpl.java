@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.scrum.ude.config.WebSecurityConfig;
 import com.scrum.ude.dao.IUsuarioDAO;
+import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.entity.Usuario;
 import com.scrum.ude.service.Interfaces.IService;
 
@@ -172,6 +173,27 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
+    
+    
+	@Override
+    public Usuario buscarUsuarioPorUsername(String  username) {
+
+
+        Query query = em.createQuery("select u from Usuario u where u.userName=:username");
+        query.setParameter("username", username);
+
+        Usuario usuario = null;
+        try {
+            log.info("Chequear ");
+            usuario = (Usuario) query.getSingleResult();
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
+
+        }
+        return usuario;
+
+    }
+    
 
     @Override
     public Usuario buscarPorCedula(Long cedula) {
@@ -200,4 +222,26 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         iUsuarioDAO.save(usuario);
 
     }
+    
+    @Override
+   	public List<Usuario> buscarProyectosoVinculadosPorUsuario(Long id) {
+
+		//String sql="SELECT p.* FROM proyecto p, usuario u WHERE u.id=p.id AND  u.id=1";
+   		//Query query =em.createNativeQuery(sql);
+		Query query = em.createQuery("select u from  Usuario u JOIN FETCH u.proyecto p where  p.id=:id");
+   		query.setParameter("id", id);
+
+   		List<Usuario> usuarios = null;
+   		try {
+   			log.info("Chequear ");
+   			usuarios = (List<Usuario>) query.getResultList();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  usuarios");
+
+   		}
+   		return usuarios;
+
+   	}
+    
+    
 }
