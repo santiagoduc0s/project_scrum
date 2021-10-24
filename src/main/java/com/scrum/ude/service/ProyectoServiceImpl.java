@@ -105,6 +105,29 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    	}
 	
+	
+	
+	@Override
+   	public List<Proyecto> buscarTodosLosProyectos() {
+
+   		
+   		Query query = em.createQuery("select p from Proyecto p  JOIN FETCH p.usuario ",Proyecto.class);
+
+   		List<Proyecto> proyecto = null;
+   		try {
+   			log.info("Chequear ");
+   			proyecto = (List<Proyecto>) query.getResultList();
+   		} catch (Exception nre) {
+   			 log.info("No se ha encontrado  Proyecto");
+
+   		}
+   		return proyecto;
+
+   	}
+	
+	
+	
+	
     
     @Override
    	public Proyecto buscarPorIdProyecto(Long id) {
