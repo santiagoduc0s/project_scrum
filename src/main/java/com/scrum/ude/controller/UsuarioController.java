@@ -195,12 +195,22 @@ public class UsuarioController {
          
          Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
     	
-    	if (usuario.getCedula() != null && !usuario.getCedula().equals(user.getCedula())) {
+    	if (usuario.getCedula() != null) {
+    		
+    	
 
             Usuario usu = usuarioService.buscarPorCedula(usuario.getCedula());
+            
+            if(user.getUserName().equals(usu.getUserName())) {
+            	
+            	usu=null;
+            	
+            }
+            
 
             model.addAttribute("usuarios", usu);
             model.addAttribute("autoridad", auth.getAuthorities().toString());
+            
 
         } else {
 
@@ -305,8 +315,13 @@ public class UsuarioController {
         user.setRol(usuario.getRol());
         
         if(usuario.getRol()==null) {
+        	String  tipoAutoridad =auth.getAuthorities().toString();
         	
-        	user.setRol( auth.getAuthorities().toString());
+        	System.out.println(tipoAutoridad);
+        	
+        	String autoridad = tipoAutoridad.replace("[", "").replace("]", "");
+        	
+        	user.setRol(autoridad );
         }
         
        
