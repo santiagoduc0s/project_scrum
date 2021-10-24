@@ -22,7 +22,7 @@ public class ApiCuestionarioController {
         if (cuestionarioService.respuestaCorrecta(idPregunta, idOpcion)) {
             return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"1\"}");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"0\"}");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"code\": \"0\"}");
     }
 
 }

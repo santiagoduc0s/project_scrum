@@ -8,10 +8,11 @@
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
 <div class="container my-5">
+    <span class="paginaId d-none" th:paginaId="${pagina.id}"></span>
     <div class="card mb-3" th:each="pregunta: ${preguntas}">
         <div class="card-header" th:text="${pregunta.pregunta}"></div>
         <div class="card-body">
-            <form th:preguntaId="${pregunta.id}">
+            <form th:preguntaId="${pregunta.id}" class="form-cuestionario">
                 <div class="form-check" th:each="opcion: ${pregunta.opciones}">
                     <input class="form-check-input" type="radio" th:name="${pregunta.id}" th:id="${opcion.id}">
                     <label class="form-check-label" th:for="${opcion.id}" th:text="${opcion.contenido}"></label>
@@ -21,7 +22,7 @@
     </div>
 
     <div class="text-center">
-        <button class="btn btn-dark my-2">Comprobar</button>
+        <button type="button" class="btn btn-dark my-2" onclick="validarCuestionario()">Comprobar</button>
     </div>
 
 </div>
@@ -32,7 +33,50 @@
 <div th:replace="layout/app :: scripts"></div>
 
 <script>
-    const forms = document.querySelectorAll('forms')
+    const forms = document.querySelectorAll('.form-cuestionario')
+
+    const validarCuestionario = async () => {
+        let respuestas = []
+        let todoOk = true;
+
+        forms.forEach(form => {
+            const preguntaId = form.getAttribute('preguntaId')
+            let opcionId;
+
+            const opciones = form.querySelectorAll('input')
+
+
+            const opcionSeleccionada = [...opciones].find(input => {
+                return input.checked === true
+            })
+
+            if (opcionSeleccionada !== undefined) {
+                opcionId = opcionSeleccionada.id
+                respuestas.push({preguntaId, opcionId})
+            } else {
+                todoOk = false;
+                return swal("Oops", "Debe seleccionar una opcion en todas la preguntas", "error")
+            }
+        })
+
+        if (todoOk) {
+            for (let i = 0; i < respuestas.length; i++) {
+                try {
+                    const response = await fetch(`/api/cuestionario/validar/${respuestas[i].preguntaId}/${respuestas[i].opcionId}`)
+                    if (!response.ok) {
+                        return swal("Oops", "No todas las opciones seleccionadas son correctas, intente nuevamente o revise los materiales", "error")
+                    }
+                } catch (e) {
+                    return swal("Oops", "Ocurrió un error al procesar el cuestionario, intente mas tarde", "error")
+                }
+            }
+            swal("Muy bien!", "Todas las respuestas seleccionadas son correctas", "success")
+            const paginaId = document.querySelector('.paginaId').getAttribute('paginaId')
+            const response = await fetch(`/api/paginas/agregar-pagina-practica/${paginaId}`)
+            console.log(response)
+        }
+    }
+
 </script>
 </body>
 </html>

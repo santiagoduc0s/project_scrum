@@ -27,6 +27,7 @@ import com.scrum.ude.service.UsuarioServiceImpl;
 
 @Controller
 public class PaginaController {
+
     @Autowired
     private IUsuarioDAO usuarioDAO;
 
@@ -42,6 +43,29 @@ public class PaginaController {
     @Autowired
     private IPaginaDAO iPaginaDAO;
 
+    @GetMapping("/api/paginas/agregar-pagina-practica/{id}")
+    public ResponseEntity<?> agregarPaginaPracticaAUsuario(@PathVariable Long id) {
+
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+        Pagina pagina = null;
+        pagina = paginaImpl.obtenerContenido(id);
+        Usuario user = null;
+        user = usuarioService.findOne(auth.getName());
+
+        if (pagina != null && Objects.equals(pagina.getDiscriminante(), "PRACTICA")) {
+            List<Pagina> paginas = new ArrayList<>();
+            paginas.addAll(user.getPaginas());
+
+            if (!paginas.contains(pagina)) {
+                paginas.add(pagina);
+            }
+
+            user.setPaginas(paginas);
+            usuarioDAO.save(user);
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
     @GetMapping("/verPag/{id}")
     public String verPagina(Model model, @PathVariable Long id) {
@@ -73,7 +97,7 @@ public class PaginaController {
         if (pagina != null) {
             List<Pagina> paginas = new ArrayList<>();
             paginas.addAll(user.getPaginas());
-            
+
             if (!paginas.contains(pagina)) {
                 paginas.add(pagina);
             }
@@ -98,8 +122,8 @@ public class PaginaController {
 
         List<Pagina> paginasTotales = paginaImpl.obtenerPaginas();
 
-        if(paginasTotales.contains("PRACTICA")){
-        	paginasTotales.removeIf(obj -> obj.getDiscriminante().equals("PRACTICA"));
+        if (paginasTotales.contains("PRACTICA")) {
+            paginasTotales.removeIf(obj -> obj.getDiscriminante().equals("PRACTICA"));
         }
 
         // ----------------
