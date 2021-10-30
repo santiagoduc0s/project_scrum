@@ -156,7 +156,7 @@ public class ProyectoController {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-        List<Usuario> usuarios = new ArrayList();
+        List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(user.getId());
 
 
         //proyecto.setCreador(true);
@@ -183,12 +183,12 @@ public class ProyectoController {
 
                 proyect.setUsuario(usuarios);
 
-                List<Proyecto> proyectos = new ArrayList();
+                List<Proyecto> proyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
                 proyectos.add(proyect);
                 user.setProyecto(proyectos);
                 usuarioDAO.save(user);
 
-                proyectoDAO.save(proyect);
+                //proyectoDAO.save(proyect);
             }
         }
         List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
@@ -200,24 +200,23 @@ public class ProyectoController {
     public String salirProyecto(Model model, @PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
-//		
+//
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
         List<Usuario> usuarios = new ArrayList();
 
-        List<Proyecto> proyectos = new ArrayList();
+        List<Proyecto> proyectos = proyectoImpl.buscarPorusuarioProyectos(user.getId());
 
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
-
-//			
         String mensajeFlash = "No existe proyecto";
-//				 
+//
         flash.addFlashAttribute("warning", mensajeFlash);
 
-        if (proyect.getUsuario().contains(user)) {
+        if (proyectos.contains(proyect)) {
 
-            user.setProyecto(null);
+            proyectos.remove(proyect);
+            user.setProyecto(proyectos);
 
             usuarioDAO.save(user);
         }
@@ -226,6 +225,7 @@ public class ProyectoController {
         model.addAttribute("proyectos", proyectoso);
         return "redirect:/vistaProyecto";
     }
+
 
 
     // vista de cada Proyecto son sus respectivas tareas
