@@ -204,9 +204,9 @@ public class ProyectoController {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-        List<Usuario> usuarios = new ArrayList();
+         List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(user.getId());
 
-        List<Proyecto> proyectos = proyectoImpl.buscarPorusuarioProyectos(user.getId());
+        List<Proyecto> proyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
 
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
         String mensajeFlash = "No existe proyecto";
@@ -215,10 +215,17 @@ public class ProyectoController {
 
         if (proyectos.contains(proyect)) {
 
+           // usuarios.remove(user);
+
+           // proyect.setUsuario(usuarios);
+
+
+            //proyectos.add(proyect);
             proyectos.remove(proyect);
             user.setProyecto(proyectos);
-
             usuarioDAO.save(user);
+
+            System.out.println("Entro en el metodo");
         }
 
         List<Proyecto> proyectoso = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
