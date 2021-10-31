@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/app :: head"></head>
+
+<body>
+
+<nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
+
+<div class="container">
+    <div class="card w-50 mx-auto" style="margin-top: 50px">
+        <div th:if="${rol != '[ROLE_ADMIN]'}" class="card-header">
+            Modificar rol de <span th:text="${usuario.get().nombre}"></span>
+        </div>
+
+        <div class="card-body">
+
+            <form id="fo" role="form" th:action="@{/cambioRol}" th:object="${usuario}" method="post">
+                    <div class="form-group col-6">
+                        <div class="form-group" id="user-group">
+                            <input id="pass" name="id" hidden type="text" class="form-control"
+                                   th:value="${id}"/>
+                        </div>
+
+                        <!--                         <h1 th:text="${rol}"> </h1> -->
+
+                    <div class="form-group">
+                        <select th:field="*{rol}">
+                            <option th:value="'ROLE_USER'" th:text="ROLE_USER"></option>
+                            <option th:value="'ROLE_ADMIN'" th:text="ROLE_ADMIN"></option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+        <div class="card-footer">
+            <input type="submit" value="Guardar" class="btn btn-success" form="fo">
+        </div>
+    </div>
+</div>
+</form>
+<div th:replace="layout/app :: scripts"></div>
+
+</body>
+
+</html>
