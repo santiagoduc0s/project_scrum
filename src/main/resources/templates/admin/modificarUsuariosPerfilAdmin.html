@@ -15,7 +15,7 @@
 
         <div class="card-body">
 
-            <form id="fo" role="form" th:action="@{/usuarioModificado}" th:object="${usuario}" method="post">
+            <form id="formularioRol" role="form" th:action="@{/usuarioModificado}" th:object="${usuario}" method="post">
                 <div class="row mb-3">
                     <div class="form-group col-6">
                         <div class="form-group" id="user-group">
@@ -50,7 +50,7 @@
                                th:field="*{mail}">
                     </div>
                     <div class="form-group col-6">
-                        <input type="text" name="usuario" id="usuario"
+                        <input type="text" readonly="readonly" name="usuario" id="usuario"
                                class="form-control input-sm floatlabel" hidden placeholder="Nombre de Usuario"
                                th:field="*{userName}">
                     </div>
@@ -85,15 +85,15 @@
                     </div>
 
                 </div>
-
+            </form>
 
         </div>
         <div class="card-footer">
-            <input type="submit" value="Guardar" class="btn btn-success" form="fo">
+            <input type="submit" value="Guardar" class="btn btn-success" form="formularioRol">
         </div>
     </div>
 </div>
-</form>
+
 <div th:replace="layout/app :: scripts"></div>
 
 </body>

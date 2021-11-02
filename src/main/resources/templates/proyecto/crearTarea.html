@@ -37,9 +37,9 @@
   				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     				<a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item" th:href="@{/verDatosPersonales}">Datos Personales</a>
     				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">Listado Usuarios</a>
-    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Codigo Curso</a>
-    				<a class="dropdown-item" th:href="@{/verCurso}" >listar cursos</a>
-    				<a class="dropdown-item" href="/vistaProyecto">ver proyectos</a>
+    				<a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" href="/vistaCodigoRegistro">Generar Código Curso</a>
+    				<a class="dropdown-item" th:href="@{/verCurso}" >Listar cursos</a>
+    				<a class="dropdown-item" href="/vistaProyecto">Ver proyectos</a>
      			<form th:action="@{/logout}" method="post">
             		<input type="submit" value="Cerrar Sesion"  class="btn btn-primary"/>
            
@@ -54,7 +54,7 @@
                    <div class="col-md-4">
                         <input type="text" class="form-control" th:field="*{nombre}"  />
                     </div>
-                    </div><label>Descripcion</label>
+                    </div><label>Descripción</label>
                     <div class="form-group">
                         <input type="text" class="form-control" th:field="*{Descripcion}"  />
                     </div>

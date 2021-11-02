@@ -11,6 +11,7 @@
     <div class="card m-5">
         <div class="card-header" th:text="${pagina.titulo}"></div>
 
+
         <div class="card-body">
             <p th:utext="${pagina.contenido}"></p>
         </div>
@@ -22,6 +23,49 @@
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+</script>
+
+<script>
+    $('.carousel').carousel({
+        interval: false
+    })
+
+    var $carousel = $('#carouselExampleIndicators');
+    $carousel.carousel();
+    var handled = false;
+    var itemclicked = "";
+    $carousel.bind('slide.bs.carousel', function (e) {
+        var current = $(e.target).find('.item.active');
+        var indx = $(current).index();
+        if ((indx + 2) > $('.carousel-indicators li').length)
+            indx = -1
+
+        if (!handled) {
+            $('.carousel-indicators li').removeClass('active')
+            $('.carousel-indicators li:nth-child(' + (indx + 2) + ')').addClass('active');
+
+        } else {
+            handled = !handled;
+        }
+
+    });
+
+    $(".carousel-indicators li").on('click', function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        handled = true;
+    });
+</script>
+
+
 </body>
 
 </html>
+

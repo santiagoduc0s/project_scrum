@@ -112,7 +112,7 @@
 <div class="container" id="app">
     <div class="card mx-auto" style="width: 50%; margin-top: 7%">
         <div class="card-header">
-            Registro
+            <img width="70" th:src="@{img/Logo_PES.png}" class="d-block mx-auto">
         </div>
         <div class="card-body">
             <form id="form-register" th:action="@{/registroUsuario}" method="POST" th:object="${usuario}">
@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <input type="number" class="form-control" placeholder="Ingrese su cedula"
+                    <input type="number" class="form-control" placeholder="Ingrese su cédula"
                            th:field="*{cedula}" name="cedula" required v-model="usuario.cedula">
                 </div>
 
@@ -144,7 +144,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <input type="text" class="form-control" placeholder="Ingrese su codigo de registro"
+                    <input type="text" class="form-control" placeholder="Ingrese su código de registro"
                            th:field="*{codigoRegistro.codigo}" name="codigoRegistro" required v-model="usuario.codigoRegistro">
                 </div>
 
@@ -214,7 +214,7 @@ var app = new Vue({
             try {
                 const response = await this.axiosInstance.get(`/api/register/cedula-disponible/${this.usuario.cedula}`)
             } catch (error) {
-                return this.showError('La cédula ingresado ya se encuentra en uso')
+                return this.showError('La cédula ingresada ya se encuentra en uso')
             }
 
             try {

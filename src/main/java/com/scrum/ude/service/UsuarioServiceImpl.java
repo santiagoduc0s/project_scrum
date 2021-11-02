@@ -243,5 +243,4 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
    	}
     
-    
 }

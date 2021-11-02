@@ -156,7 +156,7 @@ public class ProyectoController {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-        List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(user.getId());
+        List<Usuario> usuarios = new ArrayList();
 
 
         //proyecto.setCreador(true);
@@ -183,12 +183,12 @@ public class ProyectoController {
 
                 proyect.setUsuario(usuarios);
 
-                List<Proyecto> proyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
+                List<Proyecto> proyectos = new ArrayList();
                 proyectos.add(proyect);
                 user.setProyecto(proyectos);
                 usuarioDAO.save(user);
 
-                //proyectoDAO.save(proyect);
+                proyectoDAO.save(proyect);
             }
         }
         List<Proyecto> proyectos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
@@ -200,39 +200,32 @@ public class ProyectoController {
     public String salirProyecto(Model model, @PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
-//
+//		
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 //
         Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
-         List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(user.getId());
+        List<Usuario> usuarios = new ArrayList();
 
-        List<Proyecto> proyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
+        List<Proyecto> proyectos = new ArrayList();
 
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
+
+//			
         String mensajeFlash = "No existe proyecto";
-//
+//				 
         flash.addFlashAttribute("warning", mensajeFlash);
 
-        if (proyectos.contains(proyect)) {
+        if (proyect.getUsuario().contains(user)) {
 
-           // usuarios.remove(user);
+            user.setProyecto(null);
 
-           // proyect.setUsuario(usuarios);
-
-
-            //proyectos.add(proyect);
-            proyectos.remove(proyect);
-            user.setProyecto(proyectos);
             usuarioDAO.save(user);
-
-            System.out.println("Entro en el metodo");
         }
 
         List<Proyecto> proyectoso = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
         model.addAttribute("proyectos", proyectoso);
         return "redirect:/vistaProyecto";
     }
-
 
 
     // vista de cada Proyecto son sus respectivas tareas

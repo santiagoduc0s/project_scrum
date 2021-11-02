@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout/app :: head"></head>
 
@@ -14,7 +14,8 @@
             Modificar datos personales
         </div>
         <div class="card-body">
-            <form role="form" id="formularioCambiarDatos" th:action="@{/modificarDatosPersonales}" th:object="${usuario}" method="post">
+            <form role="form" id="formularioCambiarDatos" th:action="@{/modificarDatosPersonales}"
+                  th:object="${usuario}" method="post">
                 <input type="hidden" name="usuario"
                        class="form-control"
                        th:field="*{userName}">

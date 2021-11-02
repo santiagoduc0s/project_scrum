@@ -8,23 +8,21 @@
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
 <div class="container">
-    <div class="card w-50 mx-auto" style="margin-top: 50px">
-        <div th:if="${rol == '[ROLE_ADMIN]'}"  class="card-header">
-            Modificar rol de <span th:text="${usuario.get().nombre}"></span>
+    <div class="card mx-auto" style="width: 50%; margin-top: 4%">
+        <div class="card-header">
+            Modificar datos personales
         </div>
         <div class="card-body">
+            <form role="form" id="formularioCambiarDatos" th:action="@{/modificarDatosPersonales}"
+                  th:object="${usuario}" method="post">
+                <input type="hidden" name="usuario"
+                       class="form-control"
+                       th:field="*{userName}">
 
-            <form id="formularioRol" role="form" th:action="@{/usuarioModificado}" th:object="${usuario}" method="post">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6">
-                        <div class="form-group" id="user-group">
-                            <input id="pass" name="id" hidden type="text" class="form-control"
-                                   th:value="${id}"/>
-                        </div>
-                        
-<!--                         <h1 th:text="${rol}"> </h1> -->
+                <input name="id" type="hidden" class="form-control" th:value="${id}"/>
 
-               
+                <div class="row mb-3">
+                    <div class="form-group col-6">
                         <input type="text" name="nombre" id="nombre1"
                                class="form-control" placeholder="Nombre" th:field="*{nombre}">
 
@@ -39,14 +37,21 @@
 
                 <div class="form-group mb-3">
                     <input type="text" name="documento" id="documento"
-                           class="form-control" placeholder="Ingrese su cédula" required
+                           class="form-control " placeholder="Ingrese su cédula" required
                            th:field="*{cedula}">
                 </div>
 
+
                 <div class="form-group mb-3">
-                    <input type="text" name="email" id="email"
+                    <input type="text"  name="email" id="email"
                            class="form-control" placeholder="Ingrese su email" required
                            th:field="*{mail}">
+                </div>
+
+                <div class="form-group mb-3">
+                    <input type="text" readonly="readonly" name="usuario"
+                           class="form-control"
+                           th:field="*{userName}" disabled>
                 </div>
 
                 <div class="form-group mb-3">
@@ -66,35 +71,23 @@
                         <input type="password"
                                class="form-control" placeholder="Confirme su contraseña"
                                name="confirmacionContrasena" th:value="${confirmacionContrasena}">
-       
-       
                     </div>
-       
-<!--                     <div class="form-group"> -->
-<!--                         <select th:field="*{rol}"> -->
-<!--                             <option th:value="'ROLE_USER'" th:text="ROLE_USER"></option> -->
-<!--                             <option th:value="'ROLE_ADMIN'" th:text="ROLE_ADMIN"></option> -->
-<!--                         </select> -->
-
-<!--                     </div> -->
-                    
-                     <div class="card-footer">
-            <input type="submit" value="Guardar" class="btn btn-success" form="formularioRol">
-        </div>
-       
                 </div>
 
             </form>
         </div>
 
-       
-
+        <div class="card-footer p-2">
+            <div class="row">
+                <div class="col p-1 text-center">
+                    <button type="submit" form="formularioCambiarDatos" class="btn btn-dark">
+                        Guardar
+                    </button>
                 </div>
-            </form>
-
+            </div>
         </div>
-       
     </div>
+
 </div>
 
 <div th:replace="layout/app :: scripts"></div>

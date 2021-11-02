@@ -15,7 +15,7 @@
                 <span>&#10010;</span> Crear proyecto
             </button>
             <button class="btn btn-dark ms-3" data-toggle="modal" data-target="#unirseProyecto">
-                <span>&#10010;</span> Unirse Proyecto
+                <span>&#10010;</span> Unirse proyecto
             </button>
         </div>
 
@@ -28,8 +28,8 @@
                 <thead>
                 <tr>
                     <th>Proyecto</th>
-                    <th>Descripcion</th>
-                    <th>Codigo Proyecto</th>
+                    <th>Descripción</th>
+                    <th>Código Proyecto</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <label for="description" class="form-label mt-4">Descripcion</label>
                         <textarea class="form-control" id="description" rows="3"
-                                  placeholder="Descripcion del proyecto" th:field="*{Descripcion}"></textarea>
+                                  placeholder="Descripción del proyecto" th:field="*{Descripcion}"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" form="form-create-project" class="btn btn-dark mx-auto" style="">Crear
@@ -134,7 +134,7 @@
                     <div class="form-group">
                         <fieldset>
 
-                            <input class="form-control" id="name" type="text" placeholder="Codigo Proyecto"
+                            <input class="form-control" id="name" type="text" placeholder="Código Proyecto"
                                    th:field="*{codigoProyecto}">
                         </fieldset>
                     </div>
@@ -157,7 +157,7 @@
     $(".delete-project").on("click", function (event) {
         event.preventDefault();
         let url = $(this).attr('href');
-        swal('¿Estas seguro?', {
+        swal('¿Estás seguro?', {
             dangerMode: true,
             buttons: true,
         }).then(function (response) {

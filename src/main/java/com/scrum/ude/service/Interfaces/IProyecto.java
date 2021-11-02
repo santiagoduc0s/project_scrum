@@ -10,8 +10,6 @@ public interface IProyecto {
 
 	List<Proyecto> buscarProyectoPorUsuario(Long id);
 
-	List<Proyecto>  buscarProyectosPorUsuario(Long id);
-
 	Proyecto buscarPorIdProyecto(Long id);
 
 	Proyecto buscarPorCodigoProyecto(String codigo);
