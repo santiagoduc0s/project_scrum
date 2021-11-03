@@ -1,7 +1,7 @@
 // Success
 if (document.getElementById('success-alert') != null) {
     $.notify({
-        title: '<strong>ien</strong>',
+        title: '<strong>Bien</strong>',
         message: document.getElementById('success-alert').innerText,
     },{
         type: "success",
