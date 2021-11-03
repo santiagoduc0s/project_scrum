@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/app :: head"></head>
+
+<body>
+
+<nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
+
+<div class="container mt-5">
+
+    <div class="list-group">
+        <div class="list-group-item list-group-item-action">
+            <h3 th:if="${proyectos.isEmpty}">No hay proyectos</h3>
+            <div class="table-responsive" th:if="${!proyectos.isEmpty}">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Descripción</th>
+                        <th>Código Proyecto</th>
+                        <th>Creador</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="proyecto: ${proyectos}">
+                        <td>
+                            <a th:text="${proyecto.titulo}" th:href="@{/verProyectoTarea/} + ${proyecto.id}"
+                               style="color: #585858; text-decoration: none;"></a>
+                        </td>
+                        <td th:text="${proyecto.descripcion}"></td>
+                        <td th:text="${proyecto.codigoProyecto}"></td>
+                        <td th:text="${proyecto.creador}"></td>
+                        <td><a class="btn btn-sm">Ver tablero</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:each="page : ${pages}" th:classappend="${current == page ? 'active': ''}">
+                        <a class="page-link" th:href="@{|/proyectos?page=${page - 1}|}" th:text="${page}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+</div>
+
+
+
+
+
+<!--Scrips-->
+<div th:replace="layout/app :: scripts"></div>
+
+</body>
+</html>

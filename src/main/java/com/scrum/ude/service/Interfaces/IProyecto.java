@@ -3,6 +3,8 @@ package com.scrum.ude.service.Interfaces;
 import java.util.List;
 
 import com.scrum.ude.entity.Proyecto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IProyecto {
 
@@ -17,4 +19,6 @@ public interface IProyecto {
 	List<Proyecto> buscarPorusuarioProyectos(Long id);
 
 	List<Proyecto> buscarTodosLosProyectos();
+
+	public Page<Proyecto> getAll(Pageable pageable);
 }

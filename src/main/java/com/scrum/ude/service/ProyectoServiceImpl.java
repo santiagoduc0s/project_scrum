@@ -6,12 +6,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.scrum.ude.repository.ProyectoRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.scrum.ude.entity.Proyecto;
 import com.scrum.ude.service.Interfaces.IProyecto;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProyectoServiceImpl implements IProyecto  {
@@ -20,6 +25,9 @@ public class ProyectoServiceImpl implements IProyecto  {
 	
 	@PersistenceContext
 	private EntityManager em;
+
+	@Autowired
+	ProyectoRepository proyectoRepository;
 	
 
 	@Override
@@ -124,12 +132,15 @@ public class ProyectoServiceImpl implements IProyecto  {
    		return proyecto;
 
    	}
-	
-	
-	
-	
-    
-    @Override
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Proyecto> getAll(Pageable pageable) {
+		return proyectoRepository.findAll(pageable);
+	}
+
+
+	@Override
    	public Proyecto buscarPorIdProyecto(Long id) {
 
    		

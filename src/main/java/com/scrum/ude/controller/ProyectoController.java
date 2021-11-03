@@ -2,9 +2,15 @@ package com.scrum.ude.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.scrum.ude.entity.Tarea;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -45,6 +51,9 @@ public class ProyectoController {
 
     @Autowired
     private IProyectoDAO proyectoDAO;
+
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
 
 
     @GetMapping("/vistaProyecto")
@@ -432,6 +441,29 @@ public class ProyectoController {
         return "";
     }
 
+    @GetMapping("/proyectos")
+    public String showAll(@RequestParam(defaultValue = "0") int page, Authentication auth, Model model) {
+
+        Usuario user = usuarioService.findOne(((UserDetails) auth.getPrincipal()).getUsername());
+
+        if (Objects.equals(user.getRol(), "ROLE_ADMIN")) {
+            Pageable pageable = PageRequest.of(page, 10);
+            Page<Proyecto> proyectos = proyectoImpl.getAll(pageable);
+
+            int totalPage = proyectos.getTotalPages();
+            if(totalPage > 0) {
+                List<Integer> pages = IntStream.rangeClosed(1, totalPage).boxed().collect(Collectors.toList());
+                model.addAttribute("pages", pages);
+            }
+
+            model.addAttribute("proyectos", proyectos.getContent());
+            model.addAttribute("current", page + 1);
+
+            return "proyecto/proyectos";
+        }
+        return "redirect:/menu";
+    }
+
 
     @GetMapping(value = "/test2")
     public String test() {
@@ -439,3 +471,5 @@ public class ProyectoController {
     }
 
 }
+
+
