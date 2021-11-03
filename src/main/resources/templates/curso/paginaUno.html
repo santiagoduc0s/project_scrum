@@ -9,13 +9,16 @@
 
 <div class="container">
     <div class="card mt-5 w-75 mx-auto">
-        <h5 th:text="${pagina.titulo}" class="card-header text-center">Scrum</h5>
+        <h5 th:text="${capitulo.titulo}" class="card-header text-center">Scrum</h5>
         <div class="card-body">
             <ul class="list-group">
-                <a class="list-group-item list-group-item-action"
-                   th:each="paginas: ${pagina.pagina}" th:href="@{/verPag/} + ${paginas.id}"
-                   th:text="${paginas.titulo}">
-                </a>
+                <div th:each="pagina: ${capitulo.pagina}" class="list-group-item list-group-item-action" style="line-height: 30px;">
+                    <a class="text-decoration-none text-body"
+                       th:href="@{/verPag/} + ${pagina.id}"
+                       th:text="${pagina.titulo}">
+                    </a>
+                    <input type="checkbox" class="float-end form-check-input" style="margin-top: 9px" disabled th:checked="${paginaIds.containsKey(pagina.id)}">
+                </div>
             </ul>
         </div>
     </div>

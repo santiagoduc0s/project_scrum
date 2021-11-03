@@ -1,5 +1,6 @@
 package com.scrum.ude.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +33,23 @@ public class Capitulo1Controller {
 
     @GetMapping("/verCapitulo/{id}")
 
-    public String verPaginas(Model model, @PathVariable(value = "id") Long id) {
+    public String verPaginas(Authentication auth, Model model, @PathVariable(value = "id") Long id) {
 
-        Authentication auth = usuarioController.retornarUsuarioLogueado();
+        Usuario user = usuarioService.findOne(((UserDetails) auth.getPrincipal()).getUsername());
 
-        UserDetails userDetail = (UserDetails) auth.getPrincipal();
-        Usuario user= usuarioService.findOne(auth.getName());
+        List<Pagina> paginas = user.getPaginas();
+        HashMap<Long, Long> paginaIds = new HashMap<Long, Long>();
+        for (Pagina pag : paginas) {
+            paginaIds.put(pag.getId(), pag.getId());
+        }
 
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         Capitulo capitulo = capituloImpl.buscarPaginas(id);
 
+        model.addAttribute("paginaIds", paginaIds);
         model.addAttribute("contenido", "<h1>inicio Scrum</h1>");
-        model.addAttribute("pagina", capitulo);
+        model.addAttribute("capitulo", capitulo);
         model.addAttribute("usuario",user );
 
 
