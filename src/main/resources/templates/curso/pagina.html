@@ -3,12 +3,14 @@
 
 <head th:replace="layout/app :: head"></head>
 
+
+
 <body>
 
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container">
-    <div class="card m-5">
+<div class="container pb-3">
+    <div class="card my-5">
         <div class="card-header" th:text="${pagina.titulo}"></div>
 
 
@@ -21,7 +23,7 @@
 
 
 <!--Scrips-->
-<div th:replace="layout/app :: scripts"></div>
+<!--<div th:replace="layout/app :: scripts"></div>-->
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -34,7 +36,7 @@
 </script>
 
 <script>
-    $('.carousel').carousel({
+    $('#carouselExampleIndicators').carousel({
         interval: false
     })
 
