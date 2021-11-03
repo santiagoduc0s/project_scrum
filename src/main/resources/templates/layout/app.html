@@ -5,14 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PES</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/bootstrap-zephyr.min.css}" rel="stylesheet">
     <link th:href="@{/css/columns.css}" rel="stylesheet">
     <link th:href="@{/css/general.css}" rel="stylesheet">
     <link th:href="@{/css/cuestionario.css}" rel="stylesheet">
+
     <style>
+
+        .carousel-indicators > li {
+            background-color: rgb(173, 173, 173);
+        }
+
+        .carousel-indicators > li.active {
+            background-color: #616161;
+        }
+
         .container {
-            min-height : calc(100vh - 10.5rem) !important;
+            min-height: calc(100vh - 10.5rem) !important;
         }
     </style>
 </head>
@@ -21,6 +33,7 @@
 <!-- nav -->
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#"></a>
+    <img width="70" src="../img/Logo_PES.png">
     <button class="navbar-toggler me-4" type="button" data-toggle="collapse" data-target="#navbar"
             aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -44,10 +57,10 @@
                     <div class="dropdown-menu">
                         <a th:if="${autoridad=='[ROLE_USER]'}" class="dropdown-item"
                            th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a>
-                            <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item"
+                        <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item"
                            th:href="@{/verDatosPersonalesAdministrador}">Datos Personales</a>
-<!--   						<a  class="dropdown-item"  -->
-<!--                            th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a>  -->
+                        <!--   						<a  class="dropdown-item"  -->
+                        <!--                            th:href="@{/verDatosPersonales/} + ${usuario.id}">Datos Personales</a>  -->
                         <a th:if="${autoridad=='[ROLE_ADMIN]'}" class="dropdown-item" th:href="@{/listadoUsuarios}">
                             Listado Usuarios
                         </a>
@@ -87,6 +100,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script th:src="@{/js/notify.js}"></script>
     <script th:src="@{/js/mensajes.js}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+
+    <script>
+
+
+        $('.carousel').carousel({
+            interval: false
+        })
+
+        var $carousel = $('#carouselExampleIndicators');
+        $carousel.carousel();
+        var handled = false;
+        var itemclicked = "";
+        $carousel.bind('slide.bs.carousel', function (e) {
+            var current = $(e.target).find('.item.active');
+            var indx = $(current).index();
+            if ((indx + 2) > $('.carousel-indicators li').length)
+                indx = -1
+
+            if (!handled) {
+                $('.carousel-indicators li').removeClass('active')
+                $('.carousel-indicators li:nth-child(' + (indx + 2) + ')').addClass('active');
+
+            } else {
+                handled = !handled;
+            }
+
+        });
+
+        $(".carousel-indicators li").on('click', function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            handled = true;
+        });
+    </script>
+
+
 </div>
 
 
