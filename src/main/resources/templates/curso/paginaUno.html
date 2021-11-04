@@ -17,7 +17,7 @@
                        th:href="@{/verPag/} + ${pagina.id}"
                        th:text="${pagina.titulo}">
                     </a>
-                    <input type="checkbox" class="float-end form-check-input" style="margin-top: 9px" disabled th:checked="${paginaIds.containsKey(pagina.id)}">
+                    <input type="checkbox" class="float-end form-check-input" style="margin-top: 9px;position: relative;" disabled th:checked="${paginaIds.containsKey(pagina.id)}">
                 </div>
             </ul>
         </div>
