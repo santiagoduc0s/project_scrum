@@ -158,6 +158,10 @@ public class ProyectoServiceImpl implements IProyecto  {
    		return proyecto;
 
    	}
+
+   public Page<Proyecto> getProyectosLikeTitulo(String titulo, Pageable pageable) {
+		return proyectoRepository.findAllByTituloLike(titulo, pageable);
+   }
     
 //    @Override
 //   	public void elimnarProyectobyUsuario(Long id) {

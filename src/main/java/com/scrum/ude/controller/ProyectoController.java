@@ -455,13 +455,23 @@ public class ProyectoController {
     }
 
     @GetMapping("/proyectos")
-    public String showAll(@RequestParam(defaultValue = "0") int page, Authentication auth, Model model) {
+    public String showAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "") String text,
+            Authentication auth,
+            Model model
+    ) {
 
         Usuario user = usuarioService.findOne(((UserDetails) auth.getPrincipal()).getUsername());
 
         if (Objects.equals(user.getRol(), "ROLE_ADMIN")) {
             Pageable pageable = PageRequest.of(page, 10);
-            Page<Proyecto> proyectos = proyectoImpl.getAll(pageable);
+            Page<Proyecto> proyectos;
+            if (Objects.equals(text, "")) {
+                proyectos = proyectoImpl.getAll(pageable);
+            } else {
+                proyectos = proyectoImpl.getProyectosLikeTitulo("%"+text+"%", pageable);
+            }
 
             int totalPage = proyectos.getTotalPages();
             if(totalPage > 0) {
@@ -469,6 +479,7 @@ public class ProyectoController {
                 model.addAttribute("pages", pages);
             }
 
+            model.addAttribute("text", text);
             model.addAttribute("proyectos", proyectos.getContent());
             model.addAttribute("current", page + 1);
             model.addAttribute("usuario", user);

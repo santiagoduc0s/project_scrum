@@ -7,8 +7,15 @@
 
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container mt-5" th:id="app">
+<div class="container mt-4" th:id="app">
     <div class="list-group">
+        <div class="input-group mb-3 w-25 ml-auto">
+            <input type="text" class="form-control" placeholder="Ingrese el título" aria-label="Recipient's username"
+                   aria-describedby="basic-addon2" v-model.trim="text">
+            <div class="input-group-append">
+                <button class="btn btn-dark" type="button" @click="buscar">Buscar</button>
+            </div>
+        </div>
         <div class="list-group-item list-group-item-action">
             <h3 th:if="${proyectos.isEmpty}">No hay proyectos</h3>
             <div class="table-responsive" th:if="${!proyectos.isEmpty}">
@@ -50,7 +57,7 @@
             <nav aria-label="Pagination">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:each="page : ${pages}" th:classappend="${current == page ? 'active': ''}">
-                        <a class="page-link" th:href="@{|/proyectos?page=${page - 1}|}" th:text="${page}"></a>
+                        <a class="page-link" th:href="@{|/proyectos?page=${page - 1}&text=${text}|}" th:text="${page}"></a>
                     </li>
                 </ul>
             </nav>
@@ -93,7 +100,8 @@
     var app = new Vue({
         el: '#app',
         data: {
-            participantes: []
+            participantes: [],
+            text: '',
         },
         methods: {
             async getParticipantes(proyectoId) {
@@ -111,7 +119,19 @@
                 } catch (error) {
                     console.log(error)
                 }
+            },
+            buscar() {
+                window.location.href = window.location.pathname + '?text=' + this.text
+            },
+            getParameterByName(name = 'text') {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                const regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                this.text = results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
             }
+        },
+        created() {
+            this.getParameterByName()
         }
     })
 </script>
