@@ -7,8 +7,7 @@
 
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container mt-5">
-
+<div class="container mt-5" th:id="app">
     <div class="list-group">
         <div class="list-group-item list-group-item-action">
             <h3 th:if="${proyectos.isEmpty}">No hay proyectos</h3>
@@ -27,13 +26,16 @@
                     <tbody>
                     <tr th:each="proyecto: ${proyectos}">
                         <td>
-                            <a th:text="${proyecto.titulo}" th:href="@{/verProyectoTarea/} + ${proyecto.id}"
-                               style="color: #585858; text-decoration: none;"></a>
+                            <a th:text="${proyecto.titulo}"
+                               th:href="@{/verProyectoTarea/} + ${proyecto.id}"
+                               style="color: #585858; text-decoration: none;">
+                            </a>
                         </td>
                         <td th:text="${proyecto.descripcion}"></td>
                         <td th:text="${proyecto.codigoProyecto}"></td>
                         <td th:text="${proyecto.creador}"></td>
-                        <td><a class="btn btn-sm">Participantes</a></td>
+                        <td><a class="btn btn-sm" data-toggle="modal" data-target="#verParticipantes"
+                               th:@click="'getParticipantes(\'' + ${proyecto.id} + '\')'">Participantes</a></td>
                         <td><a class="btn btn-sm" th:href="@{/verProyectoTarea/} + ${proyecto.id}">Ver tablero</a></td>
                     </tr>
                     </tbody>
@@ -56,14 +58,63 @@
         <div class="col-md-2"></div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="verParticipantes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Participantes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <a href="#"
+                           class="list-group-item list-group-item-action"
+                           v-for="usuario in participantes"
+                           :key="usuario.id">{{ usuario.nombre }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
-
-
-
-
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            participantes: []
+        },
+        methods: {
+            async getParticipantes(proyectoId) {
+                try {
+                    console.log('entre')
+                    const res = await fetch('http://localhost:8889/api/proyectos/participantes/' + proyectoId, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                    console.log(res)
+                    this.participantes = await res.json()
+                    console.log(this.participantes);
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }
+    })
+</script>
 
 </body>
 </html>

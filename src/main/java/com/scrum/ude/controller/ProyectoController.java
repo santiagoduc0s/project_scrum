@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -256,7 +258,6 @@ public class ProyectoController {
             }
         }
 
-
         Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
         model.addAttribute("proyecto", proyecto);
@@ -470,10 +471,18 @@ public class ProyectoController {
 
             model.addAttribute("proyectos", proyectos.getContent());
             model.addAttribute("current", page + 1);
+            model.addAttribute("usuario", user);
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
             return "proyecto/proyectos";
         }
         return "redirect:/menu";
+    }
+
+    @GetMapping("/api/proyectos/participantes/{id}")
+    public ResponseEntity<?> getParticipantes(@PathVariable Long id) {
+        Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioImpl.transformUsuarioDao(proyecto.getUsuario()));
     }
 
 }

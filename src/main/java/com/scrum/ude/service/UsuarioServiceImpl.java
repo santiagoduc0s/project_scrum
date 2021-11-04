@@ -3,6 +3,7 @@ package com.scrum.ude.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scrum.ude.dto.UsuarioDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -131,19 +132,19 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return existe;
 
     }
-    
-	@Override
+
+    @Override
     public Usuario buscarPorMail(String email) {
 
 
         Query query = em.createQuery("select u from Usuario u where u.mail=:email");
         query.setParameter("email", email);
 
-        Usuario user= new Usuario();
+        Usuario user = new Usuario();
         try {
             log.info("Chequear ");
 
-             user=(Usuario) query.getSingleResult();
+            user = (Usuario) query.getSingleResult();
         } catch (Exception nre) {
             log.info("No se ha encontrado  usuarios");
 
@@ -151,9 +152,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return user;
 
     }
-    
-    
-    
+
 
     @Override
     public Usuario buscarPorId(Long id) {
@@ -173,10 +172,10 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
-    
-    
-	@Override
-    public Usuario buscarUsuarioPorUsername(String  username) {
+
+
+    @Override
+    public Usuario buscarUsuarioPorUsername(String username) {
 
 
         Query query = em.createQuery("select u from Usuario u where u.userName=:username");
@@ -193,7 +192,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
-    
+
 
     @Override
     public Usuario buscarPorCedula(Long cedula) {
@@ -222,25 +221,43 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         iUsuarioDAO.save(usuario);
 
     }
-    
+
     @Override
-   	public List<Usuario> buscarProyectosoVinculadosPorUsuario(Long id) {
+    public List<Usuario> buscarProyectosoVinculadosPorUsuario(Long id) {
 
-		//String sql="SELECT p.* FROM proyecto p, usuario u WHERE u.id=p.id AND  u.id=1";
-   		//Query query =em.createNativeQuery(sql);
-		Query query = em.createQuery("select u from  Usuario u JOIN FETCH u.proyecto p where  p.id=:id");
-   		query.setParameter("id", id);
+        //String sql="SELECT p.* FROM proyecto p, usuario u WHERE u.id=p.id AND  u.id=1";
+        //Query query =em.createNativeQuery(sql);
+        Query query = em.createQuery("select u from  Usuario u JOIN FETCH u.proyecto p where  p.id=:id");
+        query.setParameter("id", id);
 
-   		List<Usuario> usuarios = null;
-   		try {
-   			log.info("Chequear ");
-   			usuarios = (List<Usuario>) query.getResultList();
-   		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  usuarios");
+        List<Usuario> usuarios = null;
+        try {
+            log.info("Chequear ");
+            usuarios = (List<Usuario>) query.getResultList();
+        } catch (Exception nre) {
+            log.info("No se ha encontrado  usuarios");
 
-   		}
-   		return usuarios;
+        }
+        return usuarios;
 
-   	}
-    
+    }
+
+    public List<UsuarioDto> transformUsuarioDao(List<Usuario> usuarios) {
+
+        List<UsuarioDto> usuariosDao = new ArrayList<>();
+
+        for (Usuario usuario : usuarios) {
+            UsuarioDto usu = new UsuarioDto();
+            usu.setId(usuario.getId());
+            usu.setNombre(usuario.getNombre());
+            usu.setApellido(usuario.getApellido());
+            usu.setEmail(usuario.getMail());
+            usu.setUsername(usuario.getUserName());
+            usu.setRol(usuario.getRol());
+            usuariosDao.add(usu);
+        }
+
+        return usuariosDao;
+    }
+
 }
