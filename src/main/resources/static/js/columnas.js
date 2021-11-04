@@ -60,21 +60,22 @@ boardGrid = new Muuri('.board', {
     dragHandle: '.board-column-header'
 });
 
-function changeTaskColumn(taskId, column) {
+async function changeTaskColumn(taskId, column) {
 
     let url = window.location.origin + '/api/tareas/actualizar-estado-tarea/' + taskId + '/' + column.toUpperCase();
     console.log(url);
+    const res = fetch(url)
 
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (response) {
-            console.log('gud');
-            console.log(response);
-        },
-        error: function (error) {
-            console.log('error');
-            console.log(error)
-        }
-    });
+    // $.ajax({
+    //     type: "GET",
+    //     url: url,
+    //     success: function (response) {
+    //         console.log('gud');
+    //         console.log(response);
+    //     },
+    //     error: function (error) {
+    //         console.log('error');
+    //         console.log(error)
+    //     }
+    // });
 }
