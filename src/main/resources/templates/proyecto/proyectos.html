@@ -21,6 +21,7 @@
                         <th>Código Proyecto</th>
                         <th>Creador</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,7 +33,8 @@
                         <td th:text="${proyecto.descripcion}"></td>
                         <td th:text="${proyecto.codigoProyecto}"></td>
                         <td th:text="${proyecto.creador}"></td>
-                        <td><a class="btn btn-sm">Ver tablero</a></td>
+                        <td><a class="btn btn-sm">Participantes</a></td>
+                        <td><a class="btn btn-sm" th:href="@{/verProyectoTarea/} + ${proyecto.id}">Ver tablero</a></td>
                     </tr>
                     </tbody>
                 </table>

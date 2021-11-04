@@ -239,9 +239,23 @@ public class ProyectoController {
 
     // vista de cada Proyecto son sus respectivas tareas
     @GetMapping("/verProyectoTarea/{id}")
-    public String verProyectoWithTarea(@PathVariable(value = "id") Long id, Model model) {
+    public String verProyectoWithTarea(@PathVariable(value = "id") Long id, Authentication auth, Model model) {
 
-        Authentication auth = usuarioController.retornarUsuarioLogueado();
+        Usuario user = usuarioService.findOne(((UserDetails) auth.getPrincipal()).getUsername());
+
+        boolean participaDelProyecto = false;
+        if (Objects.equals(user.getRol(), "ROLE_USER")) {
+            for (Proyecto proyecto : user.getProyecto()) {
+                if (Objects.equals(proyecto.getId(), id)) {
+                    participaDelProyecto = true;
+                }
+            }
+
+            if (!participaDelProyecto) {
+                return "redirect:/";
+            }
+        }
+
 
         Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
@@ -249,8 +263,6 @@ public class ProyectoController {
         model.addAttribute("tareas", proyecto.getTarea());
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-        UserDetails userDetail = (UserDetails) auth.getPrincipal();
-        Usuario user = usuarioDAO.findByUserName(userDetail.getUsername());
         model.addAttribute("usuario", user);
 
         Tarea tarea = new Tarea();
@@ -462,12 +474,6 @@ public class ProyectoController {
             return "proyecto/proyectos";
         }
         return "redirect:/menu";
-    }
-
-
-    @GetMapping(value = "/test2")
-    public String test() {
-        return "test/test";
     }
 
 }
