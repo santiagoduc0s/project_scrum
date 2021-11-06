@@ -417,15 +417,22 @@ public class ProyectoController {
             if (user.getProyecto().contains(proyecto)) {
 
                 List<Proyecto> proyectos = user.getProyecto();
+
+
                 proyectos.remove(proyecto);
+
                 user.setProyecto(proyectos);
+
+
+
                 usuarioDAO.save(user);
 
-                proyecto.setUsuario(new ArrayList<>());
-                proyectoDAO.save(proyecto);
+                proyectoDAO.delete(proyecto);
+
+
             }
 
-            proyectoDAO.delete(proyecto);
+
 
 
             flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
