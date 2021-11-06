@@ -303,85 +303,35 @@ public class ProyectoController {
 
     }
 
-//    @PostMapping("/guardarModificacionProyecto")
-//    public String verProyectoParaModificar(Proyecto proyecto, @RequestParam(value = "id") Long id, Model model) {
-////					
-//        Authentication auth = usuarioController.retornarUsuarioLogueado();
-//
-//        auth.getName();
-//        Usuario user = usuarioImpl.findOne(auth.getName());
-//        Proyecto proyectoso = proyectoImpl.buscarPorIdProyecto(id);
-//
-//        //model.addAttribute("proyecto", proyecto);
-//
-//        List<Usuario> usuarios= usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyecto.getId());
-//        
-//        List<Proyecto> proyectos;
-//
-//        //if (!proyectoso.getCreador().equals(user.getUserName())) {
-//
-//          //  return "redirect:/vistaProyecto";
-//        //}
-//        if((proyecto.getDescripcion()!=proyectoso.getDescripcion()) && proyecto.getTitulo()!=proyectoso.getTitulo()) {
-//        	
-//        //usuarios.add(user);
-//        
-//        proyectoso.setTitulo(proyecto.getTitulo());
-//        proyectoso.setDescripcion(proyecto.getDescripcion());
-//        proyectoso.setUsuario(usuarios);
-//        proyectoso.setUsuario(usuarios);
-//
-//        proyectoDAO.save(proyectoso);
-//        
-//        }
-//    
-//        model.addAttribute("autoridad", auth.getAuthorities().toString());
-//
-//        List<Proyecto> proyectosos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
-//
-//        model.addAttribute("proyectos", proyectosos);
-//        
-//
-//        return "redirect:/vistaProyecto";
-////
-//    }
-//    
-
-
-    //ACA DUCOS PARA QUITAR PARTICIPANTES METODO QUE PROCESA
     @PostMapping("/guardarModificacionProyecto")
-    public String verProyectoParaModificar(Proyecto proyecto, @RequestParam(value = "id") Long id, @RequestParam(value = "idParticipante") Long idParticipante, Model model) {
-//					
+   public String verProyectoParaModificar(Proyecto proyecto, @RequestParam(value = "id") Long id, Model model) {
+////					
         Authentication auth = usuarioController.retornarUsuarioLogueado();
-
+//
         auth.getName();
         Usuario user = usuarioImpl.findOne(auth.getName());
         Proyecto proyectoso = proyectoImpl.buscarPorIdProyecto(id);
-
+//
         //model.addAttribute("proyecto", proyecto);
 
-        List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyecto.getId());
+        List<Usuario> usuarios= usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyecto.getId());
 
-        //List<Proyecto> proyectos;
+        List<Proyecto> proyectos;
 
-        //   if (!proyectoso.getCreador().equals(user.getUserName())) {
+        //if (!proyectoso.getCreador().equals(user.getUserName())) {
 
-        //     return "redirect:/vistaProyecto";
-        //}
-        if ((proyecto.getDescripcion() != proyectoso.getDescripcion()) && proyecto.getTitulo() != proyectoso.getTitulo()) {
+          //  return "redirect:/vistaProyecto";
+       //}
+        if((proyecto.getDescripcion()!=proyectoso.getDescripcion()) && proyecto.getTitulo()!=proyectoso.getTitulo()) {
 
-            Usuario usuarioParticipante = usuarioImpl.buscarPorId(idParticipante);
+        //usuarios.add(user);
 
-            usuarios.add(user);
+        proyectoso.setTitulo(proyecto.getTitulo());
+        proyectoso.setDescripcion(proyecto.getDescripcion());
+        proyectoso.setUsuario(usuarios);
+        proyectoso.setUsuario(usuarios);
 
-            usuarios.remove(usuarioParticipante);
-
-            proyectoso.setTitulo(proyecto.getTitulo());
-            proyectoso.setDescripcion(proyecto.getDescripcion());
-            proyectoso.setUsuario(usuarios);
-            proyectoso.setUsuario(usuarios);
-
-            proyectoDAO.save(proyectoso);
+        proyectoDAO.save(proyectoso);
 
         }
 
@@ -393,15 +343,65 @@ public class ProyectoController {
 
 
         return "redirect:/vistaProyecto";
+////
+   }
+//    
+
+
+    //ACA DUCOS PARA QUITAR PARTICIPANTES METODO QUE PROCESA
+//    @PostMapping("/guardarModificacionProyecto")
+//    public String verProyectoParaModificar(Proyecto proyecto, @RequestParam(value = "id") Long id, @RequestParam(value = "idParticipante") Long idParticipante, Model model) {
+////
+//        Authentication auth = usuarioController.retornarUsuarioLogueado();
 //
-    }
+//        auth.getName();
+//        Usuario user = usuarioImpl.findOne(auth.getName());
+//        Proyecto proyectoso = proyectoImpl.buscarPorIdProyecto(id);
+//
+//        //model.addAttribute("proyecto", proyecto);
+//
+//        List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyecto.getId());
+//
+//        //List<Proyecto> proyectos;
+//
+//        //   if (!proyectoso.getCreador().equals(user.getUserName())) {
+//
+//        //     return "redirect:/vistaProyecto";
+//        //}
+//        if ((proyecto.getDescripcion() != proyectoso.getDescripcion()) && proyecto.getTitulo() != proyectoso.getTitulo()) {
+//
+//            Usuario usuarioParticipante = usuarioImpl.buscarPorId(idParticipante);
+//
+//            usuarios.add(user);
+//
+//            usuarios.remove(usuarioParticipante);
+//
+//            proyectoso.setTitulo(proyecto.getTitulo());
+//            proyectoso.setDescripcion(proyecto.getDescripcion());
+//            proyectoso.setUsuario(usuarios);
+//            proyectoso.setUsuario(usuarios);
+//
+//            proyectoDAO.save(proyectoso);
+//
+//        }
+//
+//        model.addAttribute("autoridad", auth.getAuthorities().toString());
+//
+//        List<Proyecto> proyectosos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+//
+//        model.addAttribute("proyectos", proyectosos);
+//
+//
+//        return "redirect:/vistaProyecto";
+////
+//    }
 
 
-    //
 
 
-    //
-//	
+
+
+
     // aca elimino un  proyecto
     @GetMapping(value = "/eliminarProyecto/{id}")
     public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
