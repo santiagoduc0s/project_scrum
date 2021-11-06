@@ -250,7 +250,40 @@ public class UsuarioController {
 
 
         }
-        return "/admin/ModificarUsuariosPerfilAdmin";
+        return "/admin/rol";
+    }
+
+    @PostMapping("/cambioRol")
+    public String guardarUsuarioModificadoAdmin( @RequestParam(value = "id") Long id, Model model,Usuario usuario){
+
+        // System.out.println("USUARIO ID  ES    " + usuario.getId());
+
+        Authentication auth = retornarUsuarioLogueado();
+
+        Usuario user = usuarioService.buscarPorId(id);
+        Usuario usuarioLogueado = usuarioService.buscarUsuarioPorUsername(auth.getName());
+
+
+        //user.setNombre(usuario.getNombre());
+        //user.setApellido(usuario.getApellido());
+        //user.setCedula(usuario.getCedula());
+        //user.setMail(usuario.getMail());
+        user.setRol(usuario.getRol());
+
+        usuarioDAO.save(user);
+
+        List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+        if(usuarios.removeIf(t -> t.getUserName() == usuarioLogueado.getUserName()))
+
+            model.addAttribute("usuarios", usuarios);
+
+        Usuario usuariose = new Usuario();
+
+        model.addAttribute("usuario", usuariose);
+
+        return "/admin/listadoUsuarios";
+
+
     }
 
     // Perfil Usuario ver datos personales
