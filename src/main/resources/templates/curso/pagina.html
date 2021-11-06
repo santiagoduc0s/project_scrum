@@ -8,8 +8,11 @@
 <div th:replace="layout/app :: scripts"></div>
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container pb-3">
-    <div class="card my-5">
+<div class="container pb-5">
+    <div class="mx-auto mt-4">
+        <a href="#" onclick="history.go(-1);" type="button" class="btn btn-dark btn-sm">Volver</a>
+    </div>
+    <div class="card mt-3">
         <div class="card-header" th:text="${pagina.titulo}"></div>
 
 
@@ -18,9 +21,7 @@
         </div>
 
     </div>
-    <input type="button" class="btn btn-dark clearfix btn-sm my-sm-5" style="float: left" value="Página anterior"
-           onclick="history.go(-1);">
-    <!--    <input type="button" class="btn btn-dark btn-sm clearfix my-sm-5" style="float: right" value="Página siguiente" onclick="history.go(+1);">-->
+
 </div>
 
 <!--Scrips-->
@@ -65,28 +66,6 @@
         $(this).addClass('active').siblings().removeClass('active');
         handled = true;
     });
-</script>
-
-<script>
-
-    function funcionAsociadaBoton() {
-
-        otraFuncionJavascript();
-
-        history.go(-1);
-
-    }
-</script>
-
-<script>
-
-    function funcionAsociadaBoton() {
-
-        otraFuncionJavascript();
-
-        history.go(+1);
-
-    }
 </script>
 
 

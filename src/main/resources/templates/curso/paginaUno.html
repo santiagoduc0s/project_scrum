@@ -8,7 +8,10 @@
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
 <div class="container">
-    <div class="card mt-5 w-75 mx-auto">
+    <div class="w-75 mx-auto mt-4">
+        <a th:href="@{/verCurso}" type="button" class="btn btn-dark btn-sm">Volver</a>
+    </div>
+    <div class="card mt-3 w-75 mx-auto">
         <h5 th:text="${capitulo.titulo}" class="card-header text-center">Scrum</h5>
         <div class="card-body">
             <ul class="list-group">
@@ -25,26 +28,14 @@
             </ul>
         </div>
     </div>
-    <input type="button" class="btn btn-dark clearfix btn-sm my-sm-5" style="float: left" value="Página anterior"
-           onclick="history.go(-1);">
-<!--    <input type="button" class="btn btn-dark clearfix btn-sm my-sm-5" style="float: right" value="Página siguiente"-->
-<!--           onclick="history.go(+1);">-->
+
+
 </div>
 
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
 
-<script>
-
-    function funcionAsociadaBoton() {
-
-        otraFuncionJavascript();
-
-        history.go(-1);
-
-    }
-</script>
 
 </body>
 

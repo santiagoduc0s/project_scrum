@@ -263,6 +263,8 @@ public class UsuarioController {
         Usuario user = usuarioService.buscarPorId(id);
         Usuario usuarioLogueado = usuarioService.buscarUsuarioPorUsername(auth.getName());
 
+        model.addAttribute("usuario", usuarioLogueado.getUserName());
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         //user.setNombre(usuario.getNombre());
         //user.setApellido(usuario.getApellido());
