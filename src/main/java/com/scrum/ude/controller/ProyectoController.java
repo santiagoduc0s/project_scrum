@@ -173,6 +173,8 @@ public class ProyectoController {
         //proyecto.setCreador(true);
         //proyecto.setUsuario(usuarios);
 
+        String t = proyecto.getCodigoProyecto();
+
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorCodigoProyecto(proyecto.getCodigoProyecto());
 
 
@@ -411,12 +413,16 @@ public class ProyectoController {
             auth.getName();
             Usuario user = usuarioImpl.findOne(auth.getName());
             Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
+
             if (user.getProyecto().contains(proyecto)) {
 
                 List<Proyecto> proyectos = user.getProyecto();
                 proyectos.remove(proyecto);
                 user.setProyecto(proyectos);
                 usuarioDAO.save(user);
+
+                proyecto.setUsuario(new ArrayList<>());
+                proyectoDAO.save(proyecto);
             }
 
             proyectoDAO.delete(proyecto);
