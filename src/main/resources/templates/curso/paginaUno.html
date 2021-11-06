@@ -12,21 +12,39 @@
         <h5 th:text="${capitulo.titulo}" class="card-header text-center">Scrum</h5>
         <div class="card-body">
             <ul class="list-group">
-                <div th:each="pagina: ${capitulo.pagina}" class="list-group-item list-group-item-action" style="line-height: 30px;">
+                <div th:each="pagina: ${capitulo.pagina}" class="list-group-item list-group-item-action"
+                     style="line-height: 30px;">
                     <a class="text-decoration-none text-body"
                        th:href="@{/verPag/} + ${pagina.id}"
                        th:text="${pagina.titulo}">
                     </a>
-                    <input type="checkbox" class="float-end form-check-input" style="margin-top: 9px;position: relative;" disabled th:checked="${paginaIds.containsKey(pagina.id)}">
+                    <input type="checkbox" class="float-end form-check-input"
+                           style="margin-top: 9px;position: relative;" disabled
+                           th:checked="${paginaIds.containsKey(pagina.id)}">
                 </div>
             </ul>
         </div>
     </div>
+    <input type="button" class="btn btn-dark clearfix btn-sm my-sm-5" style="float: left" value="Página anterior"
+           onclick="history.go(-1);">
+<!--    <input type="button" class="btn btn-dark clearfix btn-sm my-sm-5" style="float: right" value="Página siguiente"-->
+<!--           onclick="history.go(+1);">-->
 </div>
 
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
+
+<script>
+
+    function funcionAsociadaBoton() {
+
+        otraFuncionJavascript();
+
+        history.go(-1);
+
+    }
+</script>
 
 </body>
 

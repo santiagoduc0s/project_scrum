@@ -28,10 +28,10 @@
                     <div class="board-column-content" id="backlog">
 
                         <div
-                            class="board-item"
-                            th:each=" tarea: ${tareas}"
-                            th:if="${tarea.status == 'BACKLOG'}"
-                            ondblclick="editar(this.children[0].id)"
+                                class="board-item"
+                                th:each=" tarea: ${tareas}"
+                                th:if="${tarea.status == 'BACKLOG'}"
+                                ondblclick="editar(this.children[0].id)"
                         >
                             <div class="board-item-content" th:id="${tarea.id}">
                                 <span th:text="${tarea.nombre}"></span>
@@ -50,10 +50,10 @@
                     <div class="board-column-content" id="todo">
 
                         <div
-                            class="board-item"
-                            th:each=" tarea: ${tareas}"
-                            th:if="${tarea.status == 'TODO'}"
-                            ondblclick="editar(this.children[0].id)"
+                                class="board-item"
+                                th:each=" tarea: ${tareas}"
+                                th:if="${tarea.status == 'TODO'}"
+                                ondblclick="editar(this.children[0].id)"
                         >
                             <div class="board-item-content" th:id="${tarea.id}">
                                 <span th:text="${tarea.nombre}"></span>
@@ -72,10 +72,10 @@
                     <div class="board-column-content" id="working">
 
                         <div
-                            class="board-item"
-                            th:each=" tarea: ${tareas}"
-                            th:if="${tarea.status == 'WORKING'}"
-                            ondblclick="editar(this.children[0].id)"
+                                class="board-item"
+                                th:each=" tarea: ${tareas}"
+                                th:if="${tarea.status == 'WORKING'}"
+                                ondblclick="editar(this.children[0].id)"
                         >
                             <div class="board-item-content" th:id="${tarea.id}">
                                 <span th:text="${tarea.nombre}"></span>
@@ -94,10 +94,10 @@
                     <div class="board-column-content" id="done">
 
                         <div
-                            class="board-item"
-                            th:each=" tarea: ${tareas}"
-                            th:if="${tarea.status == 'DONE'}"
-                            ondblclick="editar(this.children[0].id)"
+                                class="board-item"
+                                th:each=" tarea: ${tareas}"
+                                th:if="${tarea.status == 'DONE'}"
+                                ondblclick="editar(this.children[0].id)"
                         >
                             <div class="board-item-content" th:id="${tarea.id}">
                                 <span th:text="${tarea.nombre}"></span>
@@ -126,18 +126,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formCreateTask" th:action="@{/crearTarea}"  th:object="${tarea}" method="POST">
+                <form id="formCreateTask" th:action="@{/crearTarea}" th:object="${tarea}" method="POST">
                     <input name="pass" type="hidden" th:value="${ide}"/>
                     <div class="form-group">
                         <fieldset>
                             <label class="form-label" for="name">Título</label>
                             <input
-                                class="form-control"
-                                id="name"
-                                type="text"
-                                placeholder="Nombre del proyecto"
-                                th:field="*{nombre}"
-                                required
+                                    class="form-control"
+                                    id="name"
+                                    type="text"
+                                    placeholder="Nombre del proyecto"
+                                    th:field="*{nombre}"
+                                    required
                             >
                         </fieldset>
                     </div>
