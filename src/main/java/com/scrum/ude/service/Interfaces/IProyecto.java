@@ -21,4 +21,6 @@ public interface IProyecto {
 	List<Proyecto> buscarTodosLosProyectos();
 
 	public Page<Proyecto> getAll(Pageable pageable);
+
+	public List<Proyecto> buscarProyectosPorUsuario(Long id);
 }
