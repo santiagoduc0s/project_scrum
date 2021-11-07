@@ -30,111 +30,106 @@ import com.scrum.ude.entity.CodigoRegistro;
 @Controller
 public class CodigoController {
 
-	@Autowired
-	private UsuarioController usuarioController;
+    @Autowired
+    private UsuarioController usuarioController;
 
-	@Autowired
-	private IUsuarioDAO usuarioDAO;
-	
-	@Autowired
-	private MailService mailService;
-	
-	@Autowired
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
     private JavaMailSender mailSender;
 
-	@Autowired
-	private ICodigoRegistro codigoRegistro;
-	//navegar Vista  Generar Codigo Registro
-	@GetMapping("/vistaCodigoRegistro")
-	public String verVistaCodigoRegistro(Model model) {
+    @Autowired
+    private ICodigoRegistro codigoRegistro;
 
-		Authentication auth = usuarioController.retornarUsuarioLogueado();
+    //navegar Vista  Generar Codigo Registro
+    @GetMapping("/vistaCodigoRegistro")
+    public String verVistaCodigoRegistro(Model model) {
 
-		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-		Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
 
-		model.addAttribute("usuario",us);
+        Usuario us = usuarioDAO.findByUserName(userDetail.getUsername());
 
-		model.addAttribute("autoridad", auth.getAuthorities().toString());
+        model.addAttribute("usuario", us);
 
-		return "/generarCodigoRegistro/generarCodigo";
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-	}
-	//genera codigo registro
-	@PostMapping("/generarCodigoRegistro")
-	public String generarCodigo(Model model) {
+        return "/generarCodigoRegistro/generarCodigo";
 
-		Authentication auth = usuarioController.retornarUsuarioLogueado();
+    }
 
-		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+    //genera codigo registro
+    @PostMapping("/generarCodigoRegistro")
+    public String generarCodigo(Model model) {
 
-		Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-		model.addAttribute("usuario",us);
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
 
-		model.addAttribute("autoridad", auth.getAuthorities().toString());
+        Usuario us = usuarioDAO.findByUserName(userDetail.getUsername());
 
-		Calendar fecha = Calendar.getInstance();
+        model.addAttribute("usuario", us);
 
-		int hora = fecha.get(Calendar.HOUR_OF_DAY);
-		int minuto = fecha.get(Calendar.MINUTE);
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-		int codigo = (int) (hora + minuto * Math.random());
+        Calendar fecha = Calendar.getInstance();
 
-		HashCode sha256hex = Hashing.sipHash24().hashInt(codigo);
+        int hora = fecha.get(Calendar.HOUR_OF_DAY);
+        int minuto = fecha.get(Calendar.MINUTE);
 
-		CodigoRegistro regis = new CodigoRegistro();
+        int codigo = (int) (hora + minuto * Math.random());
 
-		regis.setCodigo(sha256hex.toString());
-		regis.setFecha(new Date());
+        HashCode sha256hex = Hashing.sipHash24().hashInt(codigo);
 
-		codigoRegistro.save(regis);
+        CodigoRegistro regis = new CodigoRegistro();
 
-		model.addAttribute("codigo", sha256hex);
-		return "/generarCodigoRegistro/generarCodigo";
-	}
-	
-	@GetMapping("/EnviarMailCodigoRegistro/{email}")
-	public ResponseEntity<?>EnvioPassword(@PathVariable(value = "email") String email,Model model) {
+        regis.setCodigo(sha256hex.toString());
+        regis.setFecha(new Date());
 
-		Authentication auth = usuarioController.retornarUsuarioLogueado();
+        codigoRegistro.save(regis);
 
-		//UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        model.addAttribute("codigo", sha256hex);
+        return "/generarCodigoRegistro/generarCodigo";
+    }
 
-		//Usuario us=usuarioDAO.findByUserName(userDetail.getUsername());
+    @GetMapping("/EnviarMailCodigoRegistro/{email}")
+    public ResponseEntity<?> EnvioPassword(@PathVariable(value = "email") String email, Model model) {
 
-		//model.addAttribute("usuario",us);
+        try {
+            Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-		model.addAttribute("autoridad", auth.getAuthorities().toString());
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-		Calendar fecha = Calendar.getInstance();
+            Calendar fecha = Calendar.getInstance();
 
-		int hora = fecha.get(Calendar.HOUR_OF_DAY);
-		int minuto = fecha.get(Calendar.MINUTE);
+            int hora = fecha.get(Calendar.HOUR_OF_DAY);
+            int minuto = fecha.get(Calendar.MINUTE);
 
-		int codigo = (int) (hora + minuto * Math.random());
+            int codigo = (int) (hora + minuto * Math.random());
 
-		HashCode sha256hex = Hashing.sipHash24().hashInt(codigo);
+            HashCode sha256hex = Hashing.sipHash24().hashInt(codigo);
 
-		CodigoRegistro regis = new CodigoRegistro();
+            CodigoRegistro regis = new CodigoRegistro();
 
-		regis.setCodigo(sha256hex.toString());
-		regis.setFecha(new Date());
+            regis.setCodigo(sha256hex.toString());
+            regis.setFecha(new Date());
 
-		codigoRegistro.save(regis);
-		
-		String message = "Su  Codigo Registro para el ingreso de P.E.S es: " + sha256hex.toString();
+            codigoRegistro.save(regis);
 
-        mailService.sendMail("pesude2021@gmail.com", email, "Codigo Registro PES", message);
+            String message = "Su código registro para el ingreso de P.E.S es: " + sha256hex.toString();
 
-		
-     return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"1\"}");
-		
-	}
+            mailService.sendMail("pesude2021@gmail.com", email, "Codigo Registro PES", message);
 
-	
-	
-	
+            return ResponseEntity.status(HttpStatus.OK).body("{\"code\": \"1\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"code\": \"0\"}");
+        }
+    }
+
 
 }

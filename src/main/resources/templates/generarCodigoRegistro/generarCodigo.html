@@ -7,12 +7,33 @@
 
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container">
+<div class="container" id="app">
     <div class="m-5 text-center">
+
+        <div class="card mb-5 mx-auto" style="width: 22rem;">
+            <div class="card-header">
+                Enviar código de registro
+            </div>
+            <div class="card-body">
+                <div class="row mt-3">
+                    <div class="form-group col">
+                        <form @submit.prevent="sendRegisterCode">
+                            <div class="input-group">
+                                <input type="email" class="form-control" v-model="email" placeholder="Ingrese email">
+                                <button class="btn btn-dark" type="submit">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-bind:class="{'d-none': spinnerDisabled}"></span>
+                                    Enviar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <form class="col-12" th:action="@{/generarCodigoRegistro}"
               method="post">
             <button type="submit" class="btn btn-success"><i class="fas fa-sign-in-alt"></i>Generar Código</button>
-
         </form>
 
         <div class="row mt-3" th:if="${codigo != null}">
@@ -31,6 +52,53 @@
 
 <!--Scrips-->
 <div th:replace="layout/app :: scripts"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                email: '',
+                spinnerDisabled: true
+            }
+        },
+        methods: {
+            async sendRegisterCode() {
+                if (this.email === '') {
+                    return Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ingrese el email del usuario',
+                    })
+                }
+
+                this.spinnerDisabled = false
+
+                try {
+                    const response = await fetch(`/EnviarMailCodigoRegistro/${this.email}`)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Correcto',
+                        text: 'El código de registro ha sido enviado',
+                    })
+                } catch (e) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No fué posible enviar el código de registro',
+                    })
+                }
+
+                this.spinnerDisabled = true
+            }
+        }
+    })
+
+</script>
 
 <script>
     function copiarCodigo() {
