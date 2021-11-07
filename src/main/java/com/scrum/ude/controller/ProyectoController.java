@@ -404,36 +404,47 @@ public class ProyectoController {
 
     // aca elimino un  proyecto
     @GetMapping(value = "/eliminarProyecto/{id}")
-    public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    public String eliminarProyecto(@PathVariable(value = "id") Long idProyecto, RedirectAttributes flash) {
 
-        if (id > 0) {
+        if (idProyecto > 0) {
 
             Authentication auth = usuarioController.retornarUsuarioLogueado();
 
             auth.getName();
             Usuario user = usuarioImpl.findOne(auth.getName());
-            Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
-            if (user.getProyecto().contains(proyecto)) {
+            List<Proyecto> pruebasssss = proyectoImpl.buscarProyectoPorUsuario(user.getId());
 
-                List<Proyecto> proyectos = user.getProyecto();
+            Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
+            List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(idProyecto);
 
+            if (pruebasssss.contains(proyecto)) {
+                // user.setProyecto(pruebas);
 
-                proyectos.remove(proyecto);
+                pruebasssss.remove(proyecto);
 
-                user.setProyecto(proyectos);
-
-
+                user.setProyecto(pruebasssss);
 
                 usuarioDAO.save(user);
 
-                proyectoDAO.delete(proyecto);
+                usuarios.remove(user);
+                //proyectoDAO.deleteById(proyecto.getId());
+                for (Usuario usuari : usuarios) {
 
+                    usuari.setProyecto(pruebasssss);
+
+                    usuarioDAO.save(usuari);
+                    proyectoDAO.deleteById(proyecto.getId());
+
+//                     if(proyecto.getTarea()!=null){
+//
+//                       tareaDAO.delete((Tarea) proyecto.getTarea());
+//
+//                     }
+
+                }
 
             }
-
-
-
 
             flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
         }
