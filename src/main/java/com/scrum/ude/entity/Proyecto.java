@@ -31,7 +31,7 @@ public class Proyecto implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "proyecto" )
 	private List<Usuario> usuario;
 	
-	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<Tarea> tarea;
 	
 	@Column

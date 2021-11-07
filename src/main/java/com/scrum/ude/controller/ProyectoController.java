@@ -404,36 +404,46 @@ public class ProyectoController {
 
     // aca elimino un  proyecto
     @GetMapping(value = "/eliminarProyecto/{id}")
-    public String eliminarProyecto(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    public String eliminarProyecto(@PathVariable(value = "id") Long idProyecto, RedirectAttributes flash) {
 
-        if (id > 0) {
+        if (idProyecto > 0) {
 
             Authentication auth = usuarioController.retornarUsuarioLogueado();
 
             auth.getName();
             Usuario user = usuarioImpl.findOne(auth.getName());
-            Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(id);
 
-            if (user.getProyecto().contains(proyecto)) {
+            List<Proyecto>  listaProyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
+            Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
+            List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(idProyecto);
 
-                List<Proyecto> proyectos = user.getProyecto();
+            if (listaProyectos.contains(proyecto)) {
 
+                listaProyectos.remove(proyecto);
 
-                proyectos.remove(proyecto);
-
-                user.setProyecto(proyectos);
-
-
+                user.setProyecto(listaProyectos);
 
                 usuarioDAO.save(user);
 
-                proyectoDAO.delete(proyecto);
+                usuarios.remove(user);
+                //proyectoDAO.deleteById(proyecto.getId());
+                for (Usuario usuario : usuarios) {
 
+                    usuario.setProyecto(listaProyectos);
+
+                    usuarioDAO.save(usuario);
+
+                    for(Tarea tarea:proyecto.getTarea()){
+
+                        tareaDAO.deleteById(tarea.getId());
+
+                    }
+                    proyectoDAO.deleteById(proyecto.getId());
+
+//
+                }
 
             }
-
-
-
 
             flash.addFlashAttribute("success", "Proyecto  eliminado con éxito!");
         }
