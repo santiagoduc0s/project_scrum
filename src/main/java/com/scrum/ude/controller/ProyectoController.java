@@ -413,35 +413,34 @@ public class ProyectoController {
             auth.getName();
             Usuario user = usuarioImpl.findOne(auth.getName());
 
-            List<Proyecto> pruebasssss = proyectoImpl.buscarProyectoPorUsuario(user.getId());
-
+            List<Proyecto>  listaProyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
             Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
             List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(idProyecto);
 
-            if (pruebasssss.contains(proyecto)) {
-                // user.setProyecto(pruebas);
+            if (listaProyectos.contains(proyecto)) {
 
-                pruebasssss.remove(proyecto);
+                listaProyectos.remove(proyecto);
 
-                user.setProyecto(pruebasssss);
+                user.setProyecto(listaProyectos);
 
                 usuarioDAO.save(user);
 
                 usuarios.remove(user);
                 //proyectoDAO.deleteById(proyecto.getId());
-                for (Usuario usuari : usuarios) {
+                for (Usuario usuario : usuarios) {
 
-                    usuari.setProyecto(pruebasssss);
+                    usuario.setProyecto(listaProyectos);
 
-                    usuarioDAO.save(usuari);
+                    usuarioDAO.save(usuario);
+
+                    for(Tarea tarea:proyecto.getTarea()){
+
+                        tareaDAO.deleteById(tarea.getId());
+
+                    }
                     proyectoDAO.deleteById(proyecto.getId());
 
-//                     if(proyecto.getTarea()!=null){
 //
-//                       tareaDAO.delete((Tarea) proyecto.getTarea());
-//
-//                     }
-
                 }
 
             }
