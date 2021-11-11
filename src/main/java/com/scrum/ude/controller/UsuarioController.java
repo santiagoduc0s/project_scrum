@@ -3,6 +3,11 @@ package com.scrum.ude.controller;
 
 import java.util.*;
 
+import com.scrum.ude.dao.IProyectoDAO;
+import com.scrum.ude.dao.ITareaDAO;
+import com.scrum.ude.entity.Proyecto;
+import com.scrum.ude.entity.Tarea;
+import com.scrum.ude.service.ProyectoServiceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +40,18 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioDAO usuarioDAO;
+
+    @Autowired
+    private ITareaDAO tareaDAO;
+
+    @Autowired
+    private IProyectoDAO proyectoDAO;
+
+    @Autowired
+    private ProyectoServiceImpl proyectoImpl;
+
+    @Autowired
+    private UsuarioServiceImpl usuarioImpl;
 
     @Autowired
     private MailService mailService;
@@ -177,9 +194,38 @@ public class UsuarioController {
 
         if (id > 0) {
 
-            usuarioDAO.deleteById(id);
-            flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
+            Usuario usuarioEliminado = usuarioService.buscarPorId(id);
+
+           List<Proyecto>  listaProyectos = proyectoImpl.buscarProyectoPorUsuario(id);
+
+            for(Proyecto proyect:listaProyectos){
+
+                List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyect.getId());
+                if(usuarios.contains(usuarioEliminado)) {
+
+                    usuarioEliminado.setPaginas(new ArrayList<>());
+
+                    usuarioEliminado.setProyecto(new ArrayList<>());
+
+                    if(proyect.getCreador().equals(usuarioEliminado.getUserName())){
+
+                        for(Tarea tarea:proyect.getTarea()){
+
+                            tareaDAO.deleteById(tarea.getId());
+
+                        }
+                        proyectoDAO.deleteById(proyect.getId());
+                    }
+                    }
+
+                    usuarioDAO.save(usuarioEliminado);
+
+                    flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
+
+                }
+               usuarioDAO.deleteById(usuarioEliminado.getId());
         }
+
         return "redirect:/listadoUsuarios";
     }
 
