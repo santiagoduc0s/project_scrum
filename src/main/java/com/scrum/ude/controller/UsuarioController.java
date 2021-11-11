@@ -1,10 +1,7 @@
 package com.scrum.ude.controller;
 
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,37 +191,43 @@ public class UsuarioController {
     	 Authentication auth = retornarUsuarioLogueado();
          
          Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
-    	
-    	if (usuario.getCedula() != null) {
-    		
-    	
 
-            Usuario usu = usuarioService.buscarPorCedula(usuario.getCedula());
-            
-            if(user.getUserName().equals(usu.getUserName())) {
-            	
-            	usu=null;
-            	
-            }
-            
+            Usuario usuarioBuscado = new Usuario();
 
-            model.addAttribute("usuarios", usu);
+
+        if (usuario.getCedula() != null && (!user.getCedula().equals(usuario.getCedula()))) {
+
+             usuarioBuscado = usuarioService.buscarPorCedula(usuario.getCedula());
+
+            //usuarioBuscado=null;
+            model.addAttribute("usuarios", usuarioBuscado);
             model.addAttribute("autoridad", auth.getAuthorities().toString());
-            
 
-        } else {
-
-            List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-           
-            
-            
-            if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
-            
-            model.addAttribute("usuarios", usuarios);
-            
-            model.addAttribute("autoridad", auth.getAuthorities().toString());
+            return "/admin/listadoUsuarios";
 
         }
+
+            if(usuarioBuscado==null) {
+
+                List<Usuario> usuarios =  new ArrayList<>();
+
+                model.addAttribute("usuarios", usuarios);
+
+                model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+                return "/admin/listadoUsuarios";
+
+            }
+
+        List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
+
+
+        if (usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
+
+            model.addAttribute("usuarios", usuarios);
+
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
 
         return "/admin/listadoUsuarios";
     }
