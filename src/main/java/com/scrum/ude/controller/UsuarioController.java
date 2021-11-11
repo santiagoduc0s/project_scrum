@@ -203,11 +203,26 @@ public class UsuarioController {
                 List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyect.getId());
                 if(usuarios.contains(usuarioEliminado)) {
 
-                    usuarioEliminado.setPaginas(new ArrayList<>());
+                    //usuarioEliminado.setPaginas(new ArrayList<>());
 
-                    usuarioEliminado.setProyecto(new ArrayList<>());
+                    //usuarioEliminado.setProyecto(new ArrayList<>());
 
                     if(proyect.getCreador().equals(usuarioEliminado.getUserName())){
+
+                        List<Usuario> usuariosParticipantes = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyect.getId());
+
+                        for(Usuario u :usuariosParticipantes){
+
+                            if(u.getUserName().equals(usuarioEliminado.getUserName())){
+
+                                u.setPaginas(new ArrayList<>());
+                            }
+
+                            u.setProyecto(new ArrayList<>());
+
+                            usuarioDAO.save(u);
+
+                        }
 
                         for(Tarea tarea:proyect.getTarea()){
 
@@ -216,9 +231,10 @@ public class UsuarioController {
                         }
                         proyectoDAO.deleteById(proyect.getId());
                     }
-                    }
 
-                    usuarioDAO.save(usuarioEliminado);
+                }
+
+                    //usuarioDAO.save(usuarioEliminado);
 
                     flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
 

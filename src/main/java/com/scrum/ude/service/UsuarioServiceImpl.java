@@ -242,6 +242,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
 
     }
 
+
 //    @Override
 //    public List<Usuario> buscarUsuariosVinculadosPorProyecto(Long id) {
 //
