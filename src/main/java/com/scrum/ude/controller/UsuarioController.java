@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -113,8 +112,6 @@ public class UsuarioController {
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(codigoRegistro.getFecha());
 
-
-            System.out.println("dddd");
             int dias = calendar2.get(Calendar.DAY_OF_MONTH) + 5;
 
             calendar2.set(Calendar.DAY_OF_MONTH, dias);
@@ -151,30 +148,27 @@ public class UsuarioController {
 
     //navego a la vista de ver usuarios que estan registrados
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping("/listadoUsuarios")
     public String verUsuarios(Model model) {
 
         Authentication auth = retornarUsuarioLogueado();
         Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
-    	
+
 
         if (auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
 
 
             List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
             System.out.println(auth.getName());
-              
-            //if(usuarios.removeIf(t -> t.getUserName() == auth.getName())) 
-            
+
             usuarios.remove(user);
-            	  
-           model.addAttribute("usuarios", usuarios);
-            
-           
-            
+
+            model.addAttribute("usuarios", usuarios);
+
+
             Usuario usuario = new Usuario();
-            
+
 
             model.addAttribute("usuario", usuario);
 
@@ -187,7 +181,7 @@ public class UsuarioController {
         return "/menu/menu";
     }
 
-    // aca elimino un usuario
+    //Elimino un usuario
 
     @GetMapping(value = "/eliminar/{id}")
     public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
@@ -196,24 +190,24 @@ public class UsuarioController {
 
             Usuario usuarioEliminado = usuarioService.buscarPorId(id);
 
-           List<Proyecto>  listaProyectos = proyectoImpl.buscarProyectoPorUsuario(id);
+            List<Proyecto> listaProyectos = proyectoImpl.buscarProyectoPorUsuario(id);
 
-            for(Proyecto proyect:listaProyectos){
+            for (Proyecto proyect : listaProyectos) {
 
                 List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyect.getId());
-                if(usuarios.contains(usuarioEliminado)) {
+                if (usuarios.contains(usuarioEliminado)) {
 
                     //usuarioEliminado.setPaginas(new ArrayList<>());
 
                     //usuarioEliminado.setProyecto(new ArrayList<>());
 
-                    if(proyect.getCreador().equals(usuarioEliminado.getUserName())){
+                    if (proyect.getCreador().equals(usuarioEliminado.getUserName())) {
 
                         List<Usuario> usuariosParticipantes = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyect.getId());
 
-                        for(Usuario u :usuariosParticipantes){
+                        for (Usuario u : usuariosParticipantes) {
 
-                            if(u.getUserName().equals(usuarioEliminado.getUserName())){
+                            if (u.getUserName().equals(usuarioEliminado.getUserName())) {
 
                                 u.setPaginas(new ArrayList<>());
                             }
@@ -224,7 +218,7 @@ public class UsuarioController {
 
                         }
 
-                        for(Tarea tarea:proyect.getTarea()){
+                        for (Tarea tarea : proyect.getTarea()) {
 
                             tareaDAO.deleteById(tarea.getId());
 
@@ -234,32 +228,33 @@ public class UsuarioController {
 
                 }
 
-                    //usuarioDAO.save(usuarioEliminado);
 
-                    flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
 
-                }
-               usuarioDAO.deleteById(usuarioEliminado.getId());
+                flash.addFlashAttribute("success", "Usuario  eliminado con éxito!");
+
+            }
+            usuarioDAO.deleteById(usuarioEliminado.getId());
         }
 
         return "redirect:/listadoUsuarios";
     }
 
     //busco por cedula de usuario
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+
+
     @PostMapping("/listadoUsuarios")
     public String buscarUsuario(Model model, Usuario usuario, BindingResult result) {
 
-    	 Authentication auth = retornarUsuarioLogueado();
-         
-         Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
+        Authentication auth = retornarUsuarioLogueado();
 
-            Usuario usuarioBuscado = new Usuario();
+        Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
+
+        Usuario usuarioBuscado = new Usuario();
 
 
         if (usuario.getCedula() != null && (!user.getCedula().equals(usuario.getCedula()))) {
 
-             usuarioBuscado = usuarioService.buscarPorCedula(usuario.getCedula());
+            usuarioBuscado = usuarioService.buscarPorCedula(usuario.getCedula());
 
             //usuarioBuscado=null;
             model.addAttribute("usuarios", usuarioBuscado);
@@ -269,17 +264,17 @@ public class UsuarioController {
 
         }
 
-            if(usuarioBuscado==null) {
+        if (usuarioBuscado == null) {
 
-                List<Usuario> usuarios =  new ArrayList<>();
+            List<Usuario> usuarios = new ArrayList<>();
 
-                model.addAttribute("usuarios", usuarios);
+            model.addAttribute("usuarios", usuarios);
 
-                model.addAttribute("autoridad", auth.getAuthorities().toString());
+            model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-                return "/admin/listadoUsuarios";
+            return "/admin/listadoUsuarios";
 
-            }
+        }
 
         List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
 
@@ -294,7 +289,8 @@ public class UsuarioController {
         return "/admin/listadoUsuarios";
     }
 
-    //modifico los datos del usuario
+    //Visualizo el Rol del Usuario
+
     @GetMapping(value = "/modificar/{id}")
     public String modificarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash, Model model) {
         Optional<Usuario> usuario = Optional.ofNullable(new Usuario());
@@ -318,10 +314,10 @@ public class UsuarioController {
         return "/admin/rol";
     }
 
-    @PostMapping("/cambioRol")
-    public String guardarUsuarioModificadoAdmin( @RequestParam(value = "id") Long id, Model model,Usuario usuario){
+    // Se cambia rol  de Usuarios
 
-        // System.out.println("USUARIO ID  ES    " + usuario.getId());
+    @PostMapping("/cambioRol")
+    public String guardarUsuarioModificadoAdmin(@RequestParam(value = "id") Long id, Model model, Usuario usuario) {
 
         Authentication auth = retornarUsuarioLogueado();
 
@@ -340,7 +336,7 @@ public class UsuarioController {
         usuarioDAO.save(user);
 
         List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-        if(usuarios.removeIf(t -> t.getUserName() == usuarioLogueado.getUserName()))
+        if (usuarios.removeIf(t -> t.getUserName() == usuarioLogueado.getUserName()))
 
             model.addAttribute("usuarios", usuarios);
 
@@ -360,10 +356,10 @@ public class UsuarioController {
         Authentication auth = retornarUsuarioLogueado();
         Usuario user = usuarioService.buscarPorId(id);
 
-        //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
+
         model.addAttribute("id", user.getId());
         model.addAttribute("usuario", user);
-        //Usuario user=
+
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         if (auth.getAuthorities().toString() == "[ROLE_USER]") {
@@ -371,15 +367,15 @@ public class UsuarioController {
             return "/user/modificarUser";
         }
 
-        return "/admin/modificarUser";
+        return "/admin/modificarUsuarioAdministrador";
     }
-    // Perfil Usuario ver datos personales
-    
+    // Perfil Administrador ver datos personales
+
     @GetMapping("/verDatosPersonalesAdministrador")
-    public String verDatosPersonales( Model model) {
+    public String verDatosPersonales(Model model) {
 
         Authentication auth = retornarUsuarioLogueado();
-        Usuario user =usuarioService.buscarUsuarioPorUsername(auth.getName());
+        Usuario user = usuarioService.buscarUsuarioPorUsername(auth.getName());
 
         //Usuario user=usuarioDAO.findByUserName(userDetail.getUsername());
         model.addAttribute("id", user.getId());
@@ -387,113 +383,26 @@ public class UsuarioController {
         //Usuario user=
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
-//        if (auth.getAuthorities().toString() == "[ROLE_USER]") {
-//
-//            return "/user/modificarUser";
-//        }
-
-        return "/admin/modificarUsuariosNoAdministrador";
+        return "/admin/modificarUsuarioAdministrador";
     }
-    
-
-    //Se procesan los cambios del Usuario, Perfil Administrador
-    @PostMapping("/usuarioModificado")
-    public String guardarUsuarioModificadoAdmin(Usuario usuario, @RequestParam(value = "id") Long id, Model model, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
-            String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena) {
-
-        System.out.println("USUARIO ID  ES    " + usuario.getId());
-        
-        Authentication auth = retornarUsuarioLogueado();
-
-        Usuario user = usuarioService.buscarPorId(id);
 
 
-        user.setNombre(usuario.getNombre());
-        user.setApellido(usuario.getApellido());
-        user.setCedula(usuario.getCedula());
-        user.setMail(usuario.getMail());
-        user.setRol(usuario.getRol());
-        
-        if(usuario.getRol()==null) {
-        	String  tipoAutoridad =auth.getAuthorities().toString();
-        	
-        	System.out.println(tipoAutoridad);
-        	
-        	String autoridad = tipoAutoridad.replace("[", "").replace("]", "");
-        	
-        	user.setRol(autoridad );
-        }
-        
-       
-       
-        //user.setUserName(usuario.getUserName());
 
-        if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
-
-            if (!confirmacionContrasena.equals(nuevaContrasena)) {
-
-                return "/admin/modificarUsuariosPerfilAdmin";
-
-            }
-
-
-            if (!nuevaContrasena.isEmpty()) {
-
-                String contra = ws.passwordEncoder().encode(nuevaContrasena);
-                user.setPassword(contra);
-            }
-        }
-
-
-        usuarioDAO.save(user);
-
-        List<Usuario> usuarios = (List<Usuario>) usuarioDAO.findAll();
-        if(usuarios.removeIf(t -> t.getUserName() == user.getUserName()))
-
-        model.addAttribute("usuarios", usuarios);
-        
-        Usuario usuariose = new Usuario();
-
-        model.addAttribute("usuario", usuariose);
-
-
-        return "/admin/listadoUsuarios";
-
-
-    }
 
     // Se procesan datos de la modificacion del  propio Usuario
 
     @PostMapping("/modificarDatosPersonales")
     public String modificarDatosPersonalesUsuario(Model model, Usuario usuario, @RequestParam(value = "id")
-            Long id, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
-                                                          String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena, RedirectAttributes flash) {
+            Long id) {
 
         Usuario user = usuarioService.buscarPorId(id);
-        if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
 
-            if (!confirmacionContrasena.equals(nuevaContrasena)) {
-
-                return "/user/modificarUser";
-            }
-
-        } else {
-            user.setNombre(usuario.getNombre());
-            user.setApellido(usuario.getApellido());
-            user.setCedula(usuario.getCedula());
-            user.setMail(usuario.getMail());
-            //user.setUserName(usuario.getUserName());
-            user.setPassword(user.getPassword());
-
-
-        }
-
-
-        if (!nuevaContrasena.isEmpty()) {
-
-            String contra = ws.passwordEncoder().encode(nuevaContrasena);
-            user.setPassword(contra);
-        }
+        user.setNombre(usuario.getNombre());
+        user.setApellido(usuario.getApellido());
+        user.setCedula(usuario.getCedula());
+        user.setMail(usuario.getMail());
+        //user.setUserName(usuario.getUserName());
+        //user.setPassword(user.getPassword());
 
         usuarioDAO.save(user);
 
@@ -503,6 +412,67 @@ public class UsuarioController {
         return "redirect:/menuCambiado/" + user.getUserName() + "";
 
     }
+
+    //Modifica Password de Usuario
+
+    @PostMapping("/modificarPasswordUsuario")
+    public String modificarPasswordUsuario(Model model, @RequestParam(value = "id")
+            Long id, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
+            String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena, RedirectAttributes flash) {
+
+        Usuario user = usuarioService.buscarPorId(id);
+        if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
+
+            if (!confirmacionContrasena.equals(nuevaContrasena)) {
+
+                return "/user/modificarUser";
+            }
+
+            if (!nuevaContrasena.isEmpty()) {
+
+                String contra = ws.passwordEncoder().encode(nuevaContrasena);
+                user.setPassword(contra);
+            }
+
+            usuarioDAO.save(user);
+
+            model.addAttribute("usuario", user);
+        }
+
+        return "redirect:/menuCambiado/" + user.getUserName() + "";
+
+    }
+
+
+//Modifica Password Administrador
+    @PostMapping("/modificarPasswordAdmin")
+    public String modificarPasswordAdmin(Model model, @RequestParam(value = "id")
+            Long id, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
+                                                   String nuevaContrasena, @RequestParam(value = "confirmacionContrasena") String confirmacionContrasena, RedirectAttributes flash) {
+
+        Usuario user = usuarioService.buscarPorId(id);
+        if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
+
+            if (!confirmacionContrasena.equals(nuevaContrasena)) {
+
+                return "/user/modificarUsuarioAdministrador";
+            }
+
+            if (!nuevaContrasena.isEmpty()) {
+
+                String contra = ws.passwordEncoder().encode(nuevaContrasena);
+                user.setPassword(contra);
+            }
+
+            usuarioDAO.save(user);
+
+            model.addAttribute("usuario", user);
+        }
+
+        return "redirect:/menuCambiado/" + user.getUserName() + "";
+
+    }
+
 
 
     // Aun no decido errores para la pantalla
@@ -520,7 +490,7 @@ public class UsuarioController {
         return "/user/modificarUser";
     }
 
-
+   // Recuperar Password de Usuario
     @GetMapping("/recuperar-password/{email}")
     public ResponseEntity<?> solicitarContrasena(@PathVariable(value = "email") String email) {
 
