@@ -389,7 +389,7 @@ public class UsuarioController {
 
 
 
-    // Se procesan datos de la modificacion del  propio Usuario
+    // Se procesan datos de la modificacion del  propio Usuario y Administrador
 
     @PostMapping("/modificarDatosPersonales")
     public String modificarDatosPersonalesUsuario(Model model, Usuario usuario, @RequestParam(value = "id")
