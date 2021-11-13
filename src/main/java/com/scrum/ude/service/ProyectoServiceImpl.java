@@ -33,14 +33,12 @@ public class ProyectoServiceImpl implements IProyecto  {
 	@Override
    	public List<Proyecto> buscarProyectoPorUsuario(Long id) {
 
-		//String sql="SELECT p.* FROM proyecto p, usuario u WHERE u.id=p.id AND  u.id=1";
-   		//Query query =em.createNativeQuery(sql);
 		Query query = em.createQuery("select p from  Proyecto p JOIN FETCH p.usuario u where  u.id=:id");
    		query.setParameter("id", id);
 
    		List<Proyecto> proyectos = null;
    		try {
-   			log.info("Chequear ");
+   			log.info("Inicio de busqueda de Proyectos por Usuario ");
    			proyectos = (List<Proyecto>) query.getResultList();
    		} catch (Exception nre) {
    			 log.info("No se ha encontrado  usuarios");
@@ -60,7 +58,7 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    		List<Proyecto> proyectos = null;
    		try {
-   			log.info("Chequear ");
+   			log.info("Inicio de busqueda de Usuarios del proyecto ");
    			proyectos = (List<Proyecto>) query.getResultList();
    		} catch (Exception nre) {
    			 log.info("No se ha encontrado  usuarios");
@@ -84,10 +82,10 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    		Proyecto proyecto = null;
    		try {
-   			log.info("Chequear ");
+   			log.info("Inicio de busqueda de Proyecto  por Nombre de TItulo ");
    			proyecto = (Proyecto) query.getSingleResult();
    		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  usuarios");
+   			 log.info("No se encuentro Proyecto");
 
    		}
    		return proyecto;
@@ -103,10 +101,10 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    		Proyecto proyecto = null;
    		try {
-   			log.info("Chequear ");
+   			log.info("Inicio de busqueda de Codigo de Proyecto ");
    			proyecto = (Proyecto) query.getSingleResult();
    		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  Proyecto");
+   			 log.info("No se ha encontrado Codigo Proyecto");
 
    		}
    		return proyecto;
@@ -123,10 +121,10 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    		List<Proyecto> proyecto = null;
    		try {
-   			log.info("Chequear ");
+   			log.info("Inicio de busqueda de Proyectos ");
    			proyecto = (List<Proyecto>) query.getResultList();
    		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  Proyecto");
+   			 log.info("No se ha encontrado  Proyectos");
 
    		}
    		return proyecto;
@@ -149,10 +147,10 @@ public class ProyectoServiceImpl implements IProyecto  {
 
    		Proyecto proyecto = null;
    		try {
-   			log.info("Chequear ");
+   			log.info("Se inicia Busqueda de Proyecto por ID ");
    			proyecto = (Proyecto) query.getSingleResult();
    		} catch (Exception nre) {
-   			 log.info("No se ha encontrado  proyecto");
+   			 log.info("No se ha Encontrado dicho ID de Proyecto");
 
    		}
    		return proyecto;
@@ -163,44 +161,23 @@ public class ProyectoServiceImpl implements IProyecto  {
 		return proyectoRepository.findAllByTituloLike(titulo, pageable);
    }
 
-	@Override
-	public List<Proyecto> buscarProyectosPorUsuario(Long id) {
+//	@Override
+//	public List<Proyecto> buscarProyectosPorUsuario(Long id) {
+//
+//		Query query = em.createQuery("select p from  Proyecto p JOIN FETCH p.usuario u where  p.id=:id");
+//		query.setParameter("id", id);
+//
+//		List<Proyecto> proyectos = null;
+//		try {
+//			log.info("Chequear ");
+//			proyectos = (List<Proyecto>) query.getResultList();
+//		} catch (Exception nre) {
+//			log.info("No se ha encontrado  usuarios");
+//
+//		}
+//		return proyectos;
+//
+//	}
 
-		//String sql="SELECT p.* FROM proyecto p, usuario u WHERE u.id=p.id AND  u.id=1";
-		//Query query =em.createNativeQuery(sql);
-		Query query = em.createQuery("select p from  Proyecto p JOIN FETCH p.usuario u where  p.id=:id");
-		query.setParameter("id", id);
-
-		List<Proyecto> proyectos = null;
-		try {
-			log.info("Chequear ");
-			proyectos = (List<Proyecto>) query.getResultList();
-		} catch (Exception nre) {
-			log.info("No se ha encontrado  usuarios");
-
-		}
-		return proyectos;
-
-	}
-    
-//    @Override
-//   	public void elimnarProyectobyUsuario(Long id) {
-//
-//   		
-//   		em.createNativeQuery("select p from Proyecto p where p.id=:id");
-//   		//query.setParameter("id", id);
-//
-//   		Proyecto proyecto = null;
-//   		try {
-//   			log.info("Chequear ");
-//   			proyecto = (Proyecto) query.getSingleResult();
-//   		} catch (Exception nre) {
-//   			 log.info("No se ha encontrado  proyecto");
-//
-//   		}
-//   
-//
-//   	}
-//
     
 }

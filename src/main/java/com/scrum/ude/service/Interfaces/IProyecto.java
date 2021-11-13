@@ -22,5 +22,5 @@ public interface IProyecto {
 
 	public Page<Proyecto> getAll(Pageable pageable);
 
-	public List<Proyecto> buscarProyectosPorUsuario(Long id);
+	//public List<Proyecto> buscarProyectosPorUsuario(Long id);
 }

@@ -386,9 +386,6 @@ public class UsuarioController {
         return "/admin/modificarUsuarioAdministrador";
     }
 
-
-
-
     // Se procesan datos de la modificacion del  propio Usuario y Administrador
 
     @PostMapping("/modificarDatosPersonales")
