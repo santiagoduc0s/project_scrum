@@ -321,6 +321,39 @@ public class ProyectoController {
 
     }
 
+    //Guardo Modificacion de Quitar Participantes
+
+    @PostMapping("/guardarModificacionProyectoWithPartipantes")
+    public String QuitarPartipanteDelProyecto(@RequestParam(value = "idProyecto") Long idProyecto,@RequestParam(value = "idUsuario") Long idUsuario, Model model) {
+
+        Authentication auth = usuarioController.retornarUsuarioLogueado();
+
+        Usuario user= usuarioImpl.buscarPorId(idUsuario);
+        Proyecto proyectoso = proyectoImpl.buscarPorIdProyecto(idProyecto);
+
+        List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyectoso.getId());
+
+        if(usuarios.contains(user)){
+            usuarios.remove(user);
+            proyectoso.setUsuario(usuarios);
+
+            proyectoDAO.save(proyectoso);
+        }
+
+
+        model.addAttribute("autoridad", auth.getAuthorities().toString());
+
+        List<Proyecto> proyectosos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
+
+        model.addAttribute("proyectos", proyectosos);
+
+        return "redirect:/vistaProyecto";
+
+    }
+
+
+
+
     // aca elimino un  proyecto
 
     @GetMapping(value = "/eliminarProyecto/{id}")
