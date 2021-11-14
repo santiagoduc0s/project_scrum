@@ -89,13 +89,15 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card mx-auto" style="width: 50%; margin-top: 4%">
+        <div class="container">
+            <div class="card mx-auto" style="width: 50%; margin-top: -8%">
                 <div class="card-header">
                     Modificar Contraseña
                 </div>
                 <div class="card-body">
-                    <form role="form" id="formularioCambiarDatos" th:action="@{/modificarDatosPersonales}"
+                    <form role="form" id="formularioCambiarDatos" th:action="@{/modificarPasswordUsuario}"
                           th:object="${usuario}" method="post">
                         <input type="hidden" name="usuario"
                                class="form-control"
