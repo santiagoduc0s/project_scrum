@@ -349,9 +349,6 @@ public class ProyectoController {
         return "redirect:/vistaProyecto";
     }
 
-
-
-
     // aca elimino un  proyecto
 
     @GetMapping(value = "/eliminarProyecto/{id}")
