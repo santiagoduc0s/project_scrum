@@ -345,8 +345,6 @@ public class UsuarioController {
         model.addAttribute("usuario", usuariose);
 
         return "/admin/listadoUsuarios";
-
-
     }
 
     // Perfil Usuario ver datos personales
@@ -369,8 +367,8 @@ public class UsuarioController {
 
         return "/admin/modificarUsuarioAdministrador";
     }
-    // Perfil Administrador ver datos personales
 
+    // Perfil Administrador ver datos personales
     @GetMapping("/verDatosPersonalesAdministrador")
     public String verDatosPersonales(Model model) {
 
@@ -411,7 +409,6 @@ public class UsuarioController {
     }
 
     //Modifica Password de Usuario
-
     @PostMapping("/modificarPasswordUsuario")
     public String modificarPasswordUsuario(Model model, @RequestParam(value = "id")
             Long id, @RequestParam(value = "contrasena") String contrasena, @RequestParam(value = "nuevaContrasena")
@@ -421,7 +418,6 @@ public class UsuarioController {
         if (ws.passwordEncoder().matches(contrasena, user.getPassword())) {
 
             if (!confirmacionContrasena.equals(nuevaContrasena)) {
-
                 return "/user/modificarUser";
             }
 

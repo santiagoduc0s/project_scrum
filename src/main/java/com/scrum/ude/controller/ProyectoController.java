@@ -212,9 +212,9 @@ public class ProyectoController {
         List<Proyecto> proyectos = proyectoImpl.buscarProyectoPorUsuario(user.getId());
 
         Proyecto proyect = (Proyecto) proyectoImpl.buscarPorIdProyecto(id);
-        String mensajeFlash = "No existe proyecto";
+        String mensajeFlash = "Ha salido correctamente";
 
-        flash.addFlashAttribute("warning", mensajeFlash);
+        flash.addFlashAttribute("success", mensajeFlash);
 
         if (proyectos.contains(proyect)) {
 
@@ -323,7 +323,7 @@ public class ProyectoController {
 
     //Guardo Modificacion de Quitar Participantes
 
-    @PostMapping("/guardarModificacionProyectoWithPartipantes")
+    @GetMapping("/guardarModificacionProyectoWithPartipantes")
     public String QuitarPartipanteDelProyecto(@RequestParam(value = "idProyecto") Long idProyecto,@RequestParam(value = "idUsuario") Long idUsuario, Model model) {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
@@ -340,7 +340,6 @@ public class ProyectoController {
             proyectoDAO.save(proyectoso);
         }
 
-
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 
         List<Proyecto> proyectosos = (List<Proyecto>) proyectoImpl.buscarProyectoPorUsuario(user.getId());
@@ -348,7 +347,6 @@ public class ProyectoController {
         model.addAttribute("proyectos", proyectosos);
 
         return "redirect:/vistaProyecto";
-
     }
 
 

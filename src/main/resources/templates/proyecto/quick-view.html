@@ -34,7 +34,7 @@
                 class="form-control"
                 id="description"
                 rows="3"
-                placeholder="Descripcion del proyecto"
+                placeholder="Descripción del proyecto"
                 th:field="*{Descripcion}"
             ></textarea>
         </div>
@@ -44,7 +44,7 @@
             <ul class="list-group">
                 <li class="list-group-item" th:each="usu : ${proyecto.usuario}" th:if="${usuario.userName != usu.userName}">
                     <span th:text="${usu.userName}"></span>
-                    <button class="btn btn-danger btn-sm float-end">Quitar</button>
+                    <a th:href="@{/guardarModificacionProyectoWithPartipantes(idProyecto=${proyecto.id}, idUsuario=${usu.id})}" class="btn btn-danger btn-sm float-end">Quitar</a>
                 </li>
             </ul>
         </div>

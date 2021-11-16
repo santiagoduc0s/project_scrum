@@ -7,8 +7,8 @@
 
 <nav th:replace="layout/app :: navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
 
-<div class="container">
-    <div class="card mx-auto" style="width: 50%; margin-top: 4%">
+<div class="container py-5">
+    <div class="card mx-auto mb-5 w-50">
         <div class="card-header">
             Modificar datos personales
         </div>
@@ -21,7 +21,7 @@
 
                 <input name="id" type="hidden" class="form-control" th:value="${id}"/>
 
-                <div class="row mb-3">
+                <div class="row">
                     <div class="form-group col-6">
                         <input type="text" name="nombre" id="nombre1"
                                class="form-control" placeholder="Nombre" th:field="*{nombre}">
@@ -37,7 +37,7 @@
 
                 <div class="form-group mb-3">
                     <input type="text" name="documento" id="documento"
-                           class="form-control " minlength="7" maxlength="8" placeholder="Ingrese su cédula" required
+                           class="form-control" placeholder="Ingrese su cédula" required
                            th:field="*{cedula}">
                 </div>
 
@@ -53,27 +53,6 @@
                            class="form-control"
                            th:field="*{userName}" disabled>
                 </div>
-
-                <!--<div class="form-group mb-3">
-                    <input type="password"
-                           class="form-control" placeholder="Ingrese su contraseña"
-                           name="contrasena" th:value="${contrasena}">
-                </div>
-
-                <div class="row mb-3">
-                    <div class="form-group col-6">
-                        <input type="password"
-                               class="form-control" placeholder="Ingrese su nueva contraseña"
-                               name="nuevaContrasena"   minlength="8" th:value="${nuevaContrasena}">
-                    </div>
-
-                    <div class="form-group col-6">
-                        <input type="password"
-                               class="form-control" placeholder="Confirme su contraseña"
-                               name="confirmacionContrasena"  minlength="8" th:value="${confirmacionContrasena}">
-                    </div>
-                </div>-->
-
             </form>
         </div>
 
@@ -88,9 +67,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="card mx-auto" style="width: 50%;">
+
+    <div class="card mx-auto w-50">
         <div class="card-header">
             Modificar contraseña
         </div>
@@ -122,7 +100,6 @@
                                name="confirmacionContrasena" minlength="8" th:value="${confirmacionContrasena}">
                     </div>
                 </div>
-
             </form>
         </div>
 
@@ -136,7 +113,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <div th:replace="layout/app :: scripts"></div>
