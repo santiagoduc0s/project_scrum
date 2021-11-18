@@ -397,21 +397,18 @@
 </svg>
 
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div th:replace="layout/app :: scripts"></div>
 
 <script>
     let urlSort = window.location.href.split('?');
 
     if (urlSort[1] != null && urlSort[1] === 'error') {
-        $.notify({
-
-            message: 'Las credenciales ingresadas son inválidas'
-        }, {
-            // settings
-            element: 'body',
-            type: "danger"
-
-        });
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Las credenciales ingresadas son invalidas',
+        })
     }
 </script>
 
