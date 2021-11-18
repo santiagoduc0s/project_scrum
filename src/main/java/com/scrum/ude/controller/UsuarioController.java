@@ -460,9 +460,13 @@ public class UsuarioController {
             usuarioDAO.save(user);
 
             model.addAttribute("usuario", user);
+        } else {
+            flash.addFlashAttribute("danger", "La contraseña ingresada es incorrecta");
+            return "redirect:/verDatosPersonales/" + user.getId();
         }
 
-        return "redirect:/menuCambiado/" + user.getUserName() + "";
+        flash.addFlashAttribute("success", "La contraseña fué modificada");
+        return "redirect:/verDatosPersonales/" + user.getId();
 
     }
 
