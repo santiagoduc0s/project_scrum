@@ -131,7 +131,7 @@
 
                 <div class="form-group mb-3">
                     <input type="number" class="form-control" placeholder="Ingrese su cédula"
-                           th:field="*{cedula}" name="cedula"  min="1" max="99" minlength="1" maxlength="2"   required v-model="usuario.cedula">
+                           th:field="*{cedula}" name="cedula"   required v-model="usuario.cedula">
                 </div>
 
                 <div class="form-group mb-3">
@@ -211,6 +211,10 @@ var app = new Vue({
     methods: {
         async validarDatos(event) {
             event.preventDefault()
+
+            if (this.usuario.cedula.length < 7 || this.usuario.cedula.length > 8) {
+                return this.showError('La cédula ingresada es inválida')
+            }
 
             try {
                 const response = await this.axiosInstance.get(`/api/register/cedula-disponible/${this.usuario.cedula}`)
