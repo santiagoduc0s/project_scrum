@@ -328,17 +328,26 @@ public class ProyectoController {
 
         Authentication auth = usuarioController.retornarUsuarioLogueado();
 
-        Usuario user= usuarioImpl.buscarPorId(idUsuario);
-        Proyecto proyectoso = proyectoImpl.buscarPorIdProyecto(idProyecto);
+        Proyecto proyecto = proyectoImpl.buscarPorIdProyecto(idProyecto);
+        List<Usuario> usuarios = new ArrayList<>();
 
-        List<Usuario> usuarios = usuarioImpl.buscarProyectosoVinculadosPorUsuario(proyectoso.getId());
+        Usuario user = usuarioImpl.buscarPorId(idUsuario);
+        usuarios.remove(user);
+        proyecto.setUsuario(usuarios);
 
-        if(usuarios.contains(user)){
-            usuarios.remove(user);
-            proyectoso.setUsuario(usuarios);
+        if (!proyecto.getCreador().equals(user.getUserName())) {
 
-            proyectoDAO.save(proyectoso);
+            proyectoDAO.save(proyecto);
+        } else {
+            //flash.addFlashAttribute("warning", "No se puede eliminar a si mismo!");
+
         }
+
+        List<Proyecto> proyectos = new ArrayList<>();
+
+        proyectos.remove(proyecto);
+        user.setProyecto(proyectos);
+        usuarioDAO.save(user);
 
         model.addAttribute("autoridad", auth.getAuthorities().toString());
 

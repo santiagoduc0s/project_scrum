@@ -3,13 +3,13 @@ package com.scrum.ude.service;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.scrum.ude.dto.UsuarioDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,8 +36,15 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
     @Autowired
     private WebSecurityConfig ws;
 
+    @Autowired
+    private EntityManagerFactory emf;
+
+
     @PersistenceContext
     private EntityManager em;
+
+
+    private EntityManagerFactory entityManagerFactory;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -84,6 +91,7 @@ public class UsuarioServiceImpl implements UserDetailsService, IService {
         return usuario;
 
     }
+
 
     @Override
     public Boolean ExisteUsuario(String userName) {
