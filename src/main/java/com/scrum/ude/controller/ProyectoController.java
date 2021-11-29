@@ -387,7 +387,7 @@ public class ProyectoController {
                 for (Usuario usuario : usuarios) {
 
                     List<Proyecto> listaProyectosUsuarios = proyectoImpl.buscarProyectoPorUsuario(usuario.getId());
-
+//
                     listaProyectosUsuarios.remove(proyecto);
                     usuario.setProyecto(listaProyectosUsuarios);
 
