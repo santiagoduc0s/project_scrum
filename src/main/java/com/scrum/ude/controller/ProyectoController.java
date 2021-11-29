@@ -386,7 +386,10 @@ public class ProyectoController {
                 //proyectoDAO.deleteById(proyecto.getId());
                 for (Usuario usuario : usuarios) {
 
-                    usuario.setProyecto(listaProyectos);
+                    List<Proyecto> listaProyectosUsuarios = proyectoImpl.buscarProyectoPorUsuario(usuario.getId());
+
+                    listaProyectosUsuarios.remove(proyecto);
+                    usuario.setProyecto(listaProyectosUsuarios);
 
                     usuarioDAO.save(usuario);
 
